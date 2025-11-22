@@ -19,24 +19,27 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset("assets/images/splash_logo.png",),
-            Text("“تطبيق تعليمي وترفيهي آمن وممتع للأطفال”",
-              style: TextStyle(
-                color: AppColors.text,
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
-                height: 1.5,
-              ),
-              textAlign: TextAlign.center,
-            )
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/images/splash_logo.png",),
+              SizedBox(height: 10,),
+              Text("“تطبيق تعليمي وترفيهي آمن وممتع للأطفال”",
+                style: TextStyle(
+                  color: AppColors.text,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w400,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
         ),
       ),
     );
