@@ -28,16 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset("assets/images/splash_logo.png",),
-              SizedBox(height: 10,),
-              Text("“تطبيق تعليمي وترفيهي آمن وممتع للأطفال”",
-                style: TextStyle(
-                  color: AppColors.text,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w400,
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.center,
-              )
             ],
           ),
         ),
