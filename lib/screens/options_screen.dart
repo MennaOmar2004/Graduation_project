@@ -1,9 +1,15 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/screens/login2.dart';
+class OptionsScreen extends StatefulWidget {
+  const OptionsScreen({super.key});
 
-class OptionsScreen extends StatelessWidget {
-  OptionsScreen({super.key});
+  @override
+  State<OptionsScreen> createState() => _OptionsScreenState();
+}
+
+class _OptionsScreenState extends State<OptionsScreen> {
 
   final List<Map<String,dynamic>> gridItems =[
     {
@@ -27,12 +33,33 @@ class OptionsScreen extends StatelessWidget {
       "buttonColor": AppColors.red
     }
   ];
+  int currentIndex=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: ConvexAppBar(
+        onTap: (value) {
+          setState(() {
+            currentIndex=value;
+          });
+        },
+          style: TabStyle.reactCircle,
+          height: 60,
+          backgroundColor:Colors.blue.shade100,
+          color: Colors.grey,
+          // activeColor:Colors.grey ,
+
+          curveSize: 90,
+          top: -15,
+          items: [
+            TabItem(icon: Image.asset("assets/images/Home.png",height: 60,),title: ""),
+            TabItem(icon: Image.asset("assets/images/Messaging.png",height: 60,),title: ""),
+            TabItem(icon: Image.asset("assets/images/Trophy.png",height: 60,),title: "")
+          ]
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: EdgeInsets.all(20),
           child: Column(
             children: [
               Row(
@@ -73,7 +100,7 @@ class OptionsScreen extends StatelessWidget {
               Text("مرحبا غادة",
                 style: TextStyle(color: AppColors.blue,fontSize: 20),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
               Expanded(
                 child: GridView.builder(
                   itemCount: gridItems.length,
@@ -144,3 +171,6 @@ class OptionsScreen extends StatelessWidget {
     );
   }
 }
+
+
+
