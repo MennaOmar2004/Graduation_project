@@ -2,7 +2,7 @@ name: wanisi_app
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -34,6 +34,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_native_splash: ^2.4.1
@@ -51,13 +54,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter_native_splash:
-  color: "#FFFFFF"       # اللون اللي عايزاه للخلفية
+  color: "#FFFFFF" # اللون اللي عايزاه للخلفية
   image: assets/images/splash_logo.png
   android: true
   ios: true
 
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -65,7 +67,17 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/splash_logo.png
+    - assets/images/splash_logo.png
+    - assets/images/person1.png
+    - assets/images/person2.png
+    - assets/images/person3.png
+    - assets/images/person4.png
+    - assets/images/person5.png
+    - assets/images/person6.png
+    - assets/images/person7.png
+    - assets/images/person8.png
+    - assets/images/person9.png
+    - assets/images/small_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -14,9 +14,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen(),)); // Replace '/home' with your actual home route
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      ); // Replace '/home' with your actual home route
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,18 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset("assets/images/splash_logo.png",),
-            Text("“تطبيق تعليمي وترفيهي آمن وممتع للأطفال”",
-              style: TextStyle(
-                color: AppColors.text,
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
-                height: 1.5,
-              ),
-              textAlign: TextAlign.center,
-            )
-          ],
+          children: [Image.asset("assets/images/splash_logo.png")],
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
+import 'package:wanisi_app/screens/avatar_selection_screen/avatar_selection_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: AvatarSelectionScreen(),
     );
   }
 }
-
-
