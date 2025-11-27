@@ -3,6 +3,7 @@ import 'package:wanisi_app/widgets/custom_Elevated_button.dart';
 
 import '../colors.dart';
 import 'login_Screen.dart';
+import 'options_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,12 +13,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              Image.asset("assets/images/splash_logo.png",),
-              SizedBox(height: 10,),
-              Text("“تطبيق تعليمي وترفيهي آمن وممتع للأطفال”",
+              Image.asset("assets/images/splash_logo.png"),
+              const SizedBox(height: 10),
+              const Text(
+                "تطبيق تعليمي وترفيهي آمن وممتع للأطفال",
                 style: TextStyle(
                   color: AppColors.blue,
                   fontSize: 20,
@@ -26,22 +28,33 @@ class HomeScreen extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 80,),
+              const SizedBox(height: 80),
               CustomElevatedButton(
-                onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen(),));
-                  },
-                  buttonBackground: AppColors.gray,
-                  buttonText: "تسجيل دخول كوالى امر",
-                  image: "assets/images/icon.png",
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                },
+                buttonBackground: AppColors.gray,
+                buttonText: "تسجيل دخول كوالى امر",
+                image: "assets/images/icon.png",
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20),
               CustomElevatedButton(
-                onPressed: (){},
+                onPressed: () {
+                  // Navigate to Options Screen for child mode
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const OptionsScreen(),
+                    ),
+                  );
+                },
                 buttonBackground: AppColors.blue,
                 buttonText: "انا طفل",
                 image: "assets/images/baby_icon.png",
-              )
+              ),
             ],
           ),
         ),

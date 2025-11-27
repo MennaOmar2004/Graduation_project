@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../colors.dart';
 import '../static/app_assets.dart';
 import 'avatar_selection_screen/widgets/layered_button.dart';
+import 'options_screen.dart';
 
 /// Success screen shown after child registration
 class SuccessScreen extends StatelessWidget {
@@ -77,7 +78,11 @@ class SuccessScreen extends StatelessWidget {
                       onPressed:
                           onContinue ??
                           () {
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const OptionsScreen(),
+                              ),
+                            );
                           },
                     ),
                   ],

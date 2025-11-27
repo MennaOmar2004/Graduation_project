@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/colors.dart';
-import 'package:wanisi_app/screens/home_screen.dart';
+import 'package:wanisi_app/screens/login2.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,8 +14,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      ); // Replace '/home' with your actual home route
+        MaterialPageRoute(builder: (context) => const Login2()),
+      );
     });
   }
 
@@ -25,13 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset("assets/images/splash_logo.png",),
-            ],
+            children: [Image.asset("assets/images/splash_logo.png")],
           ),
         ),
       ),
