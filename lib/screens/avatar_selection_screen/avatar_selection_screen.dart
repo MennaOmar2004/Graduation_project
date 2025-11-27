@@ -6,6 +6,7 @@ import '../../static/app_assets.dart';
 import '../../colors.dart';
 import 'widgets/avatar_grid_item.dart';
 import 'widgets/layered_button.dart';
+import '../options_screen.dart';
 
 /// Avatar selection screen - allows user to choose their profile avatar
 class AvatarSelectionScreen extends StatelessWidget {
@@ -116,14 +117,11 @@ class _AvatarSelectionView extends StatelessWidget {
                                     context
                                         .read<AvatarSelectionCubit>()
                                         .confirmSelection();
-                                    // TODO: Navigate to next screen
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'تم اختيار الصورة بنجاح',
-                                          style: AppTextStyles.snackbarText,
-                                        ),
-                                        duration: const Duration(seconds: 2),
+                                    // Navigate to options screen
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const OptionsScreen(),
                                       ),
                                     );
                                   }

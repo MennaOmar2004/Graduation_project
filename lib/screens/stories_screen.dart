@@ -27,18 +27,24 @@ class _StoriesScreenState extends State<StoriesScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  // Back button with avatar
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.purple, width: 2),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 20,
-                      color: AppColors.purple,
+                  // Back button with selected avatar
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.purple, width: 3),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/avatars/avatar_1.png', // Default avatar
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                   const Spacer(),
@@ -51,8 +57,22 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     ),
                   ),
                   const Spacer(),
-                  // Pixel-perfect score indicator
-                  const ScoreIndicator(score: '70'),
+                  // Score section with label
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'نقاطك',
+                        style: AppTextStyles.linkText.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      const ScoreIndicator(score: '70'),
+                    ],
+                  ),
                 ],
               ),
             ),
