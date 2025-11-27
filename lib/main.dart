@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:wanisi_app/screens/login2.dart';
+import 'package:wanisi_app/screens/options_screen.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/avatar_selection_screen.dart';
 
