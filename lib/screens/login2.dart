@@ -5,7 +5,9 @@ import '../widgets/custom_text_form_field.dart';
 import 'avatar_selection_screen/avatar_selection_screen.dart';
 
 class Login2 extends StatelessWidget {
-  const Login2({super.key});
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  Login2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,11 @@ class Login2 extends StatelessWidget {
             children: [
               Image.asset("assets/images/splash_logo.png"),
               const SizedBox(height: 50),
-              const CustomTextFormField(hint: "البريد الالكترونى للام"),
-              const SizedBox(height: 20),
-              const CustomTextFormField(hint: "الاسم الطفل"),
+              CustomTextFormField(hint: "البريد الالكترونى للام",controller:emailController ,),
               const SizedBox(height: 20),
               const SizedBox(height: 20),
-              const CustomTextFormField(hint: "كلمة السر"),
+              CustomTextFormField(hint: "كلمة السر",controller: passwordController,obscure: true,
+              ),
               const SizedBox(height: 30),
               CustomElevatedButton(
                 onPressed: () {

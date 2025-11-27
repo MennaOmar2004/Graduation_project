@@ -4,10 +4,14 @@ import 'package:wanisi_app/colors.dart';
 class CustomTextFormField extends StatelessWidget {
    final String hint;
    final IconData? suffixIcon;
+   final TextEditingController controller;
+   final bool? obscure;
   const CustomTextFormField({
     super.key,
     required this.hint,
-    this.suffixIcon
+    this.suffixIcon,
+    required this.controller,
+    this.obscure,
   });
 
   @override
@@ -23,9 +27,11 @@ class CustomTextFormField extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextFormField(
+        controller: controller,
+        obscureText:obscure ?? false,
         textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
-        maxLines: 3,  // Allow multiple lines
+        maxLines: obscure == true ? 1:3,  // Allow multiple lines
         minLines: 1,  // Start with single line
         decoration: InputDecoration(
           fillColor: Colors.white,

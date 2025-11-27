@@ -14,10 +14,7 @@ class AvatarSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AvatarSelectionCubit(),
-      child: const _AvatarSelectionView(),
-    );
+    return const _AvatarSelectionView();
   }
 }
 
