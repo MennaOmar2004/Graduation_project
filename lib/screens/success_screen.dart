@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wanisi_app/screens/avatar_selection_screen/avatar_selection_screen.dart';
 import '../colors.dart';
 import '../static/app_assets.dart';
 import 'avatar_selection_screen/widgets/layered_button.dart';
@@ -80,7 +81,7 @@ class SuccessScreen extends StatelessWidget {
                           () {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => const OptionsScreen(),
+                                builder: (context) => AvatarSelectionScreen(),
                               ),
                             );
                           },
