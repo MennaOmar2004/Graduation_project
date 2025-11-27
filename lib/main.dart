@@ -1,10 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/screens/login2.dart';
-import 'package:wanisi_app/screens/options_screen.dart';
-import 'package:wanisi_app/screens/splash_screen.dart';
-import 'package:wanisi_app/screens/avatar_selection_screen/avatar_selection_screen.dart';
+import 'package:wanisi_app/screens/stories_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,12 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      title: 'Wanisi',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: AvatarSelectionScreen(),
+      home: const StoriesScreen(),
     );
   }
 }
