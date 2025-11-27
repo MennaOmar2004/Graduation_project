@@ -6,12 +6,16 @@ class CustomTextFormField extends StatelessWidget {
    final IconData? suffixIcon;
    final TextEditingController controller;
    final bool? obscure;
+   final String? Function(String?) validator;
+   final TextInputType inputType;
   const CustomTextFormField({
     super.key,
     required this.hint,
     this.suffixIcon,
     required this.controller,
     this.obscure,
+    required this.validator,
+    required this.inputType,
   });
 
   @override
@@ -28,6 +32,8 @@ class CustomTextFormField extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
+        keyboardType: inputType,
+        validator: validator,
         obscureText:obscure ?? false,
         textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
@@ -39,6 +45,14 @@ class CustomTextFormField extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(color: AppColors.blue)
+          ),
+          errorBorder:OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: AppColors.red)
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: AppColors.red)
           ),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),

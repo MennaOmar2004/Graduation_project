@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/avatar_selection/avatar_selection_cubit.dart';
+import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
 import 'widgets/story_card.dart';
 import 'widgets/score_indicator.dart';
@@ -39,12 +42,23 @@ class _StoriesScreenState extends State<StoriesScreen> {
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.purple, width: 3),
                       ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/avatars/avatar_1.png', // Default avatar
-                          fit: BoxFit.cover,
-                        ),
+                      child: BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
+                        builder: (context, state) {
+                          final avatarPath = state.selectedAvatar ?? "assets/images/image_profile.png";
+                          return ClipOval(
+                            child: Image.asset(
+                              avatarPath,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
                       ),
+                      // child: ClipOval(
+                      //   child: Image.asset(
+                      //     'assets/images/avatars/avatar_1.png', // Default avatar
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
                     ),
                   ),
                   const Spacer(),

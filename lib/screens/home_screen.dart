@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   // Navigate to Options Screen for child mode
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const OptionsScreen(),
+                      builder: (context) =>  LoginScreen(),
                     ),
                   );
                 },

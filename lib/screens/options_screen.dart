@@ -17,32 +17,41 @@ class OptionsScreen extends StatefulWidget {
 }
 
 class _OptionsScreenState extends State<OptionsScreen> {
-  final List<Map<String, dynamic>> gridItems = [
+  final List<Map<String,dynamic>> gridItems =[
     {
       "image": "assets/images/games.png",
       "buttonText": "العاب",
       "buttonColor": AppColors.green,
+      "boxShadowColor": AppColors.green,
+      "borderColor":AppColors.green,
     },
     {
       "image": "assets/images/video.png",
       "buttonText": "فيديو",
       "buttonColor": AppColors.blue_,
+      "boxShadowColor": AppColors.blue_,
+      "borderColor":AppColors.blue_,
     },
     {
       "image": "assets/images/stories.png",
       "buttonText": "قصص",
       "buttonColor": AppColors.purple,
+      "boxShadowColor": AppColors.purple,
+      "borderColor":AppColors.purple,
     },
     {
       "image": "assets/images/tasks.png",
       "buttonText": "مهام",
       "buttonColor": AppColors.red,
-    },
+      "boxShadowColor": AppColors.red,
+      "borderColor":AppColors.red,
+    }
   ];
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       // bottomNavigationBar: ConvexAppBar(
       //   onTap: (value) {
       //     setState(() {
@@ -75,33 +84,36 @@ class _OptionsScreenState extends State<OptionsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).push(MaterialPageRoute(builder: (context) => Login2()));
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'نقاطك',
-                      style: AppTextStyles.linkText.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                      ).push(MaterialPageRoute(builder: (context) => Login2()));
+                    },
+                    icon: const Icon(Icons.arrow_back_ios_new),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'نقاطك',
+                        style: AppTextStyles.linkText.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    const ScoreIndicator(score: '70'),
-                  ],
-                ),
-              ],
+                      const SizedBox(height: 4),
+                      const ScoreIndicator(score: '70'),
+                    ],
+                  ),
+                ],
+              ),
             ),
             BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
               builder: (context, state) {
@@ -119,82 +131,100 @@ class _OptionsScreenState extends State<OptionsScreen> {
               style: TextStyle(color: AppColors.blue, fontSize: 20),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: GridView.builder(
-                itemCount: gridItems.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 0.80,
-                ),
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.15),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: GridView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: gridItems.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 0.80,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: gridItems[index]["borderColor"].withOpacity(.2), // خفيف جدًا
+                          width: 1.2,
                         ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              gridItems[index]["image"],
-                              fit: BoxFit.contain,
+                        boxShadow: [
+                          BoxShadow(
+                            color: gridItems[index]["boxShadowColor"].withOpacity(0.2),  // Slightly more visible
+                            offset: const Offset(0, 7),
+                            blurRadius: 0,
+                            spreadRadius: 0,              // Subtle downward offset
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                gridItems[index]["image"],
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Navigate to Stories screen when "قصص" button is pressed
-                              if (gridItems[index]["buttonText"] == "قصص") {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => const StoriesScreen(),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              width: double.infinity,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow:
+                                  [
+                                    BoxShadow(
+                                      color: gridItems[index]["boxShadowColor"].withOpacity(0.3),
+                                      offset: const Offset(0, 4),
+                                      blurRadius: 0,
+                                      spreadRadius: 0,
+                                    ),
+                                  ]
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Navigate to Stories screen when "قصص" button is pressed
+                                  if (gridItems[index]["buttonText"] == "قصص") {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const StoriesScreen(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: gridItems[index]["buttonColor"],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: const BorderSide(color: AppColors.buttonBorder, width: 1),
                                   ),
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  gridItems[index]["buttonColor"],
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: Text(
-                              gridItems[index]["buttonText"],
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                  elevation: 0,
+                                  shadowColor: Colors.transparent,
+                                ),
+                                child: Text(gridItems[index]["buttonText"], style: AppTextStyles.buttonText),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
+            const SizedBox(height: 20),
             Stack(
               alignment: Alignment.bottomCenter,
               children: [
