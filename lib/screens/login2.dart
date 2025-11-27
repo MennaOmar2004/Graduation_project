@@ -48,6 +48,9 @@ class Login2 extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return 'الحقل فارغ';
                       }
+                      if (value.length < 6) {
+                        return 'كلمة السر يجب أن تكون 6 أحرف على الأقل';
+                      }
                       return null;
                     },
                   ),
