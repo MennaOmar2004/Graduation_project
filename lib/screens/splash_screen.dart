@@ -14,9 +14,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen(),)); // Replace '/home' with your actual home route
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      ); // Replace '/home' with your actual home route
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
