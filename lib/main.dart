@@ -5,6 +5,7 @@ import 'package:wanisi_app/screens/login2.dart';
 import 'package:wanisi_app/screens/login_Screen.dart';
 import 'package:wanisi_app/screens/signup_screen.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
+import 'package:wanisi_app/screens/widgets/dissmissable_keyboard_ontap.dart';
 
 void main() {
   runApp(
@@ -22,13 +23,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Wanisi',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return DismissKeyboardOnTap(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Wanisi',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: SplashScreen(),
       ),
-      home: SignupScreen(),
     );
   }
 }

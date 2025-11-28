@@ -154,6 +154,34 @@ class _SignupScreenState extends State<SignupScreen> {
                       }
                     },
                   ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'تسجيل الدخول',
+                          style: AppTextStyles.linkText.copyWith(
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.text,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'لديك حساب بالفعل؟',
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

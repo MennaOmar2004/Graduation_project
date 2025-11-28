@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import 'package:wanisi_app/widgets/custom_text_form_field.dart';
+import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
 import 'package:wanisi_app/screens/success_screen.dart';
+import 'package:wanisi_app/screens/signup_screen.dart';
 
 import '../colors.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final nameController = TextEditingController();
-  final countryController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-   LoginScreen({super.key,});
+  String? selectedCountry;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +47,15 @@ class LoginScreen extends StatelessWidget {
                     hint: "البريد الالكترونى للام",
                     inputType: TextInputType.emailAddress,
                     controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'الحقل فارغ';
-                    }
-                    if (!value.contains('@')) {
-                      return 'ادخل ايميل صالح';
-                    }
-                    return null;
-                  },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'الحقل فارغ';
+                      }
+                      if (!value.contains('@')) {
+                        return 'ادخل ايميل صالح';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 20),
                   CustomTextFormField(
@@ -54,14 +70,49 @@ class LoginScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  CustomTextFormField(
+                  CustomDropdownField<String>(
                     hint: "الدوله",
-                    inputType: TextInputType.text,
-                    suffixIcon: Icons.keyboard_arrow_down,
-                    controller: countryController,
+                    value: selectedCountry,
+                    items: [
+                      DropdownMenuItem(
+                        value: 'egypt',
+                        alignment: Alignment.centerRight,
+                        child: Text('مصر'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'saudi',
+                        alignment: Alignment.centerRight,
+                        child: Text('السعودية'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'uae',
+                        alignment: Alignment.centerRight,
+                        child: Text('الإمارات'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'jordan',
+                        alignment: Alignment.centerRight,
+                        child: Text('الأردن'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'lebanon',
+                        alignment: Alignment.centerRight,
+                        child: Text('لبنان'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'palestine',
+                        alignment: Alignment.centerRight,
+                        child: Text('فلسطين'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCountry = value;
+                      });
+                    },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'الحقل فارغ';
+                      if (value == null) {
+                        return 'الرجاء اختيار الدولة';
                       }
                       return null;
                     },
@@ -89,16 +140,20 @@ class LoginScreen extends StatelessWidget {
                       if (_formKey.currentState!.validate()) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => const SuccessScreen(
-                              message: 'تم تسجيل الطفل بنجاح',
-                              buttonText: 'متابعة',
-                            ),
+                            builder:
+                                (context) => const SuccessScreen(
+                                  message: 'تم تسجيل الطفل بنجاح',
+                                  buttonText: 'متابعة',
+                                ),
                           ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('الرجاء ملء جميع الحقول بشكل صحيح', style:AppTextStyles.buttonText),
+                            content: Text(
+                              'الرجاء ملء جميع الحقول بشكل صحيح',
+                              style: AppTextStyles.buttonText,
+                            ),
                             backgroundColor: Colors.black,
                             duration: Duration(seconds: 2),
                           ),
@@ -106,23 +161,38 @@ class LoginScreen extends StatelessWidget {
                       }
                     },
                   ),
-
-                  // CustomElevatedButton(
-                  //   onPressed: () {
-                  //     // Navigate to Success Screen after adding new child
-                  //     Navigator.of(context).pushReplacement(
-                  //       MaterialPageRoute(
-                  //         builder:
-                  //             (context) => const SuccessScreen(
-                  //               message: 'تم تسجيل الطفل بنجاح',
-                  //               buttonText: 'متابعة',
-                  //             ),
-                  //       ),
-                  //     );
-                  //   },
-                  //   buttonBackground: AppColors.blue,
-                  //   buttonText: "اضافة طفل جديد",
-                  // ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const SignupScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'تسجيل طفل جديد',
+                          style: AppTextStyles.linkText.copyWith(
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.text,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'ليس لديك حساب؟',
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

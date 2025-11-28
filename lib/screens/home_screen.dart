@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/widgets/custom_Elevated_button.dart';
+import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../colors.dart';
 import 'login_Screen.dart';
@@ -18,9 +19,9 @@ class HomeScreen extends StatelessWidget {
             children: [
               Image.asset("assets/images/splash_logo.png"),
               const SizedBox(height: 10),
-              const Text(
+              Text(
                 "تطبيق تعليمي وترفيهي آمن وممتع للأطفال",
-                style: TextStyle(
+                style: GoogleFonts.cairo(
                   color: AppColors.blue,
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
@@ -29,31 +30,32 @@ class HomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 80),
-              CustomElevatedButton(
+              LayeredButton(
+                text: "تسجيل دخول كوالى امر",
+                width: 500,
+                height: 65,
+                backgroundColor: AppColors.gray,
+                shadowColor: Color(0xFFD6D6D6),
+                image: "assets/images/icon.png",
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>  LoginScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
-                buttonBackground: AppColors.gray,
-                buttonText: "تسجيل دخول كوالى امر",
-                image: "assets/images/icon.png",
               ),
               const SizedBox(height: 20),
-              CustomElevatedButton(
+              LayeredButton(
+                text: "انا طفل",
+                width: 500,
+                height: 65,
+                backgroundColor: AppColors.blue,
+                image: "assets/images/baby_icon.png",
                 onPressed: () {
                   // Navigate to Options Screen for child mode
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>  LoginScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
-                buttonBackground: AppColors.blue,
-                buttonText: "انا طفل",
-                image: "assets/images/baby_icon.png",
               ),
             ],
           ),

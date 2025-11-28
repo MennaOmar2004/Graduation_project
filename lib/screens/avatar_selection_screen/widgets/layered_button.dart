@@ -8,6 +8,9 @@ class LayeredButton extends StatelessWidget {
   final double width;
   final double height;
   final bool showShadow;
+  final String? image;
+  final Color? backgroundColor;
+  final Color? shadowColor;
 
   const LayeredButton({
     super.key,
@@ -16,6 +19,9 @@ class LayeredButton extends StatelessWidget {
     this.width = 200,
     this.height = 50,
     this.showShadow = true,
+    this.image,
+    this.backgroundColor,
+    this.shadowColor,
   });
 
   @override
@@ -30,7 +36,7 @@ class LayeredButton extends StatelessWidget {
               showShadow
                   ? [
                     BoxShadow(
-                      color: AppColors.buttonShadow,
+                      color: shadowColor ?? AppColors.buttonShadow,
                       offset: const Offset(0, 6),
                       blurRadius: 0,
                       spreadRadius: 2,
@@ -41,7 +47,7 @@ class LayeredButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.buttonPrimary,
+            backgroundColor: backgroundColor ?? AppColors.buttonPrimary,
             disabledBackgroundColor: AppColors.buttonDisabled,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
@@ -50,7 +56,17 @@ class LayeredButton extends StatelessWidget {
             elevation: 0,
             shadowColor: Colors.transparent,
           ),
-          child: Text(text, style: AppTextStyles.buttonText),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(text, style: AppTextStyles.buttonText),
+              if (image != null) ...[
+                const SizedBox(width: 10),
+                Image.asset(image!, width: 40, height: 40),
+              ],
+            ],
+          ),
         ),
       ),
     );
