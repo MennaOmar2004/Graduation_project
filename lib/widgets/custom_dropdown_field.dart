@@ -59,14 +59,15 @@ class CustomDropdownField<T> extends StatelessWidget {
             color: Colors.grey.shade700,
             fontWeight: FontWeight.w500,
           ),
+          prefixIcon: Icon(
+            Icons.keyboard_arrow_down,
+            color: Colors.grey.shade600,
+            size: 28,
+          ),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
           isDense: false,
         ),
-        icon: Icon(
-          Icons.keyboard_arrow_down,
-          color: Colors.grey.shade600,
-          size: 28,
-        ),
+        icon: SizedBox.shrink(), // Hide default icon
         isExpanded: true,
         alignment: Alignment.centerRight,
         style: TextStyle(
