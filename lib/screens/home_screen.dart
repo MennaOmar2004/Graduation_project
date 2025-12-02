@@ -6,6 +6,7 @@ import '../colors.dart';
 import 'login_Screen.dart';
 
 import 'game_screen.dart';
+import 'alphabet_game_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -69,6 +70,22 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => const GameScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              LayeredButton(
+                text: "تعلم الحروف",
+                width: 500,
+                height: 65,
+                backgroundColor: const Color(0xFF4ECDC4), // Turquoise
+                shadowColor: const Color(0xFF3AB0A6),
+                image: "assets/images/icon.png",
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AlphabetGameScreen(),
+                    ),
                   );
                 },
               ),
