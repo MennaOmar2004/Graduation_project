@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
   google_fonts: ^6.1.0
+  flame:
+  flame_audio: ^2.11.8
 
 dev_dependencies:
   flutter_native_splash: ^2.4.1

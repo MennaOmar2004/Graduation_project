@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../colors.dart';
 import 'login_Screen.dart';
-import 'options_screen.dart';
+
+import 'game_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -54,6 +55,20 @@ class HomeScreen extends StatelessWidget {
                   // Navigate to Options Screen for child mode
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              LayeredButton(
+                text: "لعبة صائد النجوم",
+                width: 500,
+                height: 65,
+                backgroundColor: const Color(0xFFFF9800), // Orange
+                shadowColor: const Color(0xFFF57C00),
+                image: "assets/images/icon.png", // Using existing icon for now
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const GameScreen()),
                   );
                 },
               ),
