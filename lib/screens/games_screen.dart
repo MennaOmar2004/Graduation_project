@@ -4,6 +4,7 @@ import '../widgets/game_card.dart';
 import '../models/game_item.dart';
 import 'alphabet_game_screen.dart';
 import 'pattern_selector_screen.dart';
+import 'mosque_builder_screen.dart';
 import 'game_screen.dart';
 import 'maze_game_screen.dart';
 
@@ -151,6 +152,13 @@ class GamesScreen extends StatelessWidget {
         color: const Color(0xFFE91E63),
       ),
       GameItem(
+        id: 'mosque_builder',
+        title: 'بناء المسجد',
+        description: 'ابنِ مسجدك الخاص',
+        icon: '🕌',
+        color: const Color(0xFF00BCD4),
+      ),
+      GameItem(
         id: 'star_catcher',
         title: 'صائد النجوم',
         description: 'العب والتقط النجوم',
@@ -162,7 +170,7 @@ class GamesScreen extends StatelessWidget {
         title: 'طريق القيم',
         description: 'تعلم القيم الحميدة',
         icon: '🌟',
-        color: const Color(0xFF00BCD4),
+        color: const Color(0xFF9C27B0),
       ),
     ];
   }
@@ -181,6 +189,12 @@ class GamesScreen extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => const PatternSelectorScreen(),
           ),
+        );
+        break;
+      case 'mosque_builder':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MosqueBuilderScreen()),
         );
         break;
       case 'star_catcher':
