@@ -1,10 +1,10 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/screens/login2.dart';
 import 'package:wanisi_app/screens/stories_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
+import 'games_screen.dart';
 
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
@@ -17,70 +17,41 @@ class OptionsScreen extends StatefulWidget {
 }
 
 class _OptionsScreenState extends State<OptionsScreen> {
-  final List<Map<String,dynamic>> gridItems =[
+  final List<Map<String, dynamic>> gridItems = [
     {
       "image": "assets/images/games.png",
       "buttonText": "العاب",
       "buttonColor": AppColors.green,
       "boxShadowColor": AppColors.green,
-      "borderColor":AppColors.green,
+      "borderColor": AppColors.green,
     },
     {
       "image": "assets/images/video.png",
       "buttonText": "فيديو",
       "buttonColor": AppColors.blue_,
       "boxShadowColor": AppColors.blue_,
-      "borderColor":AppColors.blue_,
+      "borderColor": AppColors.blue_,
     },
     {
       "image": "assets/images/stories.png",
       "buttonText": "قصص",
       "buttonColor": AppColors.purple,
       "boxShadowColor": AppColors.purple,
-      "borderColor":AppColors.purple,
+      "borderColor": AppColors.purple,
     },
     {
       "image": "assets/images/tasks.png",
       "buttonText": "مهام",
       "buttonColor": AppColors.red,
       "boxShadowColor": AppColors.red,
-      "borderColor":AppColors.red,
-    }
+      "borderColor": AppColors.red,
+    },
   ];
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // bottomNavigationBar: ConvexAppBar(
-      //   onTap: (value) {
-      //     setState(() {
-      //       currentIndex = value;
-      //     });
-      //   },
-      //   style: TabStyle.reactCircle,
-      //   height: 60,
-      //   backgroundColor: Colors.blue.shade100,
-      //   color: Colors.grey,
-      //
-      //   // activeColor:Colors.grey ,
-      //   curveSize: 90,
-      //   top: -15,
-      //   items: [
-      //     TabItem(
-      //       icon: Image.asset("assets/images/Home.png", height: 60),
-      //       title: "",
-      //     ),
-      //     TabItem(
-      //       icon: Image.asset("assets/images/Messaging.png", height: 60),
-      //       title: "",
-      //     ),
-      //     TabItem(
-      //       icon: Image.asset("assets/images/Trophy.png", height: 60),
-      //       title: "",
-      //     ),
-      //   ],
-      // ),
       body: SafeArea(
         child: Column(
           children: [
@@ -117,12 +88,9 @@ class _OptionsScreenState extends State<OptionsScreen> {
             ),
             BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
               builder: (context, state) {
-                final avatarPath = state.selectedAvatar ?? "assets/images/image_profile.png";
-                return Image.asset(
-                  avatarPath,
-                  height: 100,
-                  width: 100,
-                );
+                final avatarPath =
+                    state.selectedAvatar ?? "assets/images/image_profile.png";
+                return Image.asset(avatarPath, height: 100, width: 100);
               },
             ),
             const SizedBox(height: 5),
@@ -149,15 +117,18 @@ class _OptionsScreenState extends State<OptionsScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: gridItems[index]["borderColor"].withOpacity(.2), // خفيف جدًا
+                          color: gridItems[index]["borderColor"].withOpacity(
+                            .2,
+                          ),
                           width: 1.2,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: gridItems[index]["boxShadowColor"].withOpacity(0.2),  // Slightly more visible
+                            color: gridItems[index]["boxShadowColor"]
+                                .withOpacity(0.2),
                             offset: const Offset(0, 7),
                             blurRadius: 0,
-                            spreadRadius: 0,              // Subtle downward offset
+                            spreadRadius: 0,
                           ),
                         ],
                       ),
@@ -181,21 +152,32 @@ class _OptionsScreenState extends State<OptionsScreen> {
                               width: double.infinity,
                               height: 40,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow:
-                                  [
-                                    BoxShadow(
-                                      color: gridItems[index]["boxShadowColor"].withOpacity(0.3),
-                                      offset: const Offset(0, 4),
-                                      blurRadius: 0,
-                                      spreadRadius: 0,
-                                    ),
-                                  ]
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: gridItems[index]["boxShadowColor"]
+                                        .withOpacity(0.3),
+                                    offset: const Offset(0, 4),
+                                    blurRadius: 0,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
                               ),
                               child: ElevatedButton(
                                 onPressed: () {
+                                  // Navigate to Games screen when "العاب" button is pressed
+                                  if (gridItems[index]["buttonText"] ==
+                                      "العاب") {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const GamesScreen(),
+                                      ),
+                                    );
+                                  }
                                   // Navigate to Stories screen when "قصص" button is pressed
-                                  if (gridItems[index]["buttonText"] == "قصص") {
+                                  else if (gridItems[index]["buttonText"] ==
+                                      "قصص") {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder:
@@ -205,15 +187,22 @@ class _OptionsScreenState extends State<OptionsScreen> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: gridItems[index]["buttonColor"],
+                                  backgroundColor:
+                                      gridItems[index]["buttonColor"],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(color: AppColors.buttonBorder, width: 1),
+                                    side: const BorderSide(
+                                      color: AppColors.buttonBorder,
+                                      width: 1,
+                                    ),
                                   ),
                                   elevation: 0,
                                   shadowColor: Colors.transparent,
                                 ),
-                                child: Text(gridItems[index]["buttonText"], style: AppTextStyles.buttonText),
+                                child: Text(
+                                  gridItems[index]["buttonText"],
+                                  style: AppTextStyles.buttonText,
+                                ),
                               ),
                             ),
                           ),
@@ -228,13 +217,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
             Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                // Bottom background image
                 Image.asset(
                   'assets/images/bottom.png',
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-                // Navigation icons
                 Positioned(
                   bottom: 20,
                   left: 0,
@@ -242,7 +229,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // Home icon
                       _NavIcon(
                         imagePath: 'assets/images/Home.png',
                         isSelected: _selectedIndex == 0,
@@ -252,7 +238,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
                           });
                         },
                       ),
-                      // Messaging icon
                       _NavIcon(
                         imagePath: 'assets/images/Messaging.png',
                         isSelected: _selectedIndex == 1,
@@ -262,7 +247,6 @@ class _OptionsScreenState extends State<OptionsScreen> {
                           });
                         },
                       ),
-                      // Trophy icon
                       _NavIcon(
                         imagePath: 'assets/images/Trophy.png',
                         isSelected: _selectedIndex == 2,
@@ -283,6 +267,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
     );
   }
 }
+
 class _NavIcon extends StatelessWidget {
   final String imagePath;
   final bool isSelected;

@@ -4,10 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../colors.dart';
 import 'login_Screen.dart';
-
-import 'game_screen.dart';
-import 'alphabet_game_screen.dart';
-import 'maze_game_screen.dart';
+import 'games_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -38,7 +35,7 @@ class HomeScreen extends StatelessWidget {
                 width: 500,
                 height: 65,
                 backgroundColor: AppColors.gray,
-                shadowColor: Color(0xFFD6D6D6),
+                shadowColor: const Color(0xFFD6D6D6),
                 image: "assets/images/icon.png",
                 onPressed: () {
                   Navigator.of(context).push(
@@ -54,58 +51,12 @@ class HomeScreen extends StatelessWidget {
                 backgroundColor: AppColors.blue,
                 image: "assets/images/baby_icon.png",
                 onPressed: () {
-                  // Navigate to Options Screen for child mode
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
               ),
-              const SizedBox(height: 20),
-              LayeredButton(
-                text: "لعبة صائد النجوم",
-                width: 500,
-                height: 65,
-                backgroundColor: const Color(0xFFFF9800), // Orange
-                shadowColor: const Color(0xFFF57C00),
-                image: "assets/images/icon.png", // Using existing icon for now
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const GameScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              LayeredButton(
-                text: "تعلم الحروف",
-                width: 500,
-                height: 65,
-                backgroundColor: const Color(0xFF4ECDC4), // Turquoise
-                shadowColor: const Color(0xFF3AB0A6),
-                image: "assets/images/icon.png",
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AlphabetGameScreen(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              LayeredButton(
-                text: "طريق القيم",
-                width: 500,
-                height: 65,
-                backgroundColor: const Color(0xFFFFD700), // Gold
-                shadowColor: const Color(0xFFFFA500),
-                image: "assets/images/icon.png",
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const MazeGameScreen(),
-                    ),
-                  );
-                },
-              ),
+             
             ],
           ),
         ),
