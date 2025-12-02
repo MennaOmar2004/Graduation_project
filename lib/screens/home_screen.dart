@@ -7,6 +7,7 @@ import 'login_Screen.dart';
 
 import 'game_screen.dart';
 import 'alphabet_game_screen.dart';
+import 'maze_game_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -85,6 +86,22 @@ class HomeScreen extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const AlphabetGameScreen(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              LayeredButton(
+                text: "طريق القيم",
+                width: 500,
+                height: 65,
+                backgroundColor: const Color(0xFFFFD700), // Gold
+                shadowColor: const Color(0xFFFFA500),
+                image: "assets/images/icon.png",
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const MazeGameScreen(),
                     ),
                   );
                 },
