@@ -7,6 +7,7 @@ import 'pattern_selector_screen.dart';
 import 'mosque_builder_screen.dart';
 import 'game_screen.dart';
 import 'maze_game_screen.dart';
+import 'number_circus_screen.dart';
 
 class GamesScreen extends StatelessWidget {
   const GamesScreen({super.key});
@@ -172,6 +173,13 @@ class GamesScreen extends StatelessWidget {
         icon: '🌟',
         color: const Color(0xFF9C27B0),
       ),
+      GameItem(
+        id: 'number_circus',
+        title: 'سيرك الأرقام',
+        description: 'تعلم الأرقام بالمرح',
+        icon: '🎪',
+        color: const Color(0xFFFF6B9D),
+      ),
     ];
   }
 
@@ -207,6 +215,12 @@ class GamesScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const MazeGameScreen()),
+        );
+        break;
+      case 'number_circus':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NumberCircusScreen()),
         );
         break;
     }
