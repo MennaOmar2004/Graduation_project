@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../widgets/game_card.dart';
 import '../models/game_item.dart';
 import 'alphabet_game_screen.dart';
+import 'pattern_selector_screen.dart';
 import 'game_screen.dart';
 import 'maze_game_screen.dart';
 
@@ -143,6 +144,13 @@ class GamesScreen extends StatelessWidget {
         color: const Color(0xFF4CAF50),
       ),
       GameItem(
+        id: 'coloring',
+        title: 'التلوين',
+        description: 'لون الأنماط الجميلة',
+        icon: '🎨',
+        color: const Color(0xFFE91E63),
+      ),
+      GameItem(
         id: 'star_catcher',
         title: 'صائد النجوم',
         description: 'العب والتقط النجوم',
@@ -165,6 +173,14 @@ class GamesScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const AlphabetGameScreen()),
+        );
+        break;
+      case 'coloring':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PatternSelectorScreen(),
+          ),
         );
         break;
       case 'star_catcher':
