@@ -53,22 +53,32 @@ class SuccessScreen extends StatelessWidget {
                   children: [
                     // Checkmark icon
                     Image.asset(
-                      'assets/images/Done.png',
-                      width: 100,
-                      height: 100,
+                      'assets/images/bingoin.png',
+                      width: 170,
+                      height: 170,
                     ),
 
-                    const SizedBox(height: 80),
+                    // const SizedBox(height: 80),
 
                     // Success message
-                    Text(
-                      message,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.linkText.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF757575),
-                      ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/Done.png',
+                          width: 50,
+                          height: 50,
+                        ),
+                        // SizedBox(width: 10,),
+                        Text(
+                          message,
+                          textAlign: TextAlign.start,
+                          style: AppTextStyles.linkText.copyWith(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF757575),
+                          ),
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 50),

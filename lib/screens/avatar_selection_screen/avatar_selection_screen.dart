@@ -4,6 +4,7 @@ import '../../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../../blocs/avatar_selection/avatar_selection_state.dart';
 import '../../static/app_assets.dart';
 import '../../colors.dart';
+import '../take_photo_screen.dart';
 import 'widgets/avatar_grid_item.dart';
 import 'widgets/layered_button.dart';
 import '../options_screen.dart';
@@ -36,18 +37,23 @@ class _AvatarSelectionView extends StatelessWidget {
             const SizedBox(height: 24),
             // First Button: "انشئ صورتك"
             LayeredButton(
+              backgroundColor: AppColors.pink,
+              shadowColor:AppColors.pink2 ,
               text: 'انشئ صورتك',
+              image:"assets/images/Camera.png",
+              width:200 ,
               onPressed: () {
                 // TODO: Navigate to create your image screen
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'انشئ صورتك - قريباً',
-                      style: AppTextStyles.snackbarText,
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => TakePhotoScreen(),));
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     content: Text(
+                //       'انشئ صورتك - قريباً',
+                //       style: AppTextStyles.snackbarText,
+                //     ),
+                //     duration: const Duration(seconds: 2),
+                //   ),
+                // );
               },
             ),
             const SizedBox(height: 30),

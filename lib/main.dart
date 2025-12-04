@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/blocs/avatar_selection/avatar_selection_cubit.dart';
-import 'package:wanisi_app/screens/login2.dart';
-import 'package:wanisi_app/screens/login_Screen.dart';
-import 'package:wanisi_app/screens/signup_screen.dart';
+import 'package:wanisi_app/screens/confirm_photo_screen.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
+import 'package:wanisi_app/screens/take_photo_screen.dart';
 import 'package:wanisi_app/screens/widgets/dissmissable_keyboard_ontap.dart';
 
 void main() {

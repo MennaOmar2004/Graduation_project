@@ -1,54 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wanisi_app/colors.dart';
-import 'package:wanisi_app/screens/Tasks_screen.dart';
-import 'package:wanisi_app/screens/login2.dart';
-import 'package:wanisi_app/screens/stories_screen.dart';
+import 'package:wanisi_app/screens/options_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
-import 'games_screen.dart';
 
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
+import '../colors.dart';
+import 'login2.dart';
 
-class OptionsScreen extends StatefulWidget {
-  const OptionsScreen({super.key});
+class TasksScreen extends StatefulWidget {
+  const TasksScreen({super.key});
 
   @override
-  State<OptionsScreen> createState() => _OptionsScreenState();
+  State<TasksScreen> createState() => _TasksScreenState();
 }
 
-class _OptionsScreenState extends State<OptionsScreen> {
+class _TasksScreenState extends State<TasksScreen> {
   final List<Map<String, dynamic>> gridItems = [
     {
-      "image": "assets/images/games.png",
-      "buttonText": "العاب",
-      "buttonColor": AppColors.green,
-      "boxShadowColor": AppColors.green,
-      "borderColor": AppColors.green,
+      "image": "assets/images/home_work.png",
+      "buttonText": "مهام منزلية",
+      "buttonColor": AppColors.lightGreen,
+      "boxShadowColor": AppColors.lightGreen,
+      "borderColor": AppColors.lightGreen,
+      "text":"2/4"
     },
     {
-      "image": "assets/images/video.png",
-      "buttonText": "فيديو",
-      "buttonColor": AppColors.blue_,
-      "boxShadowColor": AppColors.blue_,
-      "borderColor": AppColors.blue_,
+      "image": "assets/images/study.png",
+      "buttonText": "مهام دراسية",
+      "buttonColor": AppColors.lightBlue,
+      "boxShadowColor": AppColors.lightBlue,
+      "borderColor": AppColors.lightBlue,
+      "text":"3/5"
     },
     {
-      "image": "assets/images/stories.png",
-      "buttonText": "قصص",
-      "buttonColor": AppColors.purple,
-      "boxShadowColor": AppColors.purple,
-      "borderColor": AppColors.purple,
+      "image": "assets/images/behavior.png",
+      "buttonText": "مهام سلوكية",
+      "buttonColor": AppColors.lightPurple,
+      "boxShadowColor": AppColors.lightPurple,
+      "borderColor": AppColors.lightPurple,
+      "text":"6/10"
     },
     {
-      "image": "assets/images/tasks.png",
-      "buttonText": "مهام",
-      "buttonColor": AppColors.red,
-      "boxShadowColor": AppColors.red,
-      "borderColor": AppColors.red,
+      "image": "assets/images/pray.png",
+      "buttonText": "مهام دينيه",
+      "buttonColor": AppColors.lightPink,
+      "boxShadowColor": AppColors.lightPink,
+      "borderColor": AppColors.lightPink,
+      "text":"5/7"
     },
   ];
   int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +69,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                     onPressed: () {
                       Navigator.of(
                         context,
-                      ).push(MaterialPageRoute(builder: (context) => Login2()));
+                      ).push(MaterialPageRoute(builder: (context) => OptionsScreen()));
                     },
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
@@ -88,17 +91,46 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 ],
               ),
             ),
-            BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
-              builder: (context, state) {
-                final avatarPath =
-                    state.selectedAvatar ?? "assets/images/image_profile.png";
-                return Image.asset(avatarPath, height: 100, width: 100);
-              },
-            ),
-            const SizedBox(height: 5),
-            Text(
-              "مرحبا غادة",
-              style: TextStyle(color: AppColors.blue, fontSize: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'مهام ونيسي',
+                  style: AppTextStyles.linkText.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 35),
+                Center(
+                  child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/Glowing Star.png',
+                          width: 40,
+                          height: 40,
+                        ),
+                        Text("20/30",style: AppTextStyles.numberText.copyWith(color:Colors.grey,fontSize: 20),)
+                      ]
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: SizedBox(
+                    width: 250,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: LinearProgressIndicator(
+                        value: .7,          // Progress 25%
+                        minHeight: 9,
+                        backgroundColor: Colors.grey.shade300,
+                        color: Color(0xFF69D66E) ,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             Flexible(
@@ -148,6 +180,20 @@ class _OptionsScreenState extends State<OptionsScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(gridItems[index]["text"]),
+                              SizedBox(width: 5,),
+                              Image.asset(
+                                'assets/images/Checked Checkbox.png',
+                                width: 25,
+                                height: 25,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 5),
                           SizedBox(
                             width: double.infinity,
                             child: Container(
@@ -167,38 +213,30 @@ class _OptionsScreenState extends State<OptionsScreen> {
                               ),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // Navigate to Games screen when "العاب" button is pressed
-                                  if (gridItems[index]["buttonText"] ==
-                                      "العاب") {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const GamesScreen(),
-                                      ),
-                                    );
-                                  }
-                                  // Navigate to Stories screen when "قصص" button is pressed
-                                  else if (gridItems[index]["buttonText"] ==
-                                      "قصص") {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const StoriesScreen(),
-                                      ),
-                                    );
-                                  }
-                                  else if (gridItems[index]["buttonText"] == "مهام"){
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const TasksScreen(),
-                                      ),
-                                    );
-                                  }
+                                  // // Navigate to Games screen when "العاب" button is pressed
+                                  // if (gridItems[index]["buttonText"] ==
+                                  //     "العاب") {
+                                  //   Navigator.of(context).push(
+                                  //     MaterialPageRoute(
+                                  //       builder:
+                                  //           (context) => const GamesScreen(),
+                                  //     ),
+                                  //   );
+                                  // }
+                                  // // Navigate to Stories screen when "قصص" button is pressed
+                                  // else if (gridItems[index]["buttonText"] ==
+                                  //     "قصص") {
+                                  //   Navigator.of(context).push(
+                                  //     MaterialPageRoute(
+                                  //       builder:
+                                  //           (context) => const StoriesScreen(),
+                                  //     ),
+                                  //   );
+                                  // }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
-                                      gridItems[index]["buttonColor"],
+                                  gridItems[index]["buttonColor"],
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     side: const BorderSide(
@@ -208,6 +246,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                                   ),
                                   elevation: 0,
                                   shadowColor: Colors.transparent,
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                                 ),
                                 child: Text(
                                   gridItems[index]["buttonText"],

@@ -55,16 +55,18 @@ class LayeredButton extends StatelessWidget {
             ),
             elevation: 0,
             shadowColor: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(text, style: AppTextStyles.buttonText),
               if (image != null) ...[
-                const SizedBox(width: 10),
-                Image.asset(image!, width: 40, height: 40),
+                Image.asset(image!, width: 45, height: 45),
+                // const SizedBox(width: 12),
               ],
+              const SizedBox(width: 10),
+              Text(text, style: AppTextStyles.buttonText),
             ],
           ),
         ),

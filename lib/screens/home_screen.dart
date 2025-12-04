@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 80),
               LayeredButton(
-                text: "تسجيل دخول كوالى امر",
+                text: "تسجيل دخول كولى امر",
                 width: 500,
                 height: 65,
                 backgroundColor: AppColors.gray,

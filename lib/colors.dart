@@ -20,6 +20,15 @@ class AppColors {
   static const Color blue_ = Color(0xFF5479FC);
   static const Color purple = Color(0xFFB76BC6);
   static const Color red = Color(0xFFD05675);
+  static const Color pink = Color(0xFFFFC0D8);
+  static const Color pink2 = Color(0xFFFF8DB8);
+  static const Color lightGreen = Color(0xFFA1DBCA);
+  static const Color lightBlue = Color(0xFFD0DDFF);
+  static const Color lightPurple = Color(0xFFCF9DD9);
+  static const Color lightPink = Color(0xFFFFAACA);
+
+
+
 }
 
 /// App text styles
@@ -35,6 +44,12 @@ class AppTextStyles {
   static TextStyle linkText = GoogleFonts.cairo(
     fontSize: 18,
     fontWeight: FontWeight.w500,
+    color: AppColors.text,
+  );
+
+  static TextStyle numberText = GoogleFonts.fredoka(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
     color: AppColors.text,
   );
 

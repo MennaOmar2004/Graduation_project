@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wanisi_app/colors.dart';
 
 /// Compact pixel-perfect score indicator widget
 class ScoreIndicator extends StatelessWidget {
@@ -43,11 +44,7 @@ class ScoreIndicator extends StatelessWidget {
               child: Text(
                 score,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Color(0xFF5479FF),
-                ),
+                style: AppTextStyles.numberText
               ),
             ),
           ],
