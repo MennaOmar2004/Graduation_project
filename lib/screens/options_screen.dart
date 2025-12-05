@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/colors.dart';
-import 'package:wanisi_app/screens/Tasks_screen.dart';
+import 'package:wanisi_app/screens/tasks_type_screen.dart';
 import 'package:wanisi_app/screens/login2.dart';
 import 'package:wanisi_app/screens/stories_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
@@ -191,7 +191,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => const TasksScreen(),
+                                            (context) => const TasksTypeScreen(),
                                       ),
                                     );
                                   }

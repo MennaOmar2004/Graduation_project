@@ -60,7 +60,7 @@ class GamesScreen extends StatelessWidget {
                 ],
               ),
               child: const Icon(
-                Icons.arrow_forward,
+                Icons.arrow_back,
                 color: Color(0xFF6B4CE6),
                 size: 24,
               ),

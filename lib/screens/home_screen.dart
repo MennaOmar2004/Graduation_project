@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 "تطبيق تعليمي وترفيهي آمن وممتع للأطفال",
-                style: GoogleFonts.cairo(
+                style: GoogleFonts.sedan(
                   color: AppColors.blue,
                   fontSize: 20,
                   fontWeight: FontWeight.w400,

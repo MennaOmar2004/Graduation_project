@@ -27,13 +27,18 @@ class _StoriesScreenState extends State<StoriesScreen> {
             const SizedBox(height: 16),
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
                   // Back button with selected avatar
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.arrow_back_ios_new),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop();
                     },
                     child: Container(
                       width: 50,
@@ -64,7 +69,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                   const Spacer(),
                   // Title
                   Text(
-                    'قصص وانيسي',
+                    'قصص ونيسي',
                     style: AppTextStyles.linkText.copyWith(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

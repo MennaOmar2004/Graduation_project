@@ -6,16 +6,17 @@ import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
+import 'home_tasks_screen.dart';
 import 'login2.dart';
 
-class TasksScreen extends StatefulWidget {
-  const TasksScreen({super.key});
+class TasksTypeScreen extends StatefulWidget {
+  const TasksTypeScreen({super.key});
 
   @override
-  State<TasksScreen> createState() => _TasksScreenState();
+  State<TasksTypeScreen> createState() => _TasksScreenState();
 }
 
-class _TasksScreenState extends State<TasksScreen> {
+class _TasksScreenState extends State<TasksTypeScreen> {
   final List<Map<String, dynamic>> gridItems = [
     {
       "image": "assets/images/home_work.png",
@@ -60,19 +61,56 @@ class _TasksScreenState extends State<TasksScreen> {
         bottom: false,
         child: Column(
           children: [
+            const SizedBox(height: 16),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.of(
-                        context,
-                      ).push(MaterialPageRoute(builder: (context) => OptionsScreen()));
+                      Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.purple, width: 3),
+                      ),
+                      child: BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
+                        builder: (context, state) {
+                          final avatarPath = state.selectedAvatar ?? "assets/images/image_profile.png";
+                          return ClipOval(
+                            child: Image.asset(
+                              avatarPath,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                      ),
+                      // child: ClipOval(
+                      //   child: Image.asset(
+                      //     'assets/images/avatars/avatar_1.png', // Default avatar
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
+                    ),
+                  ),
+                  const Spacer(),
+                  // Title
+                  Text(
+                    'مهام ونيسي',
+                    style: AppTextStyles.linkText.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  // Score section with label
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -91,17 +129,18 @@ class _TasksScreenState extends State<TasksScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'مهام ونيسي',
-                  style: AppTextStyles.linkText.copyWith(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 35),
+                // Text(
+                //   'مهام ونيسي',
+                //   style: AppTextStyles.linkText.copyWith(
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                // const SizedBox(height: 35),
                 Center(
                   child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -213,19 +252,19 @@ class _TasksScreenState extends State<TasksScreen> {
                               ),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // // Navigate to Games screen when "العاب" button is pressed
-                                  // if (gridItems[index]["buttonText"] ==
-                                  //     "العاب") {
-                                  //   Navigator.of(context).push(
-                                  //     MaterialPageRoute(
-                                  //       builder:
-                                  //           (context) => const GamesScreen(),
-                                  //     ),
-                                  //   );
-                                  // }
-                                  // // Navigate to Stories screen when "قصص" button is pressed
+                                  // Navigate to Games screen when "العاب" button is pressed
+                                  if (gridItems[index]["buttonText"] ==
+                                      "مهام منزلية") {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const HomeTasksScreen(),
+                                      ),
+                                    );
+                                  }
+                                  // Navigate to Stories screen when "قصص" button is pressed
                                   // else if (gridItems[index]["buttonText"] ==
-                                  //     "قصص") {
+                                  //     "مهام دراسية") {
                                   //   Navigator.of(context).push(
                                   //     MaterialPageRoute(
                                   //       builder:

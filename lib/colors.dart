@@ -28,20 +28,19 @@ class AppColors {
   static const Color lightPink = Color(0xFFFFAACA);
 
 
-
 }
 
 /// App text styles
 class AppTextStyles {
   // Button text style
-  static TextStyle buttonText = GoogleFonts.cairo(
+  static TextStyle buttonText = GoogleFonts.inriaSerif(
     fontSize: 18,
     fontWeight: FontWeight.w600,
     color: Colors.white,
   );
 
   // Link/secondary text style
-  static TextStyle linkText = GoogleFonts.cairo(
+  static TextStyle linkText = GoogleFonts.inriaSerif(
     fontSize: 18,
     fontWeight: FontWeight.w500,
     color: AppColors.text,
