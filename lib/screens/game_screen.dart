@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../game/star_catcher_game.dart';
-import '../game/components/power_up_component.dart';
+import '../utils/responsive_helper.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -48,14 +48,16 @@ class _GameScreenState extends State<GameScreen> {
             initialActiveOverlays: const ['HUD'],
           ),
 
-          // Back Button
+          // Back Button - RESPONSIVE
           Positioned(
-            top: 40,
-            right: 20,
+            top:
+                ResponsiveHelper.height(context, 0.05) +
+                MediaQuery.of(context).padding.top,
+            right: ResponsiveHelper.width(context, 0.05),
             child: GestureDetector(
               onTap: () => Navigator.of(context).pop(),
               child: Container(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(ResponsiveHelper.size(context, 10)),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.8),
                   shape: BoxShape.circle,
@@ -67,10 +69,10 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ],
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_back,
-                  color: Color(0xFFFF4081),
-                  size: 30,
+                  color: const Color(0xFFFF4081),
+                  size: ResponsiveHelper.iconSize(context, 24),
                 ),
               ),
             ),
@@ -93,6 +95,8 @@ class GameHUD extends StatefulWidget {
 class _GameHUDState extends State<GameHUD> {
   @override
   Widget build(BuildContext context) {
+    final safeTop = MediaQuery.of(context).padding.top;
+
     return StreamBuilder(
       stream: Stream.periodic(const Duration(milliseconds: 50)),
       builder: (context, snapshot) {
@@ -106,19 +110,31 @@ class _GameHUDState extends State<GameHUD> {
 
         return Stack(
           children: [
-            // Score
-            Positioned(top: 40, left: 20, child: _buildScoreDisplay()),
-
-            // Lives
-            Positioned(top: 100, left: 20, child: _buildLivesDisplay()),
-
-            // Combo
-            if (widget.game.combo > 0)
-              Positioned(top: 160, left: 20, child: _buildComboDisplay()),
-
-            // Active Power-ups
+            // Score - RESPONSIVE
             Positioned(
-              top: 40,
+              top: safeTop + ResponsiveHelper.height(context, 0.02),
+              left: ResponsiveHelper.width(context, 0.04),
+              child: _buildScoreDisplay(),
+            ),
+
+            // Lives - RESPONSIVE
+            Positioned(
+              top: safeTop + ResponsiveHelper.height(context, 0.1),
+              left: ResponsiveHelper.width(context, 0.04),
+              child: _buildLivesDisplay(),
+            ),
+
+            // Combo - RESPONSIVE
+            if (widget.game.combo > 0)
+              Positioned(
+                top: safeTop + ResponsiveHelper.height(context, 0.18),
+                left: ResponsiveHelper.width(context, 0.04),
+                child: _buildComboDisplay(),
+              ),
+
+            // Active Power-ups - RESPONSIVE
+            Positioned(
+              top: safeTop + ResponsiveHelper.height(context, 0.02),
               left: 0,
               right: 0,
               child: _buildPowerUpsDisplay(),
@@ -131,11 +147,16 @@ class _GameHUDState extends State<GameHUD> {
 
   Widget _buildScoreDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: ResponsiveHelper.padding(context, horizontal: 15, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFF4081), width: 2),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 16),
+        ),
+        border: Border.all(
+          color: const Color(0xFFFF4081),
+          width: ResponsiveHelper.size(context, 2),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -147,14 +168,20 @@ class _GameHUDState extends State<GameHUD> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.star, color: Color(0xFFFFD700), size: 30),
-          const SizedBox(width: 10),
-          Text(
-            "النقاط: ${widget.game.score}",
-            style: GoogleFonts.cairo(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF6A1B9A),
+          Icon(
+            Icons.star,
+            color: const Color(0xFFFFD700),
+            size: ResponsiveHelper.iconSize(context, 24),
+          ),
+          SizedBox(width: ResponsiveHelper.size(context, 6)),
+          FittedBox(
+            child: Text(
+              '${widget.game.score}',
+              style: GoogleFonts.cairo(
+                fontSize: ResponsiveHelper.fontSize(context, 22),
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFFF4081),
+              ),
             ),
           ),
         ],
@@ -164,11 +191,16 @@ class _GameHUDState extends State<GameHUD> {
 
   Widget _buildLivesDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+      padding: ResponsiveHelper.padding(context, horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFF4081), width: 2),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 16),
+        ),
+        border: Border.all(
+          color: const Color(0xFFE91E63),
+          width: ResponsiveHelper.size(context, 2),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -180,15 +212,15 @@ class _GameHUDState extends State<GameHUD> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          3,
+          widget.game.lives,
           (index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveHelper.size(context, 2),
+            ),
             child: Icon(
-              index < widget.game.lives
-                  ? Icons.favorite
-                  : Icons.favorite_border,
-              color: const Color(0xFFFF4081),
-              size: 28,
+              Icons.favorite,
+              color: const Color(0xFFE91E63),
+              size: ResponsiveHelper.iconSize(context, 20),
             ),
           ),
         ),
@@ -197,137 +229,87 @@ class _GameHUDState extends State<GameHUD> {
   }
 
   Widget _buildComboDisplay() {
-    final multiplier = widget.game.getComboMultiplier();
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.8, end: 1.0),
-      duration: const Duration(milliseconds: 200),
-      builder: (context, scale, child) {
-        return Transform.scale(
-          scale: scale,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFFF6B6B), Color(0xFFFFD93D)],
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.orange.withValues(alpha: 0.5),
-                  blurRadius: 15,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.flash_on, color: Colors.white, size: 24),
-                const SizedBox(width: 5),
-                Text(
-                  "×${multiplier + 1} كومبو: ${widget.game.combo}",
-                  style: GoogleFonts.cairo(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
+    return Container(
+      padding: ResponsiveHelper.padding(context, horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+        ),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 16),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.orange.withValues(alpha: 0.5),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
-        );
-      },
+        ],
+      ),
+      child: FittedBox(
+        child: Text(
+          'x${widget.game.combo} Combo!',
+          style: GoogleFonts.cairo(
+            fontSize: ResponsiveHelper.fontSize(context, 16),
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildPowerUpsDisplay() {
-    final activePowerUps = widget.game.activePowerUps;
-    if (activePowerUps.isEmpty) return const SizedBox.shrink();
-
     return Center(
       child: Wrap(
-        spacing: 10,
+        spacing: ResponsiveHelper.size(context, 8),
         children:
-            activePowerUps.map((powerUp) {
-              return _buildPowerUpIndicator(powerUp);
+            widget.game.activePowerUps.map((powerUp) {
+              return Container(
+                padding: ResponsiveHelper.padding(
+                  context,
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: powerUp.color.withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(
+                    ResponsiveHelper.borderRadius(context, 12),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: powerUp.color.withValues(alpha: 0.5),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      powerUp.emoji,
+                      style: TextStyle(
+                        fontSize: ResponsiveHelper.fontSize(context, 16),
+                      ),
+                    ),
+                    SizedBox(width: ResponsiveHelper.size(context, 4)),
+                    FittedBox(
+                      child: Text(
+                        '${powerUp.remainingTime.toInt()}s',
+                        style: GoogleFonts.cairo(
+                          fontSize: ResponsiveHelper.fontSize(context, 12),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }).toList(),
       ),
     );
-  }
-
-  Widget _buildPowerUpIndicator(ActivePowerUp powerUp) {
-    final color = _getPowerUpColor(powerUp.type);
-    final icon = _getPowerUpIcon(powerUp.type);
-    final name = _getPowerUpName(powerUp.type);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(icon, style: const TextStyle(fontSize: 18)),
-          const SizedBox(width: 5),
-          Text(
-            "$name ${powerUp.remainingTime.toStringAsFixed(0)}s",
-            style: GoogleFonts.cairo(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Color _getPowerUpColor(PowerUpType type) {
-    switch (type) {
-      case PowerUpType.magnet:
-        return const Color(0xFF9C27B0);
-      case PowerUpType.shield:
-        return const Color(0xFF2196F3);
-      case PowerUpType.doublePoints:
-        return const Color(0xFFFF9800);
-      case PowerUpType.speedBoost:
-        return const Color(0xFF4CAF50);
-    }
-  }
-
-  String _getPowerUpIcon(PowerUpType type) {
-    switch (type) {
-      case PowerUpType.magnet:
-        return '🧲';
-      case PowerUpType.shield:
-        return '🛡️';
-      case PowerUpType.doublePoints:
-        return '×2';
-      case PowerUpType.speedBoost:
-        return '⚡';
-    }
-  }
-
-  String _getPowerUpName(PowerUpType type) {
-    switch (type) {
-      case PowerUpType.magnet:
-        return 'مغناطيس';
-      case PowerUpType.shield:
-        return 'درع';
-      case PowerUpType.doublePoints:
-        return 'نقاط مضاعفة';
-      case PowerUpType.speedBoost:
-        return 'سرعة';
-    }
   }
 }
 
@@ -345,25 +327,21 @@ class GameOverOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final stars = _calculateStars();
-
     return Container(
       color: Colors.black.withValues(alpha: 0.7),
       child: Center(
         child: Container(
-          margin: const EdgeInsets.all(40),
-          padding: const EdgeInsets.all(30),
+          margin: ResponsiveHelper.padding(context, horizontal: 20),
+          padding: ResponsiveHelper.padding(context, all: 24),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF6A1B9A), Color(0xFF9C27B0), Color(0xFFBA68C8)],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(
+              ResponsiveHelper.borderRadius(context, 24),
             ),
-            borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
-                color: Colors.purple.withValues(alpha: 0.5),
-                blurRadius: 30,
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
             ],
@@ -371,56 +349,89 @@ class GameOverOverlay extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                "انتهت اللعبة!",
-                style: GoogleFonts.cairo(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              Icon(
+                Icons.star,
+                size: ResponsiveHelper.iconSize(context, 70),
+                color: const Color(0xFFFFD700),
               ),
-              const SizedBox(height: 20),
-
-              // Stars
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  3,
-                  (index) => Icon(
-                    index < stars ? Icons.star : Icons.star_border,
-                    color: const Color(0xFFFFD700),
-                    size: 50,
+              SizedBox(height: ResponsiveHelper.size(context, 16)),
+              FittedBox(
+                child: Text(
+                  'انتهت اللعبة!',
+                  style: GoogleFonts.cairo(
+                    fontSize: ResponsiveHelper.fontSize(context, 32),
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFFFF4081),
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
-
-              // Score
-              _buildStatRow("النقاط النهائية", game.score.toString()),
-              const SizedBox(height: 15),
-              _buildStatRow("أعلى كومبو", "×${game.maxCombo}"),
-
-              const SizedBox(height: 40),
-
-              // Buttons
+              SizedBox(height: ResponsiveHelper.size(context, 16)),
+              FittedBox(
+                child: Text(
+                  'النقاط: ${game.score}',
+                  style: GoogleFonts.cairo(
+                    fontSize: ResponsiveHelper.fontSize(context, 24),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: ResponsiveHelper.size(context, 24)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Flexible(
-                    child: _buildButton(
-                      "العب مرة أخرى",
-                      Icons.replay,
-                      const Color(0xFF4CAF50),
-                      onRestart,
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onExit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        padding: ResponsiveHelper.padding(
+                          context,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveHelper.borderRadius(context, 16),
+                          ),
+                        ),
+                      ),
+                      child: FittedBox(
+                        child: Text(
+                          'خروج',
+                          style: GoogleFonts.cairo(
+                            fontSize: ResponsiveHelper.fontSize(context, 16),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: _buildButton(
-                      "خروج",
-                      Icons.exit_to_app,
-                      const Color(0xFFFF4081),
-                      onExit,
+                  SizedBox(width: ResponsiveHelper.size(context, 12)),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onRestart,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF4081),
+                        padding: ResponsiveHelper.padding(
+                          context,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveHelper.borderRadius(context, 16),
+                          ),
+                        ),
+                      ),
+                      child: FittedBox(
+                        child: Text(
+                          'إعادة',
+                          style: GoogleFonts.cairo(
+                            fontSize: ResponsiveHelper.fontSize(context, 16),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -430,65 +441,5 @@ class GameOverOverlay extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildStatRow(String label, String value) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: GoogleFonts.cairo(fontSize: 20, color: Colors.white),
-          ),
-          Text(
-            value,
-            style: GoogleFonts.cairo(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFFFFD700),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildButton(
-    String text,
-    IconData icon,
-    Color color,
-    VoidCallback onPressed,
-  ) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, color: Colors.white),
-      label: Text(
-        text,
-        style: GoogleFonts.cairo(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 5,
-      ),
-    );
-  }
-
-  int _calculateStars() {
-    if (game.score >= 500) return 3;
-    if (game.score >= 250) return 2;
-    if (game.score >= 100) return 1;
-    return 0;
   }
 }

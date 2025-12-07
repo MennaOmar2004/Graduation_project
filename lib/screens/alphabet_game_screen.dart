@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../game/alphabet_game/alphabet_learning_game.dart';
+import '../utils/responsive_helper.dart';
 
 class AlphabetGameScreen extends StatefulWidget {
   const AlphabetGameScreen({super.key});
@@ -35,14 +36,16 @@ class _AlphabetGameScreenState extends State<AlphabetGameScreen> {
             initialActiveOverlays: const ['HUD'],
           ),
 
-          // Back Button
+          // Back Button - Responsive positioning
           Positioned(
-            top: 40,
-            right: 20,
+            top:
+                ResponsiveHelper.height(context, 0.05) +
+                MediaQuery.of(context).padding.top,
+            right: ResponsiveHelper.width(context, 0.05),
             child: GestureDetector(
               onTap: () => Navigator.of(context).pop(),
               child: Container(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(ResponsiveHelper.size(context, 10)),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.9),
                   shape: BoxShape.circle,
@@ -54,10 +57,10 @@ class _AlphabetGameScreenState extends State<AlphabetGameScreen> {
                     ),
                   ],
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_back,
-                  color: Color(0xFFFF4081),
-                  size: 30,
+                  color: const Color(0xFFFF4081),
+                  size: ResponsiveHelper.iconSize(context, 24),
                 ),
               ),
             ),
@@ -80,31 +83,37 @@ class AlphabetGameHUD extends StatefulWidget {
 class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
   @override
   Widget build(BuildContext context) {
+    final safeTop = MediaQuery.of(context).padding.top;
+
     return StreamBuilder(
       stream: Stream.periodic(const Duration(milliseconds: 50)),
       builder: (context, snapshot) {
         return Stack(
           children: [
-            // Top bar with score and level
+            // Top bar with score and level - RESPONSIVE
             Positioned(
-              top: 50,
-              left: 20,
-              right: 20,
+              top: safeTop + ResponsiveHelper.height(context, 0.02),
+              left: ResponsiveHelper.width(context, 0.04),
+              right: ResponsiveHelper.width(context, 0.04),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [_buildScoreDisplay(), _buildLevelDisplay()],
+                children: [
+                  Flexible(child: _buildScoreDisplay()),
+                  SizedBox(width: ResponsiveHelper.width(context, 0.02)),
+                  Flexible(child: _buildLevelDisplay()),
+                ],
               ),
             ),
 
-            // Lives in center top
+            // Lives in center top - RESPONSIVE
             Positioned(
-              top: 120,
+              top: safeTop + ResponsiveHelper.height(context, 0.12),
               left: 0,
               right: 0,
               child: Center(child: _buildLivesDisplay()),
             ),
 
-            // Encouragement Message
+            // Encouragement Message - RESPONSIVE
             if (widget.game.showEncouragement)
               Center(
                 child: TweenAnimationBuilder<double>(
@@ -114,9 +123,14 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
                     return Transform.scale(
                       scale: scale,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 25,
+                        margin: ResponsiveHelper.padding(
+                          context,
+                          horizontal: 20,
+                        ),
+                        padding: ResponsiveHelper.padding(
+                          context,
+                          horizontal: 30,
+                          vertical: 15,
                         ),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
@@ -126,7 +140,9 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
                               Color(0xFFFF6B9D),
                             ],
                           ),
-                          borderRadius: BorderRadius.circular(40),
+                          borderRadius: BorderRadius.circular(
+                            ResponsiveHelper.borderRadius(context, 30),
+                          ),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.orange.withValues(alpha: 0.6),
@@ -134,21 +150,27 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
                               offset: const Offset(0, 8),
                             ),
                           ],
-                          border: Border.all(color: Colors.white, width: 4),
-                        ),
-                        child: Text(
-                          widget.game.encouragementMessage,
-                          style: GoogleFonts.cairo(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
+                          border: Border.all(
                             color: Colors.white,
-                            shadows: [
-                              const Shadow(
-                                color: Colors.black26,
-                                offset: Offset(2, 2),
-                                blurRadius: 4,
-                              ),
-                            ],
+                            width: ResponsiveHelper.size(context, 3),
+                          ),
+                        ),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            widget.game.encouragementMessage,
+                            style: GoogleFonts.cairo(
+                              fontSize: ResponsiveHelper.fontSize(context, 36),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                const Shadow(
+                                  color: Colors.black26,
+                                  offset: Offset(2, 2),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -164,13 +186,18 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
 
   Widget _buildScoreDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+      padding: ResponsiveHelper.padding(context, horizontal: 15, vertical: 8),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF4ECDC4), Color(0xFF44A08D)],
         ),
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white, width: 3),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 20),
+        ),
+        border: Border.all(
+          color: Colors.white,
+          width: ResponsiveHelper.size(context, 2),
+        ),
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF4ECDC4).withValues(alpha: 0.4),
@@ -182,21 +209,28 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.star, color: Color(0xFFFFD700), size: 35),
-          const SizedBox(width: 10),
-          Text(
-            "${widget.game.score}",
-            style: GoogleFonts.cairo(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: [
-                const Shadow(
-                  color: Colors.black26,
-                  offset: Offset(1, 1),
-                  blurRadius: 2,
-                ),
-              ],
+          Icon(
+            Icons.star,
+            color: const Color(0xFFFFD700),
+            size: ResponsiveHelper.iconSize(context, 24),
+          ),
+          SizedBox(width: ResponsiveHelper.width(context, 0.02)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              "${widget.game.score}",
+              style: GoogleFonts.cairo(
+                fontSize: ResponsiveHelper.fontSize(context, 24),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                shadows: [
+                  const Shadow(
+                    color: Colors.black26,
+                    offset: Offset(1, 1),
+                    blurRadius: 2,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -206,16 +240,21 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
 
   Widget _buildLevelDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+      padding: ResponsiveHelper.padding(context, horizontal: 15, vertical: 8),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF8338EC), Color(0xFF6A1B9A)],
+          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
         ),
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white, width: 3),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 20),
+        ),
+        border: Border.all(
+          color: Colors.white,
+          width: ResponsiveHelper.size(context, 2),
+        ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8338EC).withValues(alpha: 0.4),
+            color: const Color(0xFF667eea).withValues(alpha: 0.4),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -224,21 +263,28 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.emoji_events, color: Color(0xFFFFD700), size: 30),
-          const SizedBox(width: 8),
-          Text(
-            "المستوى ${widget.game.level}",
-            style: GoogleFonts.cairo(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: [
-                const Shadow(
-                  color: Colors.black26,
-                  offset: Offset(1, 1),
-                  blurRadius: 2,
-                ),
-              ],
+          Icon(
+            Icons.emoji_events,
+            color: const Color(0xFFFFD700),
+            size: ResponsiveHelper.iconSize(context, 24),
+          ),
+          SizedBox(width: ResponsiveHelper.width(context, 0.02)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              "مستوى ${widget.game.level}",
+              style: GoogleFonts.cairo(
+                fontSize: ResponsiveHelper.fontSize(context, 20),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                shadows: [
+                  const Shadow(
+                    color: Colors.black26,
+                    offset: Offset(1, 1),
+                    blurRadius: 2,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -248,55 +294,38 @@ class _AlphabetGameHUDState extends State<AlphabetGameHUD> {
 
   Widget _buildLivesDisplay() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: ResponsiveHelper.padding(context, horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFFFF6B9D), Color(0xFFFF4081)],
+          colors: [Color(0xFFFF6B9D), Color(0xFFFF8E53)],
         ),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.white, width: 3),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 25),
+        ),
+        border: Border.all(
+          color: Colors.white,
+          width: ResponsiveHelper.size(context, 3),
+        ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFF6B9D).withValues(alpha: 0.4),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: const Color(0xFFFF6B9D).withValues(alpha: 0.5),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          3,
+          widget.game.lives,
           (index) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(
-                begin: 0.8,
-                end: index < widget.game.lives ? 1.0 : 0.8,
-              ),
-              duration: const Duration(milliseconds: 300),
-              builder: (context, scale, child) {
-                return Transform.scale(
-                  scale: scale,
-                  child: Icon(
-                    index < widget.game.lives
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color:
-                        index < widget.game.lives
-                            ? Colors.white
-                            : Colors.white.withValues(alpha: 0.5),
-                    size: 35,
-                    shadows: [
-                      const Shadow(
-                        color: Colors.black26,
-                        offset: Offset(1, 1),
-                        blurRadius: 2,
-                      ),
-                    ],
-                  ),
-                );
-              },
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveHelper.width(context, 0.01),
+            ),
+            child: Icon(
+              Icons.favorite,
+              color: Colors.white,
+              size: ResponsiveHelper.iconSize(context, 28),
             ),
           ),
         ),

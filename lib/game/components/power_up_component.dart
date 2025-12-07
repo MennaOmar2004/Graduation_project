@@ -185,4 +185,32 @@ class ActivePowerUp {
   double remainingTime;
 
   ActivePowerUp({required this.type, required this.remainingTime});
+
+  // Get color for UI display
+  Color get color {
+    switch (type) {
+      case PowerUpType.magnet:
+        return const Color(0xFF9C27B0); // Purple
+      case PowerUpType.shield:
+        return const Color(0xFF2196F3); // Blue
+      case PowerUpType.doublePoints:
+        return const Color(0xFFFF9800); // Orange
+      case PowerUpType.speedBoost:
+        return const Color(0xFF4CAF50); // Green
+    }
+  }
+
+  // Get emoji for UI display
+  String get emoji {
+    switch (type) {
+      case PowerUpType.magnet:
+        return '🧲';
+      case PowerUpType.shield:
+        return '🛡️';
+      case PowerUpType.doublePoints:
+        return '×2';
+      case PowerUpType.speedBoost:
+        return '⚡';
+    }
+  }
 }

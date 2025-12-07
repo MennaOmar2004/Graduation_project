@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/building_element.dart';
 import '../data/building_elements_data.dart';
+import '../utils/responsive_helper.dart';
 
 class ElementPalette extends StatelessWidget {
   final Function(BuildingElement) onElementSelected;
@@ -17,8 +18,14 @@ class ElementPalette extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Responsive height - 25% of screen height, max 200
+    final paletteHeight = ResponsiveHelper.height(
+      context,
+      0.25,
+    ).clamp(150.0, 200.0);
+
     return Container(
-      height: 180,
+      height: paletteHeight,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
@@ -34,26 +41,26 @@ class ElementPalette extends StatelessWidget {
         children: [
           // Handle bar
           Container(
-            margin: const EdgeInsets.only(top: 12),
-            width: 40,
-            height: 4,
+            margin: EdgeInsets.only(top: ResponsiveHelper.size(context, 12)),
+            width: ResponsiveHelper.size(context, 40),
+            height: ResponsiveHelper.size(context, 4),
             decoration: BoxDecoration(
               color: Colors.grey[300],
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: ResponsiveHelper.size(context, 8)),
           // Category tabs
-          _buildCategoryTabs(),
-          const SizedBox(height: 12),
+          _buildCategoryTabs(context),
+          SizedBox(height: ResponsiveHelper.size(context, 8)),
           // Elements grid
-          Expanded(child: _buildElementsGrid()),
+          Expanded(child: _buildElementsGrid(context)),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryTabs() {
+  Widget _buildCategoryTabs(BuildContext context) {
     final categories = [
       (ElementType.dome, 'قباب', '🕌'),
       (ElementType.minaret, 'مآذن', '🗼'),
@@ -64,10 +71,10 @@ class ElementPalette extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 50,
+      height: ResponsiveHelper.size(context, 45),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: ResponsiveHelper.padding(context, horizontal: 12),
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final (type, name, emoji) = categories[index];
@@ -76,21 +83,32 @@ class ElementPalette extends StatelessWidget {
           return GestureDetector(
             onTap: () => onCategoryChanged(isSelected ? null : type),
             child: Container(
-              margin: const EdgeInsets.only(right: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: EdgeInsets.only(right: ResponsiveHelper.size(context, 6)),
+              padding: ResponsiveHelper.padding(
+                context,
+                horizontal: 12,
+                vertical: 6,
+              ),
               decoration: BoxDecoration(
                 color: isSelected ? const Color(0xFF6B4CE6) : Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(
+                  ResponsiveHelper.borderRadius(context, 16),
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(emoji, style: const TextStyle(fontSize: 20)),
-                  const SizedBox(width: 8),
+                  Text(
+                    emoji,
+                    style: TextStyle(
+                      fontSize: ResponsiveHelper.fontSize(context, 18),
+                    ),
+                  ),
+                  SizedBox(width: ResponsiveHelper.size(context, 6)),
                   Text(
                     name,
                     style: GoogleFonts.cairo(
-                      fontSize: 14,
+                      fontSize: ResponsiveHelper.fontSize(context, 13),
                       fontWeight: FontWeight.bold,
                       color: isSelected ? Colors.white : Colors.black87,
                     ),
@@ -104,52 +122,65 @@ class ElementPalette extends StatelessWidget {
     );
   }
 
-  Widget _buildElementsGrid() {
+  Widget _buildElementsGrid(BuildContext context) {
     final elements =
         selectedCategory == null
             ? BuildingElementsData.getAllElements()
             : BuildingElementsData.getElementsByType(selectedCategory!);
 
+    // Responsive cross axis count
+    final screenWidth = MediaQuery.of(context).size.width;
+    final crossAxisCount = screenWidth < 360 ? 3 : 4;
+
     return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+      padding: ResponsiveHelper.padding(context, horizontal: 12),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
         childAspectRatio: 1,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
+        crossAxisSpacing: ResponsiveHelper.size(context, 8),
+        mainAxisSpacing: ResponsiveHelper.size(context, 8),
       ),
       itemCount: elements.length,
       itemBuilder: (context, index) {
         final element = elements[index];
-        return _buildElementCard(element);
+        return _buildElementCard(context, element);
       },
     );
   }
 
-  Widget _buildElementCard(BuildingElement element) {
+  Widget _buildElementCard(BuildContext context, BuildingElement element) {
     return Draggable<BuildingElement>(
       data: element,
       feedback: Material(
         color: Colors.transparent,
-        child: _buildElementIcon(element, isDragging: true),
+        child: _buildElementIcon(context, element, isDragging: true),
       ),
       childWhenDragging: Opacity(
         opacity: 0.3,
-        child: _buildElementIcon(element),
+        child: _buildElementIcon(context, element),
       ),
       child: GestureDetector(
         onTap: () => onElementSelected(element),
-        child: _buildElementIcon(element),
+        child: _buildElementIcon(context, element),
       ),
     );
   }
 
-  Widget _buildElementIcon(BuildingElement element, {bool isDragging = false}) {
+  Widget _buildElementIcon(
+    BuildContext context,
+    BuildingElement element, {
+    bool isDragging = false,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: element.color.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: element.color, width: 2),
+        borderRadius: BorderRadius.circular(
+          ResponsiveHelper.borderRadius(context, 10),
+        ),
+        border: Border.all(
+          color: element.color,
+          width: ResponsiveHelper.size(context, 2),
+        ),
         boxShadow:
             isDragging
                 ? [
@@ -164,18 +195,36 @@ class ElementPalette extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(element.emoji, style: TextStyle(fontSize: isDragging ? 36 : 28)),
-          const SizedBox(height: 4),
-          Text(
-            element.nameArabic,
-            style: GoogleFonts.cairo(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              color: element.color,
+          FittedBox(
+            child: Text(
+              element.emoji,
+              style: TextStyle(
+                fontSize: ResponsiveHelper.fontSize(
+                  context,
+                  isDragging ? 28 : 22,
+                ),
+              ),
             ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(height: ResponsiveHelper.size(context, 2)),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveHelper.size(context, 2),
+            ),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                element.nameArabic,
+                style: GoogleFonts.cairo(
+                  fontSize: ResponsiveHelper.fontSize(context, 9),
+                  fontWeight: FontWeight.bold,
+                  color: element.color,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/building_element.dart';
 import '../widgets/element_palette.dart';
 import '../widgets/building_canvas.dart';
+import '../utils/responsive_helper.dart';
 
 class MosqueBuilderScreen extends StatefulWidget {
   const MosqueBuilderScreen({super.key});
@@ -123,20 +124,28 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.mosque, size: 80, color: Color(0xFF00BCD4)),
-                const SizedBox(height: 16),
-                Text(
-                  'مسجد رائع!',
-                  style: GoogleFonts.cairo(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF6B4CE6),
+                Icon(
+                  Icons.mosque,
+                  size: ResponsiveHelper.iconSize(context, 70),
+                  color: const Color(0xFF00BCD4),
+                ),
+                SizedBox(height: ResponsiveHelper.size(context, 16)),
+                FittedBox(
+                  child: Text(
+                    'مسجد رائع!',
+                    style: GoogleFonts.cairo(
+                      fontSize: ResponsiveHelper.fontSize(context, 28),
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF6B4CE6),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: ResponsiveHelper.size(context, 8)),
                 Text(
                   'لقد بنيت مسجداً جميلاً!',
-                  style: GoogleFonts.cairo(fontSize: 18),
+                  style: GoogleFonts.cairo(
+                    fontSize: ResponsiveHelper.fontSize(context, 16),
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -215,13 +224,13 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: ResponsiveHelper.padding(context, all: 12),
       child: Row(
         children: [
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(ResponsiveHelper.size(context, 10)),
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -233,44 +242,54 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_forward,
-                color: Color(0xFF6B4CE6),
-                size: 24,
+                color: const Color(0xFF6B4CE6),
+                size: ResponsiveHelper.iconSize(context, 20),
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: ResponsiveHelper.width(context, 0.03)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'بناء المسجد',
-                  style: GoogleFonts.cairo(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF6B4CE6),
+                FittedBox(
+                  child: Text(
+                    'بناء المسجد',
+                    style: GoogleFonts.cairo(
+                      fontSize: ResponsiveHelper.fontSize(context, 22),
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF6B4CE6),
+                    ),
                   ),
                 ),
-                Text(
-                  'اسحب العناصر للبناء',
-                  style: GoogleFonts.cairo(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                FittedBox(
+                  child: Text(
+                    'اسحب العناصر للبناء',
+                    style: GoogleFonts.cairo(
+                      fontSize: ResponsiveHelper.fontSize(context, 13),
+                      color: Colors.grey[600],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: ResponsiveHelper.width(context, 0.03)),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: ResponsiveHelper.padding(
+              context,
+              horizontal: 12,
+              vertical: 6,
+            ),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0xFF00BCD4), Color(0xFF00ACC1)],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(
+                ResponsiveHelper.borderRadius(context, 16),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF00BCD4).withValues(alpha: 0.3),
@@ -282,12 +301,16 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.architecture, color: Colors.white, size: 20),
-                const SizedBox(width: 4),
+                Icon(
+                  Icons.architecture,
+                  color: Colors.white,
+                  size: ResponsiveHelper.iconSize(context, 18),
+                ),
+                SizedBox(width: ResponsiveHelper.size(context, 4)),
                 Text(
                   '${_placedElements.length}',
                   style: GoogleFonts.cairo(
-                    fontSize: 16,
+                    fontSize: ResponsiveHelper.fontSize(context, 15),
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -302,35 +325,41 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
 
   Widget _buildActionButtons() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildActionButton(
-            icon: Icons.undo,
-            label: 'تراجع',
-            onTap: _historyIndex > 0 ? _undo : null,
-            color: const Color(0xFF2196F3),
-          ),
-          _buildActionButton(
-            icon: Icons.redo,
-            label: 'إعادة',
-            onTap: _historyIndex < _history.length - 1 ? _redo : null,
-            color: const Color(0xFF4CAF50),
-          ),
-          _buildActionButton(
-            icon: Icons.delete_outline,
-            label: 'مسح',
-            onTap: _clearAll,
-            color: const Color(0xFFE53935),
-          ),
-          _buildActionButton(
-            icon: Icons.check_circle,
-            label: 'إنهاء',
-            onTap: _placedElements.isNotEmpty ? _showCompletionDialog : null,
-            color: const Color(0xFF00BCD4),
-          ),
-        ],
+      padding: ResponsiveHelper.padding(context, horizontal: 8, vertical: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildActionButton(
+              icon: Icons.undo,
+              label: 'تراجع',
+              onTap: _historyIndex > 0 ? _undo : null,
+              color: const Color(0xFF2196F3),
+            ),
+            SizedBox(width: ResponsiveHelper.size(context, 6)),
+            _buildActionButton(
+              icon: Icons.redo,
+              label: 'إعادة',
+              onTap: _historyIndex < _history.length - 1 ? _redo : null,
+              color: const Color(0xFF4CAF50),
+            ),
+            SizedBox(width: ResponsiveHelper.size(context, 6)),
+            _buildActionButton(
+              icon: Icons.delete_outline,
+              label: 'مسح',
+              onTap: _clearAll,
+              color: const Color(0xFFE53935),
+            ),
+            SizedBox(width: ResponsiveHelper.size(context, 6)),
+            _buildActionButton(
+              icon: Icons.check_circle,
+              label: 'إنهاء',
+              onTap: _placedElements.isNotEmpty ? _showCompletionDialog : null,
+              color: const Color(0xFF00BCD4),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -349,10 +378,16 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
         opacity: isEnabled ? 1.0 : 0.4,
         duration: const Duration(milliseconds: 200),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: ResponsiveHelper.padding(
+            context,
+            horizontal: 10,
+            vertical: 8,
+          ),
           decoration: BoxDecoration(
             color: isEnabled ? color : Colors.grey,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(
+              ResponsiveHelper.borderRadius(context, 16),
+            ),
             boxShadow:
                 isEnabled
                     ? [
@@ -367,12 +402,16 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: Colors.white, size: 18),
-              const SizedBox(width: 6),
+              Icon(
+                icon,
+                color: Colors.white,
+                size: ResponsiveHelper.iconSize(context, 16),
+              ),
+              SizedBox(width: ResponsiveHelper.size(context, 4)),
               Text(
                 label,
                 style: GoogleFonts.cairo(
-                  fontSize: 14,
+                  fontSize: ResponsiveHelper.fontSize(context, 13),
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../game/number_circus/mini_games/balloon_pop_game.dart';
+import '../utils/responsive_helper.dart';
 
 /// Stunning Number Circus screen with beautiful UI
 class NumberCircusScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _NumberCircusScreenState extends State<NumberCircusScreen> {
 
   Widget _buildHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: ResponsiveHelper.padding(context, all: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -76,7 +77,7 @@ class _NumberCircusScreenState extends State<NumberCircusScreen> {
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(ResponsiveHelper.size(context, 10)),
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -88,60 +89,72 @@ class _NumberCircusScreenState extends State<NumberCircusScreen> {
                   ),
                 ],
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_forward,
-                color: Color(0xFF6B4CE6),
-                size: 24,
+                color: const Color(0xFF6B4CE6),
+                size: ResponsiveHelper.iconSize(context, 20),
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: ResponsiveHelper.width(context, 0.03)),
 
           // Title
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  '🎪 سيرك الأرقام',
-                  style: GoogleFonts.cairo(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    foreground:
-                        Paint()
-                          ..shader = const LinearGradient(
-                            colors: [Color(0xFFFF6B9D), Color(0xFF6B4CE6)],
-                          ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
+                FittedBox(
+                  child: ShaderMask(
+                    shaderCallback:
+                        (bounds) => const LinearGradient(
+                          colors: [Color(0xFFFF6B9D), Color(0xFF6B4CE6)],
+                        ).createShader(bounds),
+                    child: Text(
+                      '🎪 سيرك الأرقام',
+                      style: GoogleFonts.cairo(
+                        fontSize: ResponsiveHelper.fontSize(context, 24),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  'افقع البالونات!',
-                  style: GoogleFonts.cairo(
-                    fontSize: 16,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        offset: const Offset(1, 1),
-                        blurRadius: 2,
-                      ),
-                    ],
+                FittedBox(
+                  child: Text(
+                    'افقع البالونات!',
+                    style: GoogleFonts.cairo(
+                      fontSize: ResponsiveHelper.fontSize(context, 14),
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          offset: const Offset(1, 1),
+                          blurRadius: 2,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
 
-          const SizedBox(width: 16),
+          SizedBox(width: ResponsiveHelper.width(context, 0.03)),
 
           // Score display
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: ResponsiveHelper.padding(
+              context,
+              horizontal: 12,
+              vertical: 8,
+            ),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
               ),
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(
+                ResponsiveHelper.borderRadius(context, 20),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.orange.withValues(alpha: 0.5),
@@ -153,21 +166,27 @@ class _NumberCircusScreenState extends State<NumberCircusScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.star, color: Colors.white, size: 24),
-                const SizedBox(width: 8),
-                Text(
-                  _getArabicNumber(_score),
-                  style: GoogleFonts.cairo(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        offset: const Offset(1, 1),
-                        blurRadius: 2,
-                      ),
-                    ],
+                Icon(
+                  Icons.star,
+                  color: Colors.white,
+                  size: ResponsiveHelper.iconSize(context, 20),
+                ),
+                SizedBox(width: ResponsiveHelper.size(context, 6)),
+                FittedBox(
+                  child: Text(
+                    _getArabicNumber(_score),
+                    style: GoogleFonts.cairo(
+                      fontSize: ResponsiveHelper.fontSize(context, 18),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          offset: const Offset(1, 1),
+                          blurRadius: 2,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
