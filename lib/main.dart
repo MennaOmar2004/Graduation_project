@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/blocs/avatar_selection/avatar_selection_cubit.dart';
@@ -18,6 +20,17 @@ void main() {
       child: MyApp(),
     ),
   );
+  /* runApp(
+    BlocProvider<AvatarSelectionCubit>(
+      create: (context) {
+        return AvatarSelectionCubit();
+      },
+      child: DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => MyApp(), // Wrap your app
+      ),
+    ),
+  );*/
 }
 
 class MyApp extends StatelessWidget {

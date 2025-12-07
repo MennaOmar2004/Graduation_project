@@ -40,7 +40,7 @@ dependencies:
   google_fonts: ^6.1.0
   flame:
   flame_audio: ^2.11.8
-
+  device_preview:
 dev_dependencies:
   flutter_native_splash: ^2.4.1
   flutter_test:
