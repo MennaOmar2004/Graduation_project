@@ -7,6 +7,8 @@ import 'mosque_builder_screen.dart';
 import 'game_screen.dart';
 import 'maze_game_screen.dart';
 import 'number_circus_screen.dart';
+import 'moon_phases_screen.dart';
+import 'prayer_garden_screen.dart';
 
 class GamesScreen extends StatelessWidget {
   const GamesScreen({super.key});
@@ -325,6 +327,20 @@ class GamesScreen extends StatelessWidget {
         color: const Color(0xFFFF6B9D),
       ),
       GameItem(
+        id: 'moon_phases',
+        title: 'أطوار القمر',
+        description: 'اكتشف التقويم القمري وأطوار القمر الجميلة',
+        icon: '🌙',
+        color: const Color(0xFF6B4CE6),
+      ),
+      GameItem(
+        id: 'prayer_garden',
+        title: 'حديقة الصلاة',
+        description: 'تعلم أوقات الصلاة في حديقة سحرية',
+        icon: '🌸',
+        color: const Color(0xFF4CAF50),
+      ),
+      GameItem(
         id: 'coloring',
         title: 'التلوين',
         description: 'لون الأنماط الإسلامية الجميلة بألوان رائعة',
@@ -393,6 +409,18 @@ class GamesScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const NumberCircusScreen()),
+        );
+        break;
+      case 'moon_phases':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MoonPhasesScreen()),
+        );
+        break;
+      case 'prayer_garden':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PrayerGardenScreen()),
         );
         break;
     }
