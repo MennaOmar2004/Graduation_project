@@ -15,6 +15,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool quietMode = false;
   final List<Map<String, dynamic>> listItems = [
     {
+      "image": "assets/images/setting.png",
+      "boxText": "معلومات شخصية ",
+      "boxColor": Color(0xFFEAF9FF),
+      "boxShadowColor": Color(0xFF3396FF),
+      "borderColor": Color(0xFF3396FF),
+    },
+    {
       "image": "assets/images/Camera.png",
       "boxText": "تعديل الصورة الشخصية",
       "boxColor": Color(0xFFFFFEEB),
@@ -86,7 +93,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         final item = listItems[index];
                         return Container(
                           width:double.infinity ,
-                          height: 70,
+                          height: 55,
                           decoration: BoxDecoration(
                             // *** هنا يتم تمرير لون الخلفية ***
                             color: item["boxColor"], // استخدام المفتاح الموحد الجديد
