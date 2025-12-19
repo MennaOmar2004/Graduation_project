@@ -315,7 +315,7 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                   left: 0,
                   right: 0,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _NavIcon(
                         imagePath: 'assets/images/Home.png',
@@ -327,20 +327,11 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                         },
                       ),
                       _NavIcon(
-                        imagePath: 'assets/images/Messaging.png',
+                        imagePath: 'assets/images/Trophy.png',
                         isSelected: _selectedIndex == 1,
                         onTap: () {
                           setState(() {
                             _selectedIndex = 1;
-                          });
-                        },
-                      ),
-                      _NavIcon(
-                        imagePath: 'assets/images/Trophy.png',
-                        isSelected: _selectedIndex == 2,
-                        onTap: () {
-                          setState(() {
-                            _selectedIndex = 2;
                           });
                         },
                       ),

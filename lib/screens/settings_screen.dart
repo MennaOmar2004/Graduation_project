@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/screens/personal_info_screen.dart';
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
@@ -16,7 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final List<Map<String, dynamic>> listItems = [
     {
       "image": "assets/images/setting.png",
-      "boxText": "معلومات شخصية ",
+      "boxText": "معلومات شخصية",
       "boxColor": Color(0xFFEAF9FF),
       "boxShadowColor": Color(0xFF3396FF),
       "borderColor": Color(0xFF3396FF),
@@ -114,7 +115,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(20),
                             onTap: () {
-                              // منطق التنقل أو الإجراء
+                              if(listItems[index]["boxText"]=="معلومات شخصية"){
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => PersonalInfoScreen()));
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
