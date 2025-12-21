@@ -43,7 +43,6 @@ class BackGroundWidget extends StatelessWidget {
             ),
           ),
         ),
-
         // 🌱 نباتات أسفل الشاشة
         Positioned(
           bottom: 120,
