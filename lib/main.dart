@@ -8,6 +8,7 @@ import 'package:wanisi_app/screens/home_tasks_screen.dart';
 import 'package:wanisi_app/screens/confirm_photo_screen.dart';
 import 'package:wanisi_app/screens/options_screen.dart' show OptionsScreen;import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
+import 'package:wanisi_app/screens/stories_screen.dart';
 import 'package:wanisi_app/screens/take_photo_screen.dart';
 import 'package:wanisi_app/screens/widgets/dissmissable_keyboard_ontap.dart';
 

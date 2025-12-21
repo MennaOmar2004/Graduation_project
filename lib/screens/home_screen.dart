@@ -13,53 +13,68 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Image.asset("assets/images/splash_logo.png"),
-              const SizedBox(height: 10),
-              Text(
-                "تطبيق تعليمي وترفيهي آمن وممتع للأطفال",
-                style: GoogleFonts.sedan(
-                  color: AppColors.blue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  height: 1.5,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: IgnorePointer(
+                child: Image.asset(
+                  'assets/images/bottom_bg.png',
+                  fit: BoxFit.cover,
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 80),
-              LayeredButton(
-                text: "تسجيل دخول كولى امر",
-                width: 500,
-                height: 65,
-                backgroundColor: AppColors.gray,
-                shadowColor: const Color(0xFFD6D6D6),
-                image: "assets/images/icon.png",
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  Image.asset("assets/images/splash_logo.png"),
+                  const SizedBox(height: 10),
+                  Text(
+                    "تطبيق تعليمي وترفيهي آمن وممتع للأطفال",
+                    style: GoogleFonts.sedan(
+                      color: AppColors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 80),
+                  LayeredButton(
+                    text: "تسجيل دخول كولى امر",
+                    width: 500,
+                    height: 65,
+                    backgroundColor: AppColors.gray,
+                    shadowColor: const Color(0xFFD6D6D6),
+                    image: "assets/images/icon.png",
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  LayeredButton(
+                    text: "انا طفل",
+                    width: 500,
+                    height: 65,
+                    backgroundColor: AppColors.blue,
+                    image: "assets/images/baby_icon.png",
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                  ),
+
+                ],
               ),
-              const SizedBox(height: 20),
-              LayeredButton(
-                text: "انا طفل",
-                width: 500,
-                height: 65,
-                backgroundColor: AppColors.blue,
-                image: "assets/images/baby_icon.png",
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                },
-              ),
-             
-            ],
-          ),
-        ),
+            ),
+          ],
+        )
       ),
     );
   }
