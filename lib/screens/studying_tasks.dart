@@ -8,14 +8,14 @@ import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
 import '../widgets/avatar_circle.dart';
 
-class HomeTasksScreen extends StatefulWidget {
-  const HomeTasksScreen({super.key});
+class StudyingTasks extends StatefulWidget {
+  const StudyingTasks({super.key});
 
   @override
-  State<HomeTasksScreen> createState() => _TasksScreenState();
+  State<StudyingTasks> createState() => _TasksScreenState();
 }
 
-class _TasksScreenState extends State<HomeTasksScreen> {
+class _TasksScreenState extends State<StudyingTasks> {
   final List<Map<String, dynamic>> listItems = [
     {
       "image":"assets/images/check_box.png",
@@ -67,7 +67,7 @@ class _TasksScreenState extends State<HomeTasksScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        bottom: false,
+          bottom: false,
           child: Column(
             children: [
               const SizedBox(height: 16),
@@ -150,18 +150,18 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
-                                    onTap:(){
-                                      setState(() {
-                                        checkedList[index] = !checkedList[index];
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      checkedList[index]
-                                          ? "assets/images/Checked Checkbox.png"
-                                          : "assets/images/empty_box.png",
-                                      width: 40,
-                                      height: 40,
-                                    ),
+                                  onTap:(){
+                                    setState(() {
+                                      checkedList[index] = !checkedList[index];
+                                    });
+                                  },
+                                  child: Image.asset(
+                                    checkedList[index]
+                                        ? "assets/images/Checked Checkbox.png"
+                                        : "assets/images/empty_box.png",
+                                    width: 40,
+                                    height: 40,
+                                  ),
                                 ),
                                 Expanded(
                                   child: Text(
@@ -184,47 +184,47 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                   )
               ),
               SizedBox(height: 50),
-        IntrinsicWidth(
-          child: Container(
-            height: 55,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFFEEB),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: const Color(0xFFFFF133).withOpacity(0.7),
-                width: 1.2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFFF133).withOpacity(0.2),
-                  offset: const Offset(0, 7),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
-                children: [
-                  Image.asset(
-                    "assets/images/Glowing Star.png",
-                    width: 50,
-                    height: 50,
+              IntrinsicWidth(
+                child: Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFFEEB),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFFFF133).withOpacity(0.7),
+                      width: 1.2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFFF133).withOpacity(0.2),
+                        offset: const Offset(0, 7),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 6),
-                  Text(
-                    "+20",
-                    style: AppTextStyles.buttonText.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF000000),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
+                      children: [
+                        Image.asset(
+                          "assets/images/Glowing Star.png",
+                          width: 50,
+                          height: 50,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          "+20",
+                          style: AppTextStyles.buttonText.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF000000),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
-        Stack(
+              Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   Image.asset(

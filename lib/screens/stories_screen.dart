@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/screens/settings_screen.dart';
+import 'package:wanisi_app/widgets/avatar_circle.dart';
 import 'package:wanisi_app/widgets/back_ground_widget.dart';
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
@@ -41,35 +43,10 @@ class _StoriesScreenState extends State<StoriesScreen> {
                         },
                         icon: const Icon(Icons.arrow_back_ios_new),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.purple, width: 3),
-                          ),
-                          child: BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
-                            builder: (context, state) {
-                              final avatarPath = state.selectedAvatar ?? "assets/images/image_profile.png";
-                              return ClipOval(
-                                child: Image.asset(
-                                  avatarPath,
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            },
-                          ),
-                          // child: ClipOval(
-                          //   child: Image.asset(
-                          //     'assets/images/avatars/avatar_1.png', // Default avatar
-                          //     fit: BoxFit.cover,
-                          //   ),
-                          // ),
-                        ),
-                      ),
+                      AvatarCircle(onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => SettingsScreen(),));
+                      },),
                       const Spacer(),
                       // Title
                       Text(
