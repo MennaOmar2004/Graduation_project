@@ -38,113 +38,115 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: IgnorePointer(
-                child: Image.asset(
-                  'assets/images/bottom_bg.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 100,),
-                      BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
-                        builder: (context, state) {
-                          final avatarPath =
-                              state.selectedAvatar ?? "assets/images/image_profile.png";
-                          return Image.asset(avatarPath, height: 150, width: 150);
-                        },
-                      ),
-                      const SizedBox(height: 50),
-                      CustomTextFormField(
-                        hint: "اسم الطفل ",
-                        inputType: TextInputType.text,
-                        controller: nameController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      CustomTextFormField(
-                        hint: "السن",
-                        inputType: TextInputType.number,
-                        controller: ageController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      CustomDropdownField<String>(
-                        hint: "الجنس",
-                        value: selectedGender,
-                        items: [
-                          DropdownMenuItem(
-                            value: 'boy',
-                            alignment: Alignment.centerRight,
-                            child: Text('ذكر'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'girl',
-                            alignment: Alignment.centerRight,
-                            child: Text('انثى'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            selectedGender = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'الرجاء اختيار الدولة';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      CustomTextFormField(
-                        hint: "المفضلات",
-                        controller: favoriteController,
-                        inputType: TextInputType.text,
-                        obscure: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 30),
-                      LayeredButton(
-                        text: "تعديل",
-                        onPressed: () {},
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+        child: SizedBox.expand(
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: IgnorePointer(
+                  child: Image.asset(
+                    'assets/images/bottom_bg.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 100,),
+                        BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
+                          builder: (context, state) {
+                            final avatarPath =
+                                state.selectedAvatar ?? "assets/images/image_profile.png";
+                            return Image.asset(avatarPath, height: 150, width: 150);
+                          },
+                        ),
+                        const SizedBox(height: 50),
+                        CustomTextFormField(
+                          hint: "اسم الطفل ",
+                          inputType: TextInputType.text,
+                          controller: nameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'الحقل فارغ';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextFormField(
+                          hint: "السن",
+                          inputType: TextInputType.number,
+                          controller: ageController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'الحقل فارغ';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        CustomDropdownField<String>(
+                          hint: "الجنس",
+                          value: selectedGender,
+                          items: [
+                            DropdownMenuItem(
+                              value: 'boy',
+                              alignment: Alignment.centerRight,
+                              child: Text('ذكر'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'girl',
+                              alignment: Alignment.centerRight,
+                              child: Text('انثى'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              selectedGender = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null) {
+                              return 'الرجاء اختيار الجنس';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextFormField(
+                          hint: "المفضلات",
+                          controller: favoriteController,
+                          inputType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'الحقل فارغ';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        LayeredButton(
+                          text: "تعديل",
+                          onPressed: () {},
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         )
       ),
     );
