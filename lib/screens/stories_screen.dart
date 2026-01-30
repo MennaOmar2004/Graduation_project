@@ -6,6 +6,7 @@ import 'package:wanisi_app/widgets/back_ground_widget.dart';
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
+import 'main_layout_screen.dart';
 import 'widgets/story_card.dart';
 import 'widgets/score_indicator.dart';
 
@@ -18,7 +19,7 @@ class StoriesScreen extends StatefulWidget {
 }
 
 class _StoriesScreenState extends State<StoriesScreen> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -126,18 +127,27 @@ class _StoriesScreenState extends State<StoriesScreen> {
                             imagePath: 'assets/images/Home.png',
                             isSelected: _selectedIndex == 0,
                             onTap: () {
-                              setState(() {
-                                _selectedIndex = 0;
-                              });
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const MainLayout(selectedIndex: 0,),
+                                ),
+                                    (route) => false,
+                              );
                             },
+
                           ),
                           _NavIcon(
                             imagePath: 'assets/images/Trophy.png',
                             isSelected: _selectedIndex == 1,
                             onTap: () {
-                              setState(() {
-                                _selectedIndex = 1;
-                              });
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const MainLayout(selectedIndex: 1,),
+                                ),
+                                    (route) => false,
+                              );
                             },
                           ),
                         ],

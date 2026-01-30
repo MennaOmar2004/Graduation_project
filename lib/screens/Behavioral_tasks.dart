@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
-
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
 import '../widgets/avatar_circle.dart';
+import 'main_layout_screen.dart';
 
 class BehavioralTasks extends StatefulWidget {
   const BehavioralTasks({super.key});
@@ -54,7 +51,7 @@ class _TasksScreenState extends State<BehavioralTasks> {
     },
   ];
   late List<bool> checkedList;
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -243,18 +240,26 @@ class _TasksScreenState extends State<BehavioralTasks> {
                           imagePath: 'assets/images/Home.png',
                           isSelected: _selectedIndex == 0,
                           onTap: () {
-                            setState(() {
-                              _selectedIndex = 0;
-                            });
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const MainLayout(selectedIndex: 0,),
+                              ),
+                                  (route) => false,
+                            );
                           },
                         ),
                         _NavIcon(
                           imagePath: 'assets/images/Trophy.png',
                           isSelected: _selectedIndex == 1,
                           onTap: () {
-                            setState(() {
-                              _selectedIndex = 1;
-                            });
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const MainLayout(selectedIndex: 1,),
+                              ),
+                                  (route) => false,
+                            );
                           },
                         ),
                       ],

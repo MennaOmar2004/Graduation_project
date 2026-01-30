@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/Behavioral_tasks.dart';
 import 'package:wanisi_app/screens/Religious_tasks.dart';
-import 'package:wanisi_app/screens/options_screen.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/studying_tasks.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import 'package:wanisi_app/widgets/avatar_circle.dart';
-
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
 import 'home_tasks_screen.dart';
-import 'login2.dart';
+import 'main_layout_screen.dart';
 
 class TasksTypeScreen extends StatefulWidget {
   const TasksTypeScreen({super.key});
@@ -56,7 +51,7 @@ class _TasksScreenState extends State<TasksTypeScreen> {
       "text":"5/7"
     },
   ];
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -318,18 +313,26 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                         imagePath: 'assets/images/Home.png',
                         isSelected: _selectedIndex == 0,
                         onTap: () {
-                          setState(() {
-                            _selectedIndex = 0;
-                          });
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MainLayout(selectedIndex: 0,),
+                            ),
+                                (route) => false,
+                          );
                         },
                       ),
                       _NavIcon(
                         imagePath: 'assets/images/Trophy.png',
                         isSelected: _selectedIndex == 1,
                         onTap: () {
-                          setState(() {
-                            _selectedIndex = 1;
-                          });
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MainLayout(selectedIndex: 1,),
+                            ),
+                                (route) => false,
+                          );
                         },
                       ),
                     ],

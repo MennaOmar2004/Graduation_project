@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/screens/main_layout_screen.dart';
 import '../../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../../blocs/avatar_selection/avatar_selection_state.dart';
 import '../../static/app_assets.dart';
@@ -124,7 +125,7 @@ class _AvatarSelectionView extends StatelessWidget {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => const OptionsScreen(),
+                                            (context) => MainLayout(selectedIndex: 0,),
                                       ),
                                     );
                                   }
