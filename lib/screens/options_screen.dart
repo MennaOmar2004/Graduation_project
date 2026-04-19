@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/screens/tasks_type_screen.dart';
 import 'package:wanisi_app/screens/login2.dart';
-import 'package:wanisi_app/screens/stories_screen.dart';
+import 'package:wanisi_app/screens/stories/stories_category_screen.dart';
+import 'package:wanisi_app/screens/stories/all_videos_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import 'achievements_screen.dart';
 import 'games_screen.dart';
@@ -184,7 +185,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder:
-                                            (context) => const StoriesScreen(),
+                                            (context) => const StoriesCategoryScreen(),
                                       ),
                                     );
                                   }
@@ -193,6 +194,14 @@ class _OptionsScreenState extends State<OptionsScreen> {
                                       MaterialPageRoute(
                                         builder:
                                             (context) => const TasksTypeScreen(),
+                                      ),
+                                    );
+                                  }
+                                  else if (gridItems[index]["buttonText"] == "فيديو"){
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const AllVideosScreen(),
                                       ),
                                     );
                                   }

@@ -82,7 +82,6 @@ class SparkleParticle extends PositionComponent {
 
     // Fade out and shrink
     final progress = elapsed / lifetime;
-    final opacity = 1.0 - progress;
     size = Vector2.all(initialSize * (1.0 - progress * 0.5));
 
     // Remove when lifetime is over
@@ -98,7 +97,7 @@ class SparkleParticle extends PositionComponent {
 
     final paint =
         Paint()
-          ..color = color.withOpacity(opacity)
+          ..color = color.withValues(alpha: opacity)
           ..style = PaintingStyle.fill;
 
     canvas.drawCircle(Offset(size.x / 2, size.y / 2), size.x / 2, paint);
@@ -107,6 +106,7 @@ class SparkleParticle extends PositionComponent {
 
 /// Trail effect for falling stars
 class StarTrailEffect extends Component {
+  @override
   final PositionComponent parent;
   final List<TrailParticle> trail = [];
   final int maxTrailLength = 10;
@@ -169,7 +169,7 @@ class TrailParticle extends PositionComponent {
 
     final paint =
         Paint()
-          ..color = const Color(0xFFFFD700).withOpacity(opacity * 0.5)
+          ..color = const Color(0xFFFFD700).withValues(alpha: opacity * 0.5)
           ..style = PaintingStyle.fill;
 
     canvas.drawCircle(Offset(size.x / 2, size.y / 2), currentSize / 2, paint);
@@ -258,7 +258,7 @@ class RingExpansionParticle extends PositionComponent {
 
     final paint =
         Paint()
-          ..color = color.withOpacity(opacity * 0.6)
+          ..color = color.withValues(alpha: opacity * 0.6)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 3;
 

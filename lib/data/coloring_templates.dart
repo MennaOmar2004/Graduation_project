@@ -35,7 +35,6 @@ class ColoringTemplates {
 
     // 8 main star points with detail
     for (int i = 0; i < 8; i++) {
-      double angle = (i * 45) * math.pi / 180;
 
       // Inner part of star point
       regions.add(
@@ -345,7 +344,7 @@ class ColoringTemplates {
         // Central square
         regions.add(
           ColorRegion(
-            id: 'square_${row}_${col}',
+            id: 'square_${row}_$col',
             path: _createSquare(x + 30, y + 30, 40),
           ),
         );
@@ -353,14 +352,14 @@ class ColoringTemplates {
         // Corner triangles
         regions.add(
           ColorRegion(
-            id: 'triangle_tl_${row}_${col}',
+            id: 'triangle_tl_${row}_$col',
             path: [Offset(x, y), Offset(x + 30, y), Offset(x + 30, y + 30)],
           ),
         );
 
         regions.add(
           ColorRegion(
-            id: 'triangle_tr_${row}_${col}',
+            id: 'triangle_tr_${row}_$col',
             path: [
               Offset(x + 70, y),
               Offset(x + 100, y),
@@ -371,7 +370,7 @@ class ColoringTemplates {
 
         regions.add(
           ColorRegion(
-            id: 'triangle_bl_${row}_${col}',
+            id: 'triangle_bl_${row}_$col',
             path: [
               Offset(x, y + 70),
               Offset(x + 30, y + 70),
@@ -382,7 +381,7 @@ class ColoringTemplates {
 
         regions.add(
           ColorRegion(
-            id: 'triangle_br_${row}_${col}',
+            id: 'triangle_br_${row}_$col',
             path: [
               Offset(x + 70, y + 70),
               Offset(x + 100, y + 100),
@@ -394,7 +393,7 @@ class ColoringTemplates {
         // Side rectangles
         regions.add(
           ColorRegion(
-            id: 'rect_top_${row}_${col}',
+            id: 'rect_top_${row}_$col',
             path: [
               Offset(x + 30, y),
               Offset(x + 70, y),
@@ -406,7 +405,7 @@ class ColoringTemplates {
 
         regions.add(
           ColorRegion(
-            id: 'rect_bottom_${row}_${col}',
+            id: 'rect_bottom_${row}_$col',
             path: [
               Offset(x + 30, y + 70),
               Offset(x + 70, y + 70),
@@ -418,7 +417,7 @@ class ColoringTemplates {
 
         regions.add(
           ColorRegion(
-            id: 'rect_left_${row}_${col}',
+            id: 'rect_left_${row}_$col',
             path: [
               Offset(x, y + 30),
               Offset(x + 30, y + 30),
@@ -430,7 +429,7 @@ class ColoringTemplates {
 
         regions.add(
           ColorRegion(
-            id: 'rect_right_${row}_${col}',
+            id: 'rect_right_${row}_$col',
             path: [
               Offset(x + 70, y + 30),
               Offset(x + 100, y + 30),
