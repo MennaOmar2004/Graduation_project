@@ -36,11 +36,11 @@ class _AllVideosScreenState extends State<AllVideosScreen> {
                     child: Center(child: CircularProgressIndicator()),
                   )
                 else if (state is StoriesError)
-                  SliverFillRemaining(
-                    child: Center(child: Text(state.message)),
-                  )
+                  SliverFillRemaining(child: Center(child: Text(state.message)))
                 else if (state is StoriesLoaded)
-                  _buildVideoList(state.stories.where((s) => s.videoUrl != null).toList())
+                  _buildVideoList(
+                    state.stories.where((s) => s.videoUrl != null).toList(),
+                  )
                 else
                   const SliverFillRemaining(child: SizedBox()),
               ],
@@ -52,12 +52,12 @@ class _AllVideosScreenState extends State<AllVideosScreen> {
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
-    const themeColor = AppColors.blue; // Primary theme for all videos
+    const themeColor = Color(0xFFFF6EC7); // Primary theme for all videos
     return SliverAppBar(
       expandedHeight: 220.0,
       pinned: true,
       elevation: 0,
-      backgroundColor: themeColor,
+      backgroundColor: Color(0xFFFF6EC7),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () => Navigator.pop(context),
@@ -88,26 +88,29 @@ class _AllVideosScreenState extends State<AllVideosScreen> {
             Positioned(
               right: -20,
               top: -20,
-              child: Icon(Icons.play_circle_outline_rounded, 
-                size: 150, 
-                color: Colors.white.withValues(alpha: 0.1)
+              child: Icon(
+                Icons.play_circle_outline_rounded,
+                size: 150,
+                color: Colors.white.withValues(alpha: 0.1),
               ),
             ),
             Positioned(
               left: 40,
               bottom: 40,
-              child: Icon(Icons.videocam_rounded, 
-                size: 60, 
-                color: Colors.white.withValues(alpha: 0.05)
+              child: Icon(
+                Icons.videocam_rounded,
+                size: 60,
+                color: Colors.white.withValues(alpha: 0.05),
               ),
             ),
             // Floating particles or highlight
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),
-                child: Icon(Icons.video_library_rounded, 
-                  color: Colors.white.withValues(alpha: 0.2), 
-                  size: 100
+                child: Icon(
+                  Icons.video_library_rounded,
+                  color: Colors.white.withValues(alpha: 0.2),
+                  size: 100,
                 ),
               ),
             ),
@@ -156,10 +159,13 @@ class _VideoCard extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => VideoPlayerScreen(story: story)),
-        ),
+        onTap:
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => VideoPlayerScreen(story: story),
+              ),
+            ),
         borderRadius: BorderRadius.circular(25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -168,16 +174,22 @@ class _VideoCard extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(25),
+                  ),
                   child: AspectRatio(
                     aspectRatio: 16 / 9,
                     child: Image.network(
                       story.thumbnailUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: story.uiColor.withValues(alpha: 0.1),
-                        child: Icon(Icons.broken_image_rounded, color: story.uiColor),
-                      ),
+                      errorBuilder:
+                          (context, error, stackTrace) => Container(
+                            color: story.uiColor.withValues(alpha: 0.1),
+                            child: Icon(
+                              Icons.broken_image_rounded,
+                              color: story.uiColor,
+                            ),
+                          ),
                     ),
                   ),
                 ),
@@ -187,22 +199,32 @@ class _VideoCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white.withValues(alpha: 0.3),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.4), width: 1.5),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.4),
+                      width: 1.5,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 10,
-                      )
-                    ]
+                      ),
+                    ],
                   ),
-                  child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 45),
+                  child: const Icon(
+                    Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 45,
+                  ),
                 ),
                 // Category Tag
                 Positioned(
                   top: 15,
                   right: 15,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: story.uiColor.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(12),
@@ -236,10 +258,7 @@ class _VideoCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildPointsBadge(),
-                      _buildWatchNowAction(),
-                    ],
+                    children: [_buildPointsBadge(), _buildWatchNowAction()],
                   ),
                 ],
               ),
@@ -256,7 +275,9 @@ class _VideoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFFFD700).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFFFD700).withValues(alpha: 0.2)),
+        border: Border.all(
+          color: const Color(0xFFFFD700).withValues(alpha: 0.2),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

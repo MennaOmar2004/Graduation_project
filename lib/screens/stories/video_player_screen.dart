@@ -151,8 +151,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.close_rounded, color: Colors.grey[800], size: 28),
+            onPressed: () {
+              // Ensure orientations are reset before popping
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitUp,
+                DeviceOrientation.portraitDown,
+              ]);
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.close_rounded, color: Colors.grey[700], size: 32),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
