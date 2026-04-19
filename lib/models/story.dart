@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/colors.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Story extends Equatable {
   final int id;
@@ -65,4 +66,9 @@ extension StoryUIExtensions on Story {
     ];
     return icons[id % icons.length];
   }
+
+  String? get youtubeId => videoUrl != null ? YoutubePlayer.convertUrlToId(videoUrl!) : null;
+
+  String get thumbnailUrl =>
+      youtubeId != null ? 'https://img.youtube.com/vi/$youtubeId/maxresdefault.jpg' : 'assets/images/stories.png';
 }

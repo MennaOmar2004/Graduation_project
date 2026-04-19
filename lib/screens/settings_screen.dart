@@ -100,12 +100,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: item["boxColor"], // استخدام المفتاح الموحد الجديد
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: item["borderColor"].withOpacity(0.7),
+                              color: item["borderColor"].withValues(alpha: 0.7),
                               width: 1.2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: item["boxShadowColor"].withOpacity(0.2),
+                                color: item["boxShadowColor"].withValues(alpha: 0.2),
                                 offset: const Offset(0, 7),
                                 blurRadius: 0,
                                 spreadRadius: 0,
@@ -132,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   if (index == listItems.length - 1)
                                     Switch(
                                       value: quietMode,
-                                      activeColor: Colors.blue.shade700,
+                                      activeThumbColor: Colors.blue.shade700,
                                       onChanged: (value) {
                                         setState(() {
                                           quietMode = value;

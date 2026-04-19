@@ -129,12 +129,12 @@ class _TasksScreenState extends State<ReligiousTasks> {
                             color: item["boxColor"], // استخدام المفتاح الموحد الجديد
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: item["borderColor"].withOpacity(0.7),
+                              color: item["borderColor"].withValues(alpha: 0.7),
                               width: 1.2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: item["boxShadowColor"].withOpacity(0.2),
+                                color: item["boxShadowColor"].withValues(alpha: 0.2),
                                 offset: const Offset(0, 7),
                                 blurRadius: 0,
                                 spreadRadius: 0,
@@ -188,12 +188,12 @@ class _TasksScreenState extends State<ReligiousTasks> {
                     color: const Color(0xFFFFFEEB),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: const Color(0xFFFFF133).withOpacity(0.7),
+                      color: const Color(0xFFFFF133).withValues(alpha: 0.7),
                       width: 1.2,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFFFF133).withOpacity(0.2),
+                        color: const Color(0xFFFFF133).withValues(alpha: 0.2),
                         offset: const Offset(0, 7),
                       ),
                     ],

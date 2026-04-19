@@ -125,7 +125,6 @@ class StoriesCategoryScreen extends StatelessWidget {
       ),
     );
   }
-
   void _onCategoryTap(BuildContext context, String category) {
     Navigator.push(
       context,
@@ -158,10 +157,10 @@ class _CategoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: color.withOpacity(0.3), width: 2),
+          border: Border.all(color: color.withValues(alpha: 0.3), width: 2),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -190,7 +189,7 @@ class _CategoryCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: color.withOpacity(0.4),
+                        color: color.withValues(alpha: 0.4),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
