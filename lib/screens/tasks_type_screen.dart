@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wanisi_app/screens/options_screen.dart';
+import 'package:wanisi_app/screens/Behavioral_tasks.dart';
+import 'package:wanisi_app/screens/Religious_tasks.dart';
+import 'package:wanisi_app/screens/settings_screen.dart';
+import 'package:wanisi_app/screens/studying_tasks.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
-
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
+import 'package:wanisi_app/widgets/avatar_circle.dart';
 import '../colors.dart';
 import 'home_tasks_screen.dart';
-import 'login2.dart';
+import 'main_layout_screen.dart';
 
 class TasksTypeScreen extends StatefulWidget {
   const TasksTypeScreen({super.key});
@@ -51,7 +51,7 @@ class _TasksScreenState extends State<TasksTypeScreen> {
       "text":"5/7"
     },
   ];
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -72,34 +72,10 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                     },
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.purple, width: 3),
-                      ),
-                      child: BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
-                        builder: (context, state) {
-                          final avatarPath = state.selectedAvatar ?? "assets/images/image_profile.png";
-                          return ClipOval(
-                            child: Image.asset(
-                              avatarPath,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                      // child: ClipOval(
-                      //   child: Image.asset(
-                      //     'assets/images/avatars/avatar_1.png', // Default avatar
-                      //     fit: BoxFit.cover,
-                      //   ),
-                      // ),
-                    ),
-                  ),
+                  AvatarCircle(onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => SettingsScreen(),));
+                  },),
                   const Spacer(),
                   // Title
                   Text(
@@ -262,16 +238,32 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                                       ),
                                     );
                                   }
-                                  // Navigate to Stories screen when "قصص" button is pressed
-                                  // else if (gridItems[index]["buttonText"] ==
-                                  //     "مهام دراسية") {
-                                  //   Navigator.of(context).push(
-                                  //     MaterialPageRoute(
-                                  //       builder:
-                                  //           (context) => const StoriesScreen(),
-                                  //     ),
-                                  //   );
-                                  // }
+                                  else if (gridItems[index]["buttonText"] ==
+                                      "مهام دراسية"){
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const StudyingTasks(),
+                                      ),
+                                    );
+                                  }
+                                  else if(gridItems[index]["buttonText"] ==
+                                      "مهام سلوكية"){
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const BehavioralTasks(),
+                                      ),
+                                    );
+                                  }
+                                  else{
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const ReligiousTasks(),
+                                      ),
+                                    );
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
@@ -315,33 +307,32 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                   left: 0,
                   right: 0,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _NavIcon(
                         imagePath: 'assets/images/Home.png',
                         isSelected: _selectedIndex == 0,
                         onTap: () {
-                          setState(() {
-                            _selectedIndex = 0;
-                          });
-                        },
-                      ),
-                      _NavIcon(
-                        imagePath: 'assets/images/Messaging.png',
-                        isSelected: _selectedIndex == 1,
-                        onTap: () {
-                          setState(() {
-                            _selectedIndex = 1;
-                          });
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MainLayout(selectedIndex: 0,),
+                            ),
+                                (route) => false,
+                          );
                         },
                       ),
                       _NavIcon(
                         imagePath: 'assets/images/Trophy.png',
-                        isSelected: _selectedIndex == 2,
+                        isSelected: _selectedIndex == 1,
                         onTap: () {
-                          setState(() {
-                            _selectedIndex = 2;
-                          });
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MainLayout(selectedIndex: 1,),
+                            ),
+                                (route) => false,
+                          );
                         },
                       ),
                     ],
