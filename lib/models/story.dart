@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:wanisi_app/colors.dart';
 
 class Story extends Equatable {
   final int id;
@@ -33,4 +35,34 @@ class Story extends Equatable {
 
   @override
   List<Object?> get props => [id, title, text, category, audioUrl, videoUrl, points];
+}
+
+extension StoryUIExtensions on Story {
+  Color get uiColor {
+    final List<Color> palette = [
+      AppColors.blue,
+      AppColors.purple,
+      AppColors.green,
+      const Color(0xFFFF8C67), // Coral
+      const Color(0xFF67BCFF), // Sky
+      const Color(0xFFB167FF), // Lavender
+      const Color(0xFFFFB567), // Sunflower
+      const Color(0xFF67FFD1), // Mint
+    ];
+    return palette[id % palette.length];
+  }
+
+  IconData get uiIcon {
+    final List<IconData> icons = [
+      Icons.auto_stories,
+      Icons.import_contacts_rounded,
+      Icons.local_library_rounded,
+      Icons.menu_book_rounded,
+      Icons.auto_awesome_rounded,
+      Icons.palette_rounded,
+      Icons.explore_rounded,
+      Icons.history_edu_rounded,
+    ];
+    return icons[id % icons.length];
+  }
 }

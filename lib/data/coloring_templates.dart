@@ -371,7 +371,7 @@ class ColoringTemplates {
 
         regions.add(
           ColorRegion(
-            id: 'triangle_bl_${row}_${col}',
+            id: 'triangle_bl_${row}_$col',
             path: [
               Offset(x, y + 70),
               Offset(x + 30, y + 70),

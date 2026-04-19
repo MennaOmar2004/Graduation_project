@@ -41,7 +41,8 @@ class StoriesCategoryScreen extends StatelessWidget {
                       const SizedBox(height: 30),
                       _CategoryCard(
                         title: 'قصص دينية',
-                        image: 'assets/images/secound_bunny.png', // noted spelling
+                        image:
+                            'assets/images/secound_bunny.png', // noted spelling
                         color: AppColors.blue,
                         onTap: () => _onCategoryTap(context, 'قصص دينية'),
                       ),
@@ -125,7 +126,6 @@ class StoriesCategoryScreen extends StatelessWidget {
     );
   }
 
-
   void _onCategoryTap(BuildContext context, String category) {
     Navigator.push(
       context,
@@ -181,7 +181,10 @@ class _CategoryCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: color,
                     borderRadius: BorderRadius.circular(15),

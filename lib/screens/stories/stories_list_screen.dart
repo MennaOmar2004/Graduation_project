@@ -59,7 +59,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
       floating: false,
       pinned: true,
       elevation: 0,
-      backgroundColor: AppColors.blue,
+      backgroundColor: _getCategoryColor(),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () => Navigator.pop(context),
@@ -82,11 +82,11 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
           fit: StackFit.expand,
           children: [
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [AppColors.blue, AppColors.blue_],
+                  colors: [_getCategoryColor(), _getCategoryColor().withValues(alpha: 0.8)],
                 ),
               ),
             ),
@@ -96,7 +96,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
               right: -20,
               child: CircleAvatar(
                 radius: 80,
-                backgroundColor: Colors.white.withOpacity(0.1),
+                backgroundColor: Colors.white.withValues(alpha: 0.1),
               ),
             ),
             Positioned(
@@ -104,7 +104,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
               left: 20,
               child: CircleAvatar(
                 radius: 40,
-                backgroundColor: Colors.white.withOpacity(0.05),
+                backgroundColor: Colors.white.withValues(alpha: 0.05),
               ),
             ),
             Center(
@@ -115,7 +115,7 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
                    Image.asset(
                     'assets/images/small_icon.png',
                     height: 80,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                   ),
                 ],
               ),
@@ -131,9 +131,9 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
       margin: const EdgeInsets.symmetric(vertical: 12),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -165,20 +165,27 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final story = stories[index];
-            return _StoryCard(story: story, index: index);
+            return _StoryCard(story: story, index: index, category: widget.category);
           },
           childCount: stories.length,
         ),
       ),
     );
   }
+
+  Color _getCategoryColor() {
+    if (widget.category.contains('تربوية')) return AppColors.purple;
+    if (widget.category.contains('دينية')) return AppColors.blue;
+    return AppColors.green;
+  }
 }
 
 class _StoryCard extends StatelessWidget {
   final Story story;
   final int index;
+  final String category;
 
-  const _StoryCard({required this.story, required this.index});
+  const _StoryCard({required this.story, required this.index, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +208,7 @@ class _StoryCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 20,
               offset: const Offset(0, 8),
             ),
@@ -236,11 +243,25 @@ class _StoryCard extends StatelessWidget {
                             width: 85,
                             height: 85,
                             decoration: BoxDecoration(
-                              color: _getCategoryColor().withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(18),
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  story.uiColor.withValues(alpha: 0.2),
+                                  story.uiColor.withValues(alpha: 0.05),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(22),
+                              border: Border.all(
+                                color: story.uiColor.withValues(alpha: 0.2),
+                                width: 1.5,
+                              ),
                             ),
-                            child: const Icon(Icons.menu_book_rounded,
-                                color: AppColors.blue, size: 35),
+                            child: Icon(
+                              story.uiIcon,
+                              color: story.uiColor,
+                              size: 38,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -277,34 +298,35 @@ class _StoryCard extends StatelessWidget {
     );
   }
 
-  Color _getCategoryColor() {
-    if (story.category.contains('تربوية')) return AppColors.purple;
-    if (story.category.contains('دينية')) return AppColors.blue;
-    return AppColors.green;
-  }
 
   Widget _buildCardMetadata() {
     return Row(
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: Colors.amber.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.stars_rounded, color: Colors.amber, size: 14),
-              const SizedBox(width: 4),
-              Text(
-                '${story.points} نقطة',
-                style: GoogleFonts.cairo(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.amber[800],
+        Flexible(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.amber.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.stars_rounded, color: Colors.amber, size: 14),
+                const SizedBox(width: 4),
+                Flexible(
+                  child: Text(
+                    '${story.points} نقطة ذهبية',
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.cairo(
+                      color: const Color(0xFFB8860B),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         const SizedBox(width: 10),
@@ -324,8 +346,8 @@ class _StoryCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.blue.withOpacity(0.03),
-        border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.05))),
+        color: _getCategoryColor().withValues(alpha: 0.03),
+        border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.05))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -335,13 +357,19 @@ class _StoryCard extends StatelessWidget {
             style: GoogleFonts.cairo(
               fontSize: 13,
               fontWeight: FontWeight.bold,
-              color: AppColors.blue,
+              color: _getCategoryColor(),
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.arrow_forward_rounded, size: 16, color: AppColors.blue),
+          Icon(Icons.arrow_forward_rounded, size: 16, color: _getCategoryColor()),
         ],
       ),
     );
+  }
+
+  Color _getCategoryColor() {
+    if (category.contains('تربوية')) return AppColors.purple;
+    if (category.contains('دينية')) return AppColors.blue;
+    return AppColors.green;
   }
 }
