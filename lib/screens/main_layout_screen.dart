@@ -61,11 +61,22 @@ class _MainLayoutState extends State<MainLayout> {
                           setState(() => selectedIndex = 0);
                         },
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10), // التحكم في الارتفاع (تطلع لفوق أو تنزل)
+                        child: Transform.scale(
+                          scale: 1.1, // التحكم في حجم المصحف تحديداً (1.1 يعني أكبر بـ 10%)
+                          child: _NavIcon(
+                            imagePath: 'assets/images/quran.png',
+                            isSelected: selectedIndex == 1,
+                            onTap: () => setState(() => selectedIndex = 1),
+                          ),
+                        ),
+                      ),
                       _NavIcon(
                         imagePath: 'assets/images/Trophy.png',
-                        isSelected: selectedIndex == 1,
+                        isSelected: selectedIndex == 2,
                         onTap: () {
-                          setState(() => selectedIndex = 1);
+                          setState(() => selectedIndex = 2);
                         },
                       ),
                     ],
@@ -90,29 +101,48 @@ class _NavIcon extends StatelessWidget {
     required this.onTap,
   });
 
+  // ... داخل كلاس _NavIcon المعدل ...
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AnimatedScale(
-            scale: isSelected ? 1.3 : 1.0,
-            duration: const Duration(milliseconds: 200),
-            child: Image.asset(imagePath, width: 70, height: 70),
-          ),
-          const SizedBox(height: 4), // مسافة صغيرة بين الصورة والخط
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            height: 3, // سمك الخط
-            width: isSelected ? 30 : 0, // يظهر الخط فقط لو مختارة
-            decoration: BoxDecoration(
-              color: Colors.blue, // لون الخط
-              borderRadius: BorderRadius.circular(2),
+      child: Container(
+        // إضافة padding عشان منطقة الضغط تبقى أكبر وأسهل
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedScale(
+              scale: isSelected ? 1.2 : 0.9, // تصغير بسيط لغير المختار
+              duration: const Duration(milliseconds: 200),
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: isSelected ? 1.0 : 0.6, // بهتان بسيط لغير المختار بيدي شكل شيك
+                child: Image.asset(
+                  imagePath,
+                  width: 60, // تصغير العرض لـ 60 عشان الـ 3 أيقونات يرتاحوا بجانب بعض
+                  height: 60,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 6),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 3,
+              width: isSelected ? 25 : 0,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(2),
+                // إضافة توهج بسيط للخط بيدي لمسة جمالية
+                boxShadow: isSelected ? [
+                  BoxShadow(color: Colors.blue.withOpacity(0.5), blurRadius: 4)
+                ] : [],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
