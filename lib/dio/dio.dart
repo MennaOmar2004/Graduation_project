@@ -31,6 +31,7 @@ class DioFactory {
           responseHeader: false,
           error: true,
           compact: true,
+          logPrint: (object) => debugPrint(object.toString()),
         ),
       );
     }
