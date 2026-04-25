@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/cubit_of_tasks/tasks_State.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
+import 'package:wanisi_app/widgets/tasks_widget.dart';
 import '../colors.dart';
+import '../cubit_of_tasks/tasks_cubit.dart';
 import '../widgets/avatar_circle.dart';
 import 'main_layout_screen.dart';
 
@@ -13,50 +17,50 @@ class HomeTasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<HomeTasksScreen> {
-  final List<Map<String, dynamic>> listItems = [
-    {
-      "image":"assets/images/check_box.png",
-      "boxText": "انجزت واجبي المنزلي",
-      "boxColor": Color(0xDDFFFEEB),
-      "boxShadowColor": Color(0xFFFFF133),
-      "borderColor":  Color(0xFFFFF133)
-    },
-    {
-      "image":"assets/images/empty_box.png",
-      "boxText": "قرأت القران",
-      "boxColor": Color(0xFFFFE8F1),
-      "boxShadowColor": Color(0xFFFCBAD3),
-      "borderColor": Color(0xFFFCBAD3),
-    },
-    {
-      "image":"assets/images/empty_box.png",
-      "boxText": "انجزت واجبي المنزلي",
-      "boxColor": Color(0xFFF3FFE3),
-      "boxShadowColor": Color(0xFF72C076),
-      "borderColor": Color(0xFF72C076),
-    },
-    {
-      "image":"assets/images/empty_box.png",
-      "boxText": "انجزت واجبي المنزلي",
-      "boxColor": Color(0xFFF2DDF6),
-      "boxShadowColor": Color(0xFFD66BEB),
-      "borderColor": Color(0xFFD66BEB),
-    },
-    {
-      "image":"assets/images/empty_box.png",
-      "boxText": "انجزت واجبي المنزلي",
-      "boxColor": Color(0xFFF6EADD),
-      "boxShadowColor": Color(0xFFEBB46B),
-      "borderColor": Color(0xFFEBB46B),
-    },
-  ];
-  late List<bool> checkedList;
+  // final List<Map<String, dynamic>> listItems = [
+  //   {
+  //     "image":"assets/images/check_box.png",
+  //     "boxText": "انجزت واجبي المنزلي",
+  //     "boxColor": Color(0xDDFFFEEB),
+  //     "boxShadowColor": Color(0xFFFFF133),
+  //     "borderColor":  Color(0xFFFFF133)
+  //   },
+  //   {
+  //     "image":"assets/images/empty_box.png",
+  //     "boxText": "قرأت القران",
+  //     "boxColor": Color(0xFFFFE8F1),
+  //     "boxShadowColor": Color(0xFFFCBAD3),
+  //     "borderColor": Color(0xFFFCBAD3),
+  //   },
+  //   {
+  //     "image":"assets/images/empty_box.png",
+  //     "boxText": "انجزت واجبي المنزلي",
+  //     "boxColor": Color(0xFFF3FFE3),
+  //     "boxShadowColor": Color(0xFF72C076),
+  //     "borderColor": Color(0xFF72C076),
+  //   },
+  //   {
+  //     "image":"assets/images/empty_box.png",
+  //     "boxText": "انجزت واجبي المنزلي",
+  //     "boxColor": Color(0xFFF2DDF6),
+  //     "boxShadowColor": Color(0xFFD66BEB),
+  //     "borderColor": Color(0xFFD66BEB),
+  //   },
+  //   {
+  //     "image":"assets/images/empty_box.png",
+  //     "boxText": "انجزت واجبي المنزلي",
+  //     "boxColor": Color(0xFFF6EADD),
+  //     "boxShadowColor": Color(0xFFEBB46B),
+  //     "borderColor": Color(0xFFEBB46B),
+  //   },
+  // ];
+  // late List<bool> checkedList;
   final int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    checkedList = List.generate(listItems.length, (_) => false);
+    context.read<TasksCubit>().init();
   }
 
   @override
@@ -80,7 +84,8 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                     ),
                     AvatarCircle(onTap: () {
                       Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => SettingsScreen(),));
+                          MaterialPageRoute(
+                            builder: (context) => SettingsScreen(),));
                     },
                     ),
                     const Spacer(),
@@ -113,115 +118,66 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                 ),
               ),
               SizedBox(height: 100,),
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const SizedBox(height: 20),
-                      itemCount: listItems.length,
-                      itemBuilder: (context, index) {
-                        final item = listItems[index];
-                        return Container(
-                          width:double.infinity ,
-                          height: 55,
-                          decoration: BoxDecoration(
-                            // *** هنا يتم تمرير لون الخلفية ***
-                            color: item["boxColor"], // استخدام المفتاح الموحد الجديد
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: item["borderColor"].withValues(alpha: 0.7),
-                              width: 1.2,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: item["boxShadowColor"].withValues(alpha: 0.2),
-                                offset: const Offset(0, 7),
-                                blurRadius: 0,
-                                spreadRadius: 0,
+              BlocBuilder<TasksCubit,TasksState>(builder: (BuildContext context, state) {
+                if(state is TasksLoaded){
+                  final filteredTasks = state.tasksList
+                      .where((task) => task.category == "مهام منزلية")
+                      .toList();
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        TasksWidget(tasks: filteredTasks),
+                        SizedBox(height: 50),
+                        IntrinsicWidth(
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFFEEB),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(0xFFFFF133).withOpacity(0.7),
+                                width: 1.2,
                               ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                    onTap:(){
-                                      setState(() {
-                                        checkedList[index] = !checkedList[index];
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      checkedList[index]
-                                          ? "assets/images/Checked Checkbox.png"
-                                          : "assets/images/empty_box.png",
-                                      width: 40,
-                                      height: 40,
-                                    ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    item["boxText"],
-                                    style: AppTextStyles.buttonText.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF9D9D9D)
-                                    ),
-                                    textAlign: TextAlign.right,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFFFFF133).withOpacity(0.2),
+                                  offset: const Offset(0, 7),
                                 ),
                               ],
                             ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
+                                children: [
+                                  Image.asset(
+                                    "assets/images/Glowing Star.png",
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    "+${state.points}",
+                                    style: AppTextStyles.buttonText.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF000000),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  )
-              ),
-              SizedBox(height: 50),
-        IntrinsicWidth(
-          child: Container(
-            height: 55,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFFEEB),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: const Color(0xFFFFF133).withOpacity(0.7),
-                width: 1.2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFFF133).withOpacity(0.2),
-                  offset: const Offset(0, 7),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
-                children: [
-                  Image.asset(
-                    "assets/images/Glowing Star.png",
-                    width: 50,
-                    height: 50,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    "+20",
-                    style: AppTextStyles.buttonText.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF000000),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Stack(
+                  );
+                }
+                return Expanded(child: Center(child: CircularProgressIndicator()));
+              }),
+              Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   Image.asset(
@@ -243,7 +199,8 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const MainLayout(selectedIndex: 0,),
+                                builder: (_) =>
+                                const MainLayout(selectedIndex: 0,),
                               ),
                                   (route) => false,
                             );
@@ -256,7 +213,8 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const MainLayout(selectedIndex: 1,),
+                                builder: (_) =>
+                                const MainLayout(selectedIndex: 1,),
                               ),
                                   (route) => false,
                             );
@@ -273,6 +231,8 @@ class _TasksScreenState extends State<HomeTasksScreen> {
     );
   }
 }
+
+
 class _NavIcon extends StatelessWidget {
   final String imagePath;
   final bool isSelected;

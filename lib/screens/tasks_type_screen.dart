@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/Behavioral_tasks.dart';
 import 'package:wanisi_app/screens/Religious_tasks.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
@@ -6,6 +7,7 @@ import 'package:wanisi_app/screens/studying_tasks.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import 'package:wanisi_app/widgets/avatar_circle.dart';
 import '../colors.dart';
+import '../cubit_of_tasks/tasks_cubit.dart';
 import 'home_tasks_screen.dart';
 import 'main_layout_screen.dart';
 
@@ -13,10 +15,11 @@ class TasksTypeScreen extends StatefulWidget {
   const TasksTypeScreen({super.key});
 
   @override
-  State<TasksTypeScreen> createState() => _TasksScreenState();
+  State<TasksTypeScreen> createState() => _TasksTypeScreenState();
 }
 
-class _TasksScreenState extends State<TasksTypeScreen> {
+class _TasksTypeScreenState extends State<TasksTypeScreen> {
+
   final List<Map<String, dynamic>> gridItems = [
     {
       "image": "assets/images/home_work.png",
@@ -24,7 +27,6 @@ class _TasksScreenState extends State<TasksTypeScreen> {
       "buttonColor": AppColors.lightGreen,
       "boxShadowColor": AppColors.lightGreen,
       "borderColor": AppColors.lightGreen,
-      "text":"2/4"
     },
     {
       "image": "assets/images/study.png",
@@ -32,7 +34,6 @@ class _TasksScreenState extends State<TasksTypeScreen> {
       "buttonColor": AppColors.lightBlue,
       "boxShadowColor": AppColors.lightBlue,
       "borderColor": AppColors.lightBlue,
-      "text":"3/5"
     },
     {
       "image": "assets/images/behavior.png",
@@ -40,21 +41,32 @@ class _TasksScreenState extends State<TasksTypeScreen> {
       "buttonColor": AppColors.lightPurple,
       "boxShadowColor": AppColors.lightPurple,
       "borderColor": AppColors.lightPurple,
-      "text":"6/10"
     },
     {
       "image": "assets/images/pray.png",
-      "buttonText": "مهام دينيه",
+      "buttonText": "مهام دينية",
       "buttonColor": AppColors.lightPink,
       "boxShadowColor": AppColors.lightPink,
       "borderColor": AppColors.lightPink,
-      "text":"5/7"
     },
   ];
+
   final int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<TasksCubit>().init();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final cubit = context.watch<TasksCubit>();
+
+    final progress = cubit.totalTasks == 0
+        ? 0.0
+        : cubit.totalDone / cubit.totalTasks;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -62,22 +74,27 @@ class _TasksScreenState extends State<TasksTypeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 16),
+
+            /// HEADER
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
-                  AvatarCircle(onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => SettingsScreen(),));
-                  },),
+                  AvatarCircle(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SettingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
                   const Spacer(),
-                  // Title
                   Text(
                     'مهام ونيسي',
                     style: AppTextStyles.linkText.copyWith(
@@ -86,17 +103,11 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                     ),
                   ),
                   const Spacer(),
-                  // Score section with label
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         'نقاطك',
-                        style: AppTextStyles.linkText.copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppTextStyles.linkText.copyWith(fontSize: 14),
                       ),
                       const SizedBox(height: 4),
                       const ScoreIndicator(score: '70'),
@@ -105,62 +116,79 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                 ],
               ),
             ),
+
             const SizedBox(height: 20),
+
+            /// PROGRESS
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Text(
-                //   'مهام ونيسي',
-                //   style: AppTextStyles.linkText.copyWith(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
-                // const SizedBox(height: 35),
-                Center(
-                  child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(
-                          'assets/images/Glowing Star.png',
-                          width: 40,
-                          height: 40,
-                        ),
-                        Text("20/30",style: AppTextStyles.numberText.copyWith(color:Colors.grey,fontSize: 20),)
-                      ]
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Center(
-                  child: SizedBox(
-                    width: 250,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: LinearProgressIndicator(
-                        value: .7,          // Progress 25%
-                        minHeight: 9,
-                        backgroundColor: Colors.grey.shade300,
-                        color: Color(0xFF69D66E) ,
-                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/Glowing Star.png',
+                      width: 40,
+                      height: 40,
                     ),
-                  ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "${cubit.totalDone}/${cubit.totalTasks}",
+                      style: AppTextStyles.numberText.copyWith(
+                        color: Colors.grey,
+                        fontSize: 20,
+                      ),
+                    )
+                  ],
+                ),
+
+                const SizedBox(height: 10),
+
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0, end: progress),
+                  duration: const Duration(milliseconds: 600),
+                  builder: (context, value, _) {
+                    return Center(
+                      child: SizedBox(
+                        width: 250,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: LinearProgressIndicator(
+                            value: value,
+                            minHeight: 9,
+                            backgroundColor: Colors.grey.shade300,
+                            color: const Color(0xFF69D66E),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
+
             const SizedBox(height: 10),
-            Flexible(
+
+            /// GRID
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 child: GridView.builder(
-                  physics: BouncingScrollPhysics(),
                   itemCount: gridItems.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 15,
                     childAspectRatio: 0.80,
                   ),
                   itemBuilder: (context, index) {
+                    final category = gridItems[index]["buttonText"];
+
+                    final done =
+                        cubit.completedByCategory[category] ?? 0;
+                    final total =
+                        cubit.totalByCategory[category] ?? 0;
+
                     return Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -181,25 +209,24 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                           ),
                         ],
                       ),
+
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
-                                gridItems[index]["image"],
-                                fit: BoxFit.contain,
-                              ),
+                            child: Image.asset(
+                              gridItems[index]["image"],
+                              fit: BoxFit.contain,
                             ),
                           ),
                           const SizedBox(height: 10),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(gridItems[index]["text"]),
+                              Text("$done/$total"),
                               SizedBox(width: 5,),
                               Image.asset(
                                 'assets/images/Checked Checkbox.png',
@@ -208,9 +235,12 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                               ),
                             ],
                           ),
+
                           const SizedBox(height: 5),
+
                           SizedBox(
                             width: double.infinity,
+                            height: 40,
                             child: Container(
                               width: double.infinity,
                               height: 40,
@@ -227,44 +257,6 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                                 ],
                               ),
                               child: ElevatedButton(
-                                onPressed: () {
-                                  // Navigate to Games screen when "العاب" button is pressed
-                                  if (gridItems[index]["buttonText"] ==
-                                      "مهام منزلية") {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const HomeTasksScreen(),
-                                      ),
-                                    );
-                                  }
-                                  else if (gridItems[index]["buttonText"] ==
-                                      "مهام دراسية"){
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const StudyingTasks(),
-                                      ),
-                                    );
-                                  }
-                                  else if(gridItems[index]["buttonText"] ==
-                                      "مهام سلوكية"){
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const BehavioralTasks(),
-                                      ),
-                                    );
-                                  }
-                                  else{
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => const ReligiousTasks(),
-                                      ),
-                                    );
-                                  }
-                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                   gridItems[index]["buttonColor"],
@@ -279,10 +271,42 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                                   shadowColor: Colors.transparent,
                                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                                 ),
-                                child: Text(
-                                  gridItems[index]["buttonText"],
-                                  style: AppTextStyles.buttonText,
-                                ),
+                                onPressed: () {
+                                  if (category == "مهام منزلية") {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                        const HomeTasksScreen(),
+                                      ),
+                                    );
+                                  } else if (category == "مهام دراسية") {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                        const StudyingTasks(),
+                                      ),
+                                    );
+                                  } else if (category == "مهام سلوكية") {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                        const BehavioralTasks(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                        const ReligiousTasks(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Text(category,style: AppTextStyles.buttonText,),
                               ),
                             ),
                           ),
@@ -293,7 +317,8 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+
+            /// BOTTOM NAV
             Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -316,7 +341,8 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const MainLayout(selectedIndex: 0,),
+                              builder: (_) =>
+                              const MainLayout(selectedIndex: 0),
                             ),
                                 (route) => false,
                           );
@@ -329,7 +355,8 @@ class _TasksScreenState extends State<TasksTypeScreen> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const MainLayout(selectedIndex: 1,),
+                              builder: (_) =>
+                              const MainLayout(selectedIndex: 1),
                             ),
                                 (route) => false,
                           );

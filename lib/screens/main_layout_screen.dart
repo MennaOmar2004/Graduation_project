@@ -61,22 +61,11 @@ class _MainLayoutState extends State<MainLayout> {
                           setState(() => selectedIndex = 0);
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10), // التحكم في الارتفاع (تطلع لفوق أو تنزل)
-                        child: Transform.scale(
-                          scale: 1.1, // التحكم في حجم المصحف تحديداً (1.1 يعني أكبر بـ 10%)
-                          child: _NavIcon(
-                            imagePath: 'assets/images/quran.png',
-                            isSelected: selectedIndex == 1,
-                            onTap: () => setState(() => selectedIndex = 1),
-                          ),
-                        ),
-                      ),
                       _NavIcon(
                         imagePath: 'assets/images/Trophy.png',
-                        isSelected: selectedIndex == 2,
+                        isSelected: selectedIndex == 1,
                         onTap: () {
-                          setState(() => selectedIndex = 2);
+                          setState(() => selectedIndex = 1);
                         },
                       ),
                     ],

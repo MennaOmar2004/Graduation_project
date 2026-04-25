@@ -132,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   if (index == listItems.length - 1)
                                     Switch(
                                       value: quietMode,
-                                      activeThumbColor: Colors.blue.shade700,
+                                      activeTrackColor: Colors.blue.shade700,
                                       onChanged: (value) {
                                         setState(() {
                                           quietMode = value;
