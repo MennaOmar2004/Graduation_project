@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import 'package:wanisi_app/widgets/custom_text_form_field.dart';
 import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
 import 'package:wanisi_app/screens/success_screen.dart';
 import '../colors.dart';
+import '../network/dio_helper.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -114,7 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 20),
                       CustomTextFormField(
-                        hint: "التخصصات",
+                        hint: "التفضيلات",
                         inputType: TextInputType.text,
                         controller: specializationsController,
                         validator: (value) {
@@ -134,39 +137,89 @@ class _SignupScreenState extends State<SignupScreen> {
                           if (value == null || value.isEmpty) {
                             return 'الحقل فارغ';
                           }
-                          if (value.length < 6) {
-                            return 'كلمة السر يجب أن تكون 6 أحرف على الأقل';
+                          if (value.length < 3) {
+                            return 'كلمة السر يجب أن تكون 3 أحرف على الأقل';
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 30),
                       LayeredButton(
-                        text: "تسجيل الطفل",
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => const SuccessScreen(
-                                  message: 'تم تسجيل الطفل بنجاح',
-                                  buttonText: 'متابعة',
-                                ),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'الرجاء ملء جميع الحقول بشكل صحيح',
-                                  style: AppTextStyles.buttonText,
-                                ),
-                                backgroundColor: Colors.black,
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
+                          text: "تسجيل الطفل",
+                          // داخل onPressed في SignupScreen
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              try {
+                                final prefs = await SharedPreferences.getInstance();
+                                final parentId = prefs.getInt("parentId");
+
+                                if (parentId == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("عفواً، يجب تسجيل دخول الأب أولاً")),
+                                  );
+                                  return;
+                                }
+
+                                // 1️⃣ إنشاء الطفل
+                                final createResponse = await DioHelper.dio.post(
+                                  "/api/v1/children",
+                                  data: {
+                                    "fullName": nameController.text.trim(),
+                                    "age": int.parse(ageController.text.trim()), // تحويل السن لرقم
+                                    "parentId": parentId,
+                                    "avatarUrl": "https://ui-avatars.com/api/?name=${nameController.text}", // قيمة افتراضية
+                                    "preferences": specializationsController.text.trim(),
+                                    "pinCode": passwordController.text.trim(),
+                                    "gender": selectedGender,
+                                  },
+                                );
+
+                                // تأكدي من قراءة الـ ID بشكل صحيح (حسب رد السيرفر)
+                                final dynamic responseData = createResponse.data;
+                                final int childId = responseData["data"] != null
+                                    ? responseData["data"]["id"]
+                                    : responseData["id"];
+
+                                // 2️⃣ تسجيل دخول الطفل فوراً
+                                final loginResponse = await DioHelper.dio.post(
+                                  "/api/v1/auth/child/login",
+                                  data: {
+                                    "childId": childId,
+                                    "pinCode": passwordController.text.trim(),
+                                  },
+                                );
+
+                                // 3️⃣ حفظ توكن الطفل ومعرفه للعمليات القادمة
+                                await prefs.setString("child_token", loginResponse.data["token"]);
+                                await prefs.setInt("childId", childId);
+
+                                // 4️⃣ الانتقال
+                                if (mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const SuccessScreen(
+                                        message: 'تم تسجيل الطفل بنجاح',
+                                        buttonText: 'متابعة',
+                                      ),
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                print("❌ Complete Error: $e");
+                                String errorMsg = "فشل التسجيل، تأكد من البيانات";
+
+                                // إذا كان الخطأ من السيرفر، نحاول إظهار السبب الحقيقي
+                                if (e is DioException && e.response?.data != null) {
+                                  errorMsg = e.response?.data["message"] ?? errorMsg;
+                                }
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(errorMsg)),
+                                );
+                              }
+                            }
                           }
-                        },
                       ),
                       const SizedBox(height: 20),
                       Row(

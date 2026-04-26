@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:core';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wanisi_app/cubit_of_tasks/tasks_State.dart';
 import 'package:wanisi_app/model_of_tasks/tasks.dart';
+import 'package:wanisi_app/network/dio_helper.dart';
 import '../model_of_tasks/tasks_logs.dart';
 
 
@@ -10,7 +13,7 @@ import '../model_of_tasks/tasks_logs.dart';
 class TasksCubit extends Cubit<TasksState> {
   TasksCubit():super(InitialTasksState());
 
-  final Dio dio = Dio();
+  final Dio dio = DioHelper.dio;
   final List<Tasks> tasksList=[];
   final List<TasksLogs> logs = [];
   Map<String, int> completedByCategory = {};
@@ -64,7 +67,7 @@ class TasksCubit extends Cubit<TasksState> {
 
     for (var category in categories) {
       final response = await dio.get(
-          "https://waneesy.runasp.net/api/v1/tasks/category/$category"
+          "/api/v1/tasks/category/$category"
       );
 
       for (var task in response.data["data"]) {
@@ -113,7 +116,7 @@ class TasksCubit extends Cubit<TasksState> {
   Future <void> loadLogs() async {
     try {
       final response = await dio.get(
-        "https://waneesy.runasp.net/api/v1/task-logs",
+        "/api/v1/task-logs/my-logs",
       );
 
       logs.clear();
@@ -132,6 +135,18 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
   void toggleTask(int taskId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final childId = prefs.getInt("childId");
+    final token = prefs.getString("token");
+
+
+    print("🔥 TOKEN BEFORE TASK LOG:");
+    print(token);
+
+    if (childId == null) {
+      print("❌ childId is missing");
+      return;
+    }
     try {
       final existingLog = logs.firstWhere(
             (log) =>
@@ -146,13 +161,13 @@ class TasksCubit extends Cubit<TasksState> {
 
       if (existingLog.logID != null) {
         await dio.delete(
-          "https://waneesy.runasp.net/api/v1/task-logs/${existingLog.logID}",
+          "/api/v1/task-logs/${existingLog.logID}",
         );
       } else {
         await dio.post(
-          "https://waneesy.runasp.net/api/v1/task-logs",
+          "/api/v1/task-logs",
           data: {
-            "childId": 1,
+            "childId": childId,
             "taskId": taskId,
             "isCompleted": true,
           },

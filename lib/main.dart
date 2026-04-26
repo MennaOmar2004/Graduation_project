@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/blocs/avatar_selection/avatar_selection_cubit.dart';
+import 'package:wanisi_app/cubit_of_auth/auth_cubit.dart';
 import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
+import 'package:wanisi_app/network/dio_helper.dart';
+import 'package:wanisi_app/screens/splash_screen.dart';
 
 import 'package:wanisi_app/screens/story_screen.dart';
 import 'package:wanisi_app/screens/widgets/dissmissable_keyboard_ontap.dart';
 
 void main() {
+  DioHelper.init();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AvatarSelectionCubit>(create: (context) => AvatarSelectionCubit()),
-        BlocProvider<TasksCubit>(create: (context) => TasksCubit())
+        BlocProvider<TasksCubit>(create: (context) => TasksCubit()),
+        BlocProvider<AuthCubit>(create: (context) => AuthCubit(),)
       ],
       child:MyApp() ,
     ),
@@ -41,7 +46,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home:StoryScreen(),
+        home: SplashScreen(),
       ),
     );
   }
