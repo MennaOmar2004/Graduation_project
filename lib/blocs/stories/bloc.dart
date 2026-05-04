@@ -22,6 +22,7 @@ class StoriesCubit extends Cubit<StoriesState> {
     try {
       final stories = await _repository.getStoriesByCategory(category);
       emit(StoriesLoaded(stories, selectedCategory: category));
+      print("Loaded stories: ${stories.length}");
     } catch (e) {
       emit(StoriesError(e.toString()));
     }

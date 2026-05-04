@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<AuthState>{
       await prefs.setString("parent_token", loginData!.token);
       await prefs.setInt("parentId", loginData!.parentId);
       await prefs.setString("fullName", loginData!.fullName);
-
+      await prefs.reload();
       emit(AuthSuccess(loginData!));
     } catch(e){
       emit(AuthFailure("Login failed"));

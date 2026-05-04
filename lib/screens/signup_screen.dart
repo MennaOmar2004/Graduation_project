@@ -227,7 +227,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
                             },
                             child: Text(
                               'تسجيل الدخول',

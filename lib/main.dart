@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/blocs/avatar_selection/avatar_selection_cubit.dart';
 import 'package:wanisi_app/cubit_of_auth/auth_cubit.dart';
+import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
 import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
 import 'package:wanisi_app/network/dio_helper.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
@@ -16,7 +17,8 @@ void main() {
       providers: [
         BlocProvider<AvatarSelectionCubit>(create: (context) => AvatarSelectionCubit()),
         BlocProvider<TasksCubit>(create: (context) => TasksCubit()),
-        BlocProvider<AuthCubit>(create: (context) => AuthCubit(),)
+        BlocProvider<AuthCubit>(create: (context) => AuthCubit(),),
+        BlocProvider<ChildCubit>(create: (context) => ChildCubit(),)
       ],
       child:MyApp() ,
     ),

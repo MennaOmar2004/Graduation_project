@@ -1,38 +1,105 @@
+// import 'package:dio/dio.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+//
+// class DioHelper{
+//   static late Dio dio;
+//
+//   static void init(){
+//     dio=Dio(
+//         BaseOptions(
+//           baseUrl: "https://waneesy.runasp.net",
+//           connectTimeout: const Duration(seconds: 10) ,
+//           receiveTimeout:const Duration(seconds: 10)
+//         )
+//     );
+//
+//     // DioHelper.dart
+//     dio.interceptors.add(
+//       InterceptorsWrapper(
+//         onRequest: (options, handler) async {
+//           final prefs = await SharedPreferences.getInstance();
+//           String? childToken = prefs.getString("child_token");
+//           String? parentToken = prefs.getString("parent_token");
+//
+//           // المنطق الصحيح للتوكن:
+//           String? token;
+//
+//           // إذا كان المسار هو إنشاء طفل، اجبره يستخدم توكن الأب
+//           if (options.path.contains("/api/v1/children") && options.method == "POST") {
+//             token = parentToken;
+//             print("🔑 Using PARENT Token for creation");
+//           } else {
+//             // في باقي العمليات، نستخدم توكن الطفل إذا وجد، وإلا توكن الأب
+//             token = childToken ?? parentToken;
+//             print("🔑 Using ${childToken != null ? 'CHILD' : 'PARENT'} Token");
+//           }
+//
+//           if (token != null) {
+//             options.headers["Authorization"] = "Bearer $token";
+//           }
+//
+//           return handler.next(options);
+//         },
+//         onError: (DioException e, handler) {
+//           // هذه الطباعة ستخبرنا بالسبب الحقيقي للرفض من السيرفر
+//           print("❌ Server Reject Reason: ${e.response?.data}");
+//           return handler.next(e);
+//         },
+//       ),
+//     );
+//   }
+// }
+
+
+
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DioHelper{
+class DioHelper {
   static late Dio dio;
 
-  static void init(){
-    dio=Dio(
-        BaseOptions(
-          baseUrl: "https://waneesy.runasp.net",
-          connectTimeout: const Duration(seconds: 10) ,
-          receiveTimeout:const Duration(seconds: 10)
-        )
+  static void init() {
+    dio = Dio(
+      BaseOptions(
+        baseUrl: "https://waneesy.runasp.net",
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+      ),
     );
 
-    // DioHelper.dart
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final prefs = await SharedPreferences.getInstance();
-          String? childToken = prefs.getString("child_token");
-          String? parentToken = prefs.getString("parent_token");
 
-          // المنطق الصحيح للتوكن:
+          final childToken = prefs.getString("child_token");
+          final parentToken = prefs.getString("parent_token");
+
           String? token;
 
-          // إذا كان المسار هو إنشاء طفل، اجبره يستخدم توكن الأب
-          if (options.path.contains("/api/v1/children") && options.method == "POST") {
+          // ✅ شرط واضح ومظبوط (بدون مشاكل precedence)
+          final isMyChildrenRequest =
+          options.path.contains("/api/v1/auth/my-children");
+
+          final isCreateChildRequest =
+              options.path.contains("/api/v1/children") &&
+                  options.method == "POST";
+
+          final isUpdateChildRequest =
+              options.path.contains("/api/v1/children") &&
+                  options.method == "PUT";
+
+          if (isMyChildrenRequest || isCreateChildRequest ||  isUpdateChildRequest) {
             token = parentToken;
-            print("🔑 Using PARENT Token for creation");
+            print("🔑 Using PARENT Token");
           } else {
-            // في باقي العمليات، نستخدم توكن الطفل إذا وجد، وإلا توكن الأب
             token = childToken ?? parentToken;
             print("🔑 Using ${childToken != null ? 'CHILD' : 'PARENT'} Token");
           }
+
+          // 🔥 مهم جدًا: طباعة التوكن اللي بيتبعت فعليًا
+          print("📤 REQUEST: ${options.path}");
+          print("🔐 TOKEN SENT: $token");
 
           if (token != null) {
             options.headers["Authorization"] = "Bearer $token";
@@ -41,8 +108,9 @@ class DioHelper{
           return handler.next(options);
         },
         onError: (DioException e, handler) {
-          // هذه الطباعة ستخبرنا بالسبب الحقيقي للرفض من السيرفر
-          print("❌ Server Reject Reason: ${e.response?.data}");
+          print("❌ STATUS: ${e.response?.statusCode}");
+          print("❌ RESPONSE DATA: ${e.response?.data}");
+
           return handler.next(e);
         },
       ),

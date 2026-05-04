@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
 import 'package:wanisi_app/screens/personal_info_screen.dart';
+import 'package:wanisi_app/screens/select_child_screen.dart';
+import 'package:wanisi_app/screens/signup_screen.dart';
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
@@ -161,48 +164,109 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   )
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 30,right: 20,left: 20),
-                child: Container(
-                  width: double.infinity,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color:AppColors.buttonShadow,
-                        offset: const Offset(0, 6),
-                        blurRadius: 0,
-                        spreadRadius: 2,
-                      ),
-                    ]
-                  ),
-                  child: ElevatedButton(
-                      onPressed: (){},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF0900FF),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: AppColors.buttonBorder, width: 1),
+                padding: const EdgeInsets.only(bottom: 30, right: 20, left: 20),
+                child: Row(
+                  children: [
+                    // الزر الأول: تبديل الطفل
+                    Expanded(
+                      child: Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.buttonShadow,
+                              offset: const Offset(0, 6),
+                              blurRadius: 0,
+                              spreadRadius: 2,
+                            ),
+                          ],
                         ),
-                        elevation: 0,
-                        shadowColor: Colors.grey,
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                        Image.asset("assets/images/Baby_Face.png", width: 45, height: 45),
-                        Text(
-                            "تبديل الطفل",
-                            style: AppTextStyles.buttonText.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                            )
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SelectChildScreen(),
+                            ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF91D6F0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(color: AppColors.buttonBorder, width: 1),
+                            ),
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center, // لجعل المحتوى في المنتصف
+                            children: [
+                              Image.asset("assets/images/Baby_Face.png", width: 30, height: 30),
+                              const SizedBox(width: 8),
+                              Flexible( // حماية النص من الخروج عن الإطار في الشاشات الصغيرة
+                                child: Text(
+                                  "تبديل الطفل",
+                                  style: AppTextStyles.buttonText.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17, // تأكد من تناسق الخط
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        ],
-                      )
-                  ),
-                )
+                      ),
+                    ),
+
+                    const SizedBox(width: 15), // مسافة بين الزرين
+
+                    // الزر الثاني: إضافة طفل
+                    Expanded(
+                      child: Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.buttonShadow,
+                              offset: const Offset(0, 6),
+                              blurRadius: 0,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SignupScreen(),
+                            ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF0900FF),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(color: AppColors.buttonBorder, width: 1),
+                            ),
+                            elevation: 0,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "+   اضافة طفل",
+                              style: AppTextStyles.buttonText.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
             ],
