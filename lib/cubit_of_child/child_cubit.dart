@@ -45,6 +45,9 @@ class ChildCubit extends Cubit<ChildState>{
       emit(ChildError(e.toString()));
     }
   }
+  void setSelectedChild(Child child) {
+    emit(ChildSelectedSuccess(child));
+  }
 
   Future<void> updateChild({required int childId,
     required String name,

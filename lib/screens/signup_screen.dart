@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import 'package:wanisi_app/widgets/custom_text_form_field.dart';
 import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
 import 'package:wanisi_app/screens/success_screen.dart';
 import '../colors.dart';
+import '../cubit_of_child/child_cubit.dart';
+import '../model_of_child/child.dart';
 import '../network/dio_helper.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -192,7 +195,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                 // 3️⃣ حفظ توكن الطفل ومعرفه للعمليات القادمة
                                 await prefs.setString("child_token", loginResponse.data["token"]);
                                 await prefs.setInt("childId", childId);
-
+                                context.read<ChildCubit>().setSelectedChild(
+                                  Child(
+                                    id: childId,
+                                    name: nameController.text.trim(),
+                                    age: int.parse(ageController.text.trim()),
+                                    avatarUrl: "",
+                                  ),
+                                );
                                 // 4️⃣ الانتقال
                                 if (mounted) {
                                   Navigator.pushReplacement(

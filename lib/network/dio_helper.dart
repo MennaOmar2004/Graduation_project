@@ -89,7 +89,10 @@ class DioHelper {
               options.path.contains("/api/v1/children") &&
                   options.method == "PUT";
 
-          if (isMyChildrenRequest || isCreateChildRequest ||  isUpdateChildRequest) {
+          final isAvatarUploadRequest =
+          options.path.contains("/avatar");
+
+          if (isMyChildrenRequest || isCreateChildRequest ||  isUpdateChildRequest || isAvatarUploadRequest) {
             token = parentToken;
             print("🔑 Using PARENT Token");
           } else {

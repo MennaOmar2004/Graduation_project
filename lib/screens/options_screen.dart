@@ -8,6 +8,7 @@ import 'package:wanisi_app/screens/stories/all_videos_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import '../cubit_of_child/child_cubit.dart';
 import '../cubit_of_child/child_state.dart';
+import '../model_of_child/child.dart';
 import 'achievements_screen.dart';
 import 'games_screen.dart';
 
