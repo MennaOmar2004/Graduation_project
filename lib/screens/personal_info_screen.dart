@@ -168,11 +168,18 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                             text: "تعديل",
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
+                                  final state = context.read<ChildCubit>().state;
+                                  String currentUrl = "";
+
+                                  // سحب رابط الصورة الحالي عشان نبعته هو هو للسيرفر
+                                  if (state is ChildSelectedSuccess) {
+                                    currentUrl = state.data.avatarUrl;
+                                  }
                                   context.read<ChildCubit>().updateChild(
                                       childId :childId!,
                                       name :nameController.text,
                                       age : int.parse(ageController.text),
-                                      avatarUrl:"",
+                                      avatarUrl:currentUrl,
                                       preferences:favoriteController.text
                                   );
                                 }

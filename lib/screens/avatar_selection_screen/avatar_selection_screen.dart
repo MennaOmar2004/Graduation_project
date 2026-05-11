@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wanisi_app/screens/main_layout_screen.dart';
 import '../../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../../blocs/avatar_selection/avatar_selection_state.dart';
+import '../../blocs/avatar_selection/avatar_to_file.dart';
+import '../../cubit_of_child/child_cubit.dart';
+import '../../network/cloudinary_helper.dart';
 import '../../static/app_assets.dart';
 import '../../colors.dart';
 import '../take_photo_screen.dart';
@@ -115,21 +121,44 @@ class _AvatarSelectionView extends StatelessWidget {
                         return LayeredButton(
                           text: 'تأكيد',
                           showShadow: state.selectedAvatar != null,
-                          onPressed:
-                              state.selectedAvatar != null
-                                  ? () {
-                                    context
-                                        .read<AvatarSelectionCubit>()
-                                        .confirmSelection();
-                                    // Navigate to options screen
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => MainLayout(selectedIndex: 0,),
-                                      ),
-                                    );
+                            // داخل AvatarSelectionScreen - زر "تأكيد"
+                            onPressed: () async {
+                              final selectedAvatar = context.read<AvatarSelectionCubit>().state.selectedAvatar;
+                              if (selectedAvatar == null) return;
+
+                              // 1. ارفعي الصورة لـ Cloudinary
+                              File imageFile = await assetToFile(selectedAvatar);
+                              String? imageUrl = await CloudinaryHelper.uploadImage(imageFile);
+
+                              if (imageUrl != null) {
+                                final prefs = await SharedPreferences.getInstance();
+
+                                // 2. اسحبي البيانات "المؤقتة" اللي حفظناها في الـ Signup
+                                final String name = prefs.getString("temp_child_name") ?? "";
+                                final int age = prefs.getInt("temp_child_age") ?? 0;
+                                final String preferences = prefs.getString("temp_child_prefs") ?? "";
+                                final int? childId = prefs.getInt("childId");
+
+                                if (childId != null) {
+                                  // 3. نداء الـ Update بكل البيانات المطلوبة للـ API
+                                  await context.read<ChildCubit>().updateChild(
+                                    childId: childId,
+                                    name: name,         // البيانات القديمة
+                                    age: age,           // البيانات القديمة
+                                    avatarUrl: imageUrl, // الرابط الجديد (المهم)
+                                    preferences: preferences, // البيانات القديمة
+                                  );
+
+                                  // 4. تنظيف الـ SharedPreferences (اختياري لكن يفضل)
+                                  await prefs.remove("temp_child_name");
+                                  await prefs.remove("temp_child_age");
+
+                                  if (context.mounted) {
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OptionsScreen()));
                                   }
-                                  : null,
+                                }
+                              }
+                            }
                         );
                       },
                     ),

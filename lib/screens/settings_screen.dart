@@ -7,6 +7,7 @@ import 'package:wanisi_app/screens/signup_screen.dart';
 import '../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
+import '../cubit_of_child/child_state.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -79,11 +80,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             children: [
               SizedBox(height: 30,),
-              BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
+              BlocBuilder<ChildCubit, ChildState>(
                 builder: (context, state) {
-                  final avatarPath =
-                      state.selectedAvatar ?? "assets/images/image_profile.png";
-                  return Image.asset(avatarPath, height: 150, width: 150);
+                  print("OPTIONS STATE = $state");
+                  if (state is ChildSelectedSuccess) {
+                    return Image.network(
+                      state.data.avatarUrl,
+                      height: 100,
+                      width: 100,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/images/image_profile.png",
+                          height: 100,
+                          width: 100,
+                        );
+                      },
+                    );
+                  }
+                  return Image.asset(
+                    "assets/images/image_profile.png",
+                    height: 100,
+                    width: 100,
+                  );
                 },
               ),
               SizedBox(height: 50,),

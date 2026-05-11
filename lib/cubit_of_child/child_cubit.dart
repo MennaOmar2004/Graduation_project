@@ -10,6 +10,7 @@ class ChildCubit extends Cubit<ChildState>{
 
   final List<Child> childrenList=[];
   final Dio dio = DioHelper.dio;
+  int? selectedChildId;
 
   Future<void> getChildren() async{
 
@@ -40,12 +41,14 @@ class ChildCubit extends Cubit<ChildState>{
 
       await prefs.setString("child_token", token);
       await prefs.setInt("childId", child.id);
+      selectedChildId = child.id;
       emit(ChildSelectedSuccess(child));
     }catch(e){
       emit(ChildError(e.toString()));
     }
   }
   void setSelectedChild(Child child) {
+    selectedChildId = child.id;
     emit(ChildSelectedSuccess(child));
   }
 
@@ -66,8 +69,16 @@ class ChildCubit extends Cubit<ChildState>{
         }
       );
       print("✅ UPDATE RESPONSE: ${response.data}");
-
       emit(ChildUpdatedSuccess());
+      emit(ChildSelectedSuccess(
+        Child(
+          id: childId,
+          name: name,
+          age: age,
+          avatarUrl: avatarUrl,
+          // تأكدي إن موديل الـ Child عندك بيدعم preferences لو محتاجاها
+        ),
+      ));
     }catch(e){
       emit(ChildError(e.toString()));
     }

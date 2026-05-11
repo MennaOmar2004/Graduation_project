@@ -162,7 +162,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                   );
                                   return;
                                 }
-
+                                final avatarUrl =
+                                prefs.getString("selected_avatar_url");
+                                print("🔵 avatarUrl from prefs = $avatarUrl");
                                 // 1️⃣ إنشاء الطفل
                                 final createResponse = await DioHelper.dio.post(
                                   "/api/v1/children",
@@ -170,13 +172,19 @@ class _SignupScreenState extends State<SignupScreen> {
                                     "fullName": nameController.text.trim(),
                                     "age": int.parse(ageController.text.trim()), // تحويل السن لرقم
                                     "parentId": parentId,
-                                    "avatarUrl": "https://ui-avatars.com/api/?name=${nameController.text}", // قيمة افتراضية
+                                    "avatarUrl": "https://your-default-avatar-link.png", // قيمة افتراضية
                                     "preferences": specializationsController.text.trim(),
                                     "pinCode": passwordController.text.trim(),
                                     "gender": selectedGender,
                                   },
                                 );
+                                await prefs.setString("temp_child_name", nameController.text.trim());
+                                await prefs.setInt("temp_child_age", int.parse(ageController.text.trim()));
+                                await prefs.setString("temp_child_gender", selectedGender!);
+                                await prefs.setString("temp_child_prefs", specializationsController.text.trim());
 
+                                print("CREATE RESPONSE: ${createResponse.data}");
+                                await prefs.remove("selected_avatar_url");
                                 // تأكدي من قراءة الـ ID بشكل صحيح (حسب رد السيرفر)
                                 final dynamic responseData = createResponse.data;
                                 final int childId = responseData["data"] != null
@@ -200,7 +208,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     id: childId,
                                     name: nameController.text.trim(),
                                     age: int.parse(ageController.text.trim()),
-                                    avatarUrl: "",
+                                    avatarUrl: avatarUrl ??"",
                                   ),
                                 );
                                 // 4️⃣ الانتقال
