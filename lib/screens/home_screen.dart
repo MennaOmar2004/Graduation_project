@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/screens/parent_signup_screen.dart';
 
 import '../colors.dart';
 import 'login_Screen.dart';
@@ -59,14 +60,14 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   LayeredButton(
-                    text: "انا طفل",
+                    text: "انشاء حساب كولى امر",
                     width: 500,
                     height: 65,
                     backgroundColor: AppColors.blue,
                     image: "assets/images/baby_icon.png",
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(builder: (context) => ParentSignUpScreen()),
                       );
                     },
                   ),

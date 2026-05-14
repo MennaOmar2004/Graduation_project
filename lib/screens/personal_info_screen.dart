@@ -92,11 +92,28 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                       child: Column(
                         children: [
                           SizedBox(height: 100,),
-                          BlocBuilder<AvatarSelectionCubit, AvatarSelectionState>(
+                          BlocBuilder<ChildCubit, ChildState>(
                             builder: (context, state) {
-                              final avatarPath =
-                                  state.selectedAvatar ?? "assets/images/image_profile.png";
-                              return Image.asset(avatarPath, height: 150, width: 150);
+                              print("OPTIONS STATE = $state");
+                              if (state is ChildSelectedSuccess) {
+                                return Image.network(
+                                  state.data.avatarUrl,
+                                  height: 100,
+                                  width: 100,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                      "assets/images/image_profile.png",
+                                      height: 100,
+                                      width: 100,
+                                    );
+                                  },
+                                );
+                              }
+                              return Image.asset(
+                                "assets/images/image_profile.png",
+                                height: 100,
+                                width: 100,
+                              );
                             },
                           ),
                           const SizedBox(height: 50),

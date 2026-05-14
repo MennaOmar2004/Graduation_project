@@ -35,4 +35,26 @@ class AuthCubit extends Cubit<AuthState>{
       emit(AuthFailure("Login failed"));
     }
   }
+
+  Future<void> signUp(
+  String fullName,
+  String email,
+  String phoneNumber,
+  String password ) async{
+    emit(AuthLoading());
+    try{
+      await dio.post("/api/v1/parents",
+      data:{
+        "fullName":fullName,
+        "email":email,
+        "phoneNumber":phoneNumber,
+        "password": password
+      }
+      );
+      await login(email, password);
+    }catch(e){
+      emit(AuthFailure("Signup failed"));
+    }
+
+  }
 }
