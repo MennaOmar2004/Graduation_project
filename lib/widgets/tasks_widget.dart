@@ -61,7 +61,7 @@ class TasksWidget extends StatelessWidget {
 
                 return Container(
                   width: double.infinity,
-                  height: 55,
+                  height: 60,
                   decoration: BoxDecoration(
                     color: item["boxColor"],
                     borderRadius: BorderRadius.circular(20),

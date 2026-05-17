@@ -54,29 +54,135 @@ class TasksCubit extends Cubit<TasksState> {
   //   // emit(TasksLoaded(tasksList,points));
   // }
 
+  // Future<void> loadAllTasks() async {
+  //   final categories = [
+  //     "مهام منزلية",
+  //     "مهام دراسية",
+  //     "مهام سلوكية",
+  //     "مهام دينية"
+  //   ];
+  //
+  //   tasksList.clear();
+  //   totalByCategory.clear();
+  //
+  //   for (var category in categories) {
+  //     final response = await dio.get(
+  //         "/api/v1/tasks/category/$category"
+  //     );
+  //
+  //     for (var task in response.data["data"]) {
+  //       final t = Tasks.fromJson(task);
+  //       tasksList.add(t);
+  //
+  //       final cat = t.category;
+  //       totalByCategory[cat!] = (totalByCategory[cat] ?? 0) + 1;
+  //     }
+  //   }
+  // }
   Future<void> loadAllTasks() async {
-    final categories = [
-      "مهام منزلية",
-      "مهام دراسية",
-      "مهام سلوكية",
-      "مهام دينية"
-    ];
+    try {
+      final response = await dio.get("/api/v1/tasks/today");
 
-    tasksList.clear();
-    totalByCategory.clear();
+      tasksList.clear();
+      totalByCategory.clear();
 
-    for (var category in categories) {
-      final response = await dio.get(
-          "/api/v1/tasks/category/$category"
-      );
+      const allowedCategories = {
+        "مهام منزلية",
+        "مهام دراسية",
+        "مهام سلوكية",
+        "مهام دينية",
+      };
 
       for (var task in response.data["data"]) {
         final t = Tasks.fromJson(task);
-        tasksList.add(t);
 
         final cat = t.category;
-        totalByCategory[cat!] = (totalByCategory[cat] ?? 0) + 1;
+
+        // ❌ خزن فقط لو الكاتيجوري مطابق 100%
+        if (cat == null || !allowedCategories.contains(cat)) {
+          continue;
+        }
+
+        tasksList.add(t);
+        print("tasksList length = ${tasksList.length}");
+        totalByCategory[cat] = (totalByCategory[cat] ?? 0) + 1;
       }
+    } catch (e) {
+      print(e);
+    }
+  }
+  // Future<void> loadAllTasks() async {
+  //   try {
+  //     final response = await dio.get("/api/v1/tasks/today");
+  //
+  //     tasksList.clear();
+  //     totalByCategory.clear();
+  //
+  //     for (var task in response.data["data"]) {
+  //       final t = Tasks.fromJson(task);
+  //
+  //       tasksList.add(t);
+  //
+  //       final cat = t.category;
+  //       if (cat != null) {
+  //         totalByCategory[cat] =
+  //             (totalByCategory[cat] ?? 0) + 1;
+  //       }
+  //     }
+  //
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  List<Tasks> getDailyTasks(String category) {
+    return tasksList.where((task) {
+      return task.category == category &&
+          task.taskType == "Daily";
+    }).toList();
+  }
+
+  List<Tasks> getPersonalTasks(String category) {
+    return tasksList.where((task) {
+      return task.category == category &&
+          task.taskType == "Personal";
+    }).toList();
+  }
+
+  Future<void> addCustomTask({
+    required String title,
+    required String category,
+    required int pointsRewarded,
+  }) async {
+    try {
+      await dio.post(
+        "/api/v1/tasks/personal",
+        data: {
+          "title": title,
+          "description": "",
+          "category": category,
+          "difficulty": "easy",
+          "duration": "5",
+          "videoUrl": "",
+          "pointsRewarded": pointsRewarded,
+          "taskType": "Personal",
+        },
+      );
+
+      await loadAllTasks();
+      await loadLogs();
+      recalculateAll();
+
+      emit(TasksLoaded(
+        List.from(tasksList),
+        points,
+        completedByCategory,
+        totalByCategory,
+        totalDone,
+        totalTasks,
+      ));
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -102,32 +208,40 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
   int points =0;
-  void calculatePoints (){
-    points=logs.fold(0, (sum, log) => sum + (log.pointsEarned??0));
-    print("TOTAL POINTS: $points");
-  }
+  // void calculatePoints (){
+  //   points=logs.fold(0, (sum, log) => sum + (log.pointsEarned??0));
+  //   print("TOTAL POINTS: $points");
+  // }
 
   void recalculateAll() {
     calculateCompleted();
     calculateSummary();
-    calculatePoints();
+    // calculatePoints();
   }
 
-  Future <void> loadLogs() async {
+  Future<void> loadLogs() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final childId = prefs.getInt("childId");
+
+      if (childId == null) return;
+
       final response = await dio.get(
-        "/api/v1/task-logs/my-logs",
+        "/api/v1/task-logs/child/$childId",
+        queryParameters: {
+          "includeHistory": false,
+          "days": 30,
+        },
       );
 
       logs.clear();
 
-      for(var log in response.data["data"]) {
+      final data = response.data["data"] ?? [];
+
+      for (var log in data) {
         logs.add(TasksLogs.fromJson(log));
       }
-
-      // calculatePoints();
-      // calculateCompleted();
-      // calculateSummary();
+      points = response.data["totalPointsEarned"] ?? 0;
 
     } catch (e) {
       print(e);

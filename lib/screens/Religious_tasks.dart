@@ -6,6 +6,7 @@ import '../colors.dart';
 import '../cubit_of_tasks/tasks_State.dart';
 import '../cubit_of_tasks/tasks_cubit.dart';
 import '../widgets/avatar_circle.dart';
+import '../widgets/personal_task_widget.dart';
 import '../widgets/tasks_widget.dart';
 import 'main_layout_screen.dart';
 
@@ -117,17 +118,64 @@ class _TasksScreenState extends State<ReligiousTasks> {
                   ],
                 ),
               ),
-              SizedBox(height: 100,),
+              SizedBox(height: 35,),
               BlocBuilder<TasksCubit,TasksState>(builder: (BuildContext context, state) {
                 if(state is TasksLoaded){
-                  final filteredTasks = state.tasksList
-                      .where((task) => task.category == "مهام دينية")
-                      .toList();
+                  final cubit = context.read<TasksCubit>();
+
+                  final dailyTasks =
+                  cubit.getDailyTasks("مهام دينية");
+
+                  final personalTasks =
+                  cubit.getPersonalTasks("مهام دينية");
                   return Expanded(
                     child: Column(
                       children: [
-                        TasksWidget(tasks: filteredTasks),
-                        SizedBox(height: 50),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              "مهام يومية",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ),
+                        TasksWidget(tasks: dailyTasks),
+
+                        const SizedBox(height: 20),
+
+                        if (personalTasks.isNotEmpty) ...[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                "مهام شخصية",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                          ),
+                          TasksWidget(tasks: personalTasks),
+                        ],
+
+                        const SizedBox(height: 10),
+
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: PersonalTaskWidget(
+                            category: "مهام دينية",
+                          ),
+                        ),
+                        SizedBox(height: 35),
                         IntrinsicWidth(
                           child: Container(
                             height: 55,
