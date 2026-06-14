@@ -44,10 +44,15 @@ class _StoriesScreenState extends State<StoriesScreen> {
                         },
                         icon: const Icon(Icons.arrow_back_ios_new),
                       ),
-                      AvatarCircle(onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => SettingsScreen(),));
-                      },),
+                      AvatarCircle(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SettingsScreen(),
+                            ),
+                          );
+                        },
+                      ),
                       const Spacer(),
                       // Title
                       Text(
@@ -130,12 +135,12 @@ class _StoriesScreenState extends State<StoriesScreen> {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const MainLayout(selectedIndex: 0,),
+                                  builder:
+                                      (_) => const MainLayout(selectedIndex: 0),
                                 ),
-                                    (route) => false,
+                                (route) => false,
                               );
                             },
-
                           ),
                           _NavIcon(
                             imagePath: 'assets/images/Trophy.png',
@@ -144,9 +149,10 @@ class _StoriesScreenState extends State<StoriesScreen> {
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const MainLayout(selectedIndex: 1,),
+                                  builder:
+                                      (_) => const MainLayout(selectedIndex: 1),
                                 ),
-                                    (route) => false,
+                                (route) => false,
                               );
                             },
                           ),
@@ -158,7 +164,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
               ],
             ),
           ],
-        )
+        ),
       ),
     );
   }

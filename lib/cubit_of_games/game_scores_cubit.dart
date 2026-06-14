@@ -29,16 +29,20 @@ class GameScoresCubit extends Cubit<GameScoresState> {
         return;
       }
 
-      // Fetch games list (using Admin token as requested)
+      // Fetch all game scores using Admin token
       final response = await dio.get(
-        '/api/v1/games',
+        '/api/v1/game-scores',
         options: Options(
           headers: {'Authorization': 'Bearer $_adminToken'},
         ),
       );
       
-      scoresList = response.data["data"] ?? [];
+      final allScores = response.data["data"] ?? [];
+      
+      // Filter the scores for this specific child
+      scoresList = allScores.where((item) => item["childId"] == childId).toList();
 
+      // Sum all scores (including duplicates)
       totalGameScore = scoresList.fold(0, (sum, item) {
         final score = item["score"] ?? 0;
         return sum + (score as int);
@@ -63,15 +67,23 @@ class GameScoresCubit extends Cubit<GameScoresState> {
 
       if (childId == null) return;
 
+      final postData = {
+        "childId": childId,
+        "gameId": gameId,
+        "score": score,
+        "attempts": 0,
+      };
+
+      print("====================================");
+      print("📤 POSTING SCORE TO BACKEND:");
+      print("ENDPOINT: /api/v1/game-scores");
+      print("PAYLOAD: $postData");
+      print("====================================");
+
       // POST uses the normal DioHelper interceptor token (which is now the CHILD token, resulting in 201 Created)
       await dio.post(
         '/api/v1/game-scores',
-        data: {
-          "childId": childId,
-          "gameId": gameId,
-          "score": score,
-          "attempts": 0,
-        },
+        data: postData,
       );
 
       emit(GameScoreSubmitSuccess(score));
