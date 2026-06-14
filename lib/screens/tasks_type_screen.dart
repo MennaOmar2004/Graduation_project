@@ -7,6 +7,7 @@ import 'package:wanisi_app/screens/studying_tasks.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import 'package:wanisi_app/widgets/avatar_circle.dart';
 import '../colors.dart';
+import '../cubit_of_games/game_scores_cubit.dart';
 import '../cubit_of_tasks/tasks_cubit.dart';
 import 'home_tasks_screen.dart';
 import 'main_layout_screen.dart';
@@ -57,6 +58,8 @@ class _TasksTypeScreenState extends State<TasksTypeScreen> {
   void initState() {
     super.initState();
     context.read<TasksCubit>().init();
+    // Also refresh game scores so the ScoreIndicator is up-to-date
+    context.read<GameScoresCubit>().fetchGameScores();
   }
 
   @override
@@ -110,7 +113,7 @@ class _TasksTypeScreenState extends State<TasksTypeScreen> {
                         style: AppTextStyles.linkText.copyWith(fontSize: 14),
                       ),
                       const SizedBox(height: 4),
-                      const ScoreIndicator(score: '70'),
+                  const ScoreIndicator(),
                     ],
                   ),
                 ],

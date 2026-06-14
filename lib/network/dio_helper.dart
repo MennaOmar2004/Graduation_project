@@ -92,7 +92,7 @@ class DioHelper {
           final isAvatarUploadRequest =
           options.path.contains("/avatar");
 
-          if (isMyChildrenRequest || isCreateChildRequest ||  isUpdateChildRequest || isAvatarUploadRequest) {
+          if (isMyChildrenRequest || isCreateChildRequest || isUpdateChildRequest || isAvatarUploadRequest) {
             token = parentToken;
             print("🔑 Using PARENT Token");
           } else {
@@ -104,7 +104,7 @@ class DioHelper {
           print("📤 REQUEST: ${options.path}");
           print("🔐 TOKEN SENT: $token");
 
-          if (token != null) {
+          if (token != null && !options.headers.containsKey("Authorization")) {
             options.headers["Authorization"] = "Bearer $token";
           }
 
@@ -112,7 +112,10 @@ class DioHelper {
         },
         onError: (DioException e, handler) {
           print("❌ STATUS: ${e.response?.statusCode}");
+          print("❌ PATH: ${e.requestOptions.path}");
+          print("❌ TOKEN: ${e.requestOptions.headers['Authorization']}");
           print("❌ RESPONSE DATA: ${e.response?.data}");
+          print("❌ RESPONSE HEADERS: ${e.response?.headers}");
 
           return handler.next(e);
         },

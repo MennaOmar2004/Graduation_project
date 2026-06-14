@@ -87,7 +87,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const ScoreIndicator(score: '70'),
+                      const ScoreIndicator(),
                     ],
                   ),
                 ],

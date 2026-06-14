@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../game/maze_game/maze_game.dart';
 
 class MazeGameScreen extends StatefulWidget {
@@ -12,11 +15,32 @@ class MazeGameScreen extends StatefulWidget {
 
 class _MazeGameScreenState extends State<MazeGameScreen> {
   late MazeGame _game;
+  late GameScoresCubit _gameScoresCubit;
 
   @override
   void initState() {
     super.initState();
-    _game = MazeGame();
+    _gameScoresCubit = context.read<GameScoresCubit>();
+    _game = MazeGame()
+      ..onGameFinished = (score) {
+        // Score submitted via callback when game ends normally
+        _gameScoresCubit.submitGameScore(
+          gameId: GameIds.maze,
+          score: score,
+        );
+      };
+  }
+
+  @override
+  void dispose() {
+    // Submit current score only if > 0 (guard against submitting 0 on back)
+    if (_game.score > 0) {
+      _gameScoresCubit.submitGameScore(
+        gameId: GameIds.maze,
+        score: _game.score,
+      );
+    }
+    super.dispose();
   }
 
   @override

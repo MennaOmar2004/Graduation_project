@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../game/number_circus/mini_games/balloon_pop_game.dart';
 import '../utils/responsive_helper.dart';
 
@@ -15,15 +18,35 @@ class NumberCircusScreen extends StatefulWidget {
 class _NumberCircusScreenState extends State<NumberCircusScreen> {
   late BalloonPopGame _game;
   int _score = 0;
+  late GameScoresCubit _gameScoresCubit;
 
   @override
   void initState() {
     super.initState();
+    _gameScoresCubit = context.read<GameScoresCubit>();
     _game =
         BalloonPopGame()
           ..onScoreChanged = (score) {
             setState(() => _score = score);
+          }
+          ..onLevelComplete = () {
+            _gameScoresCubit.submitGameScore(
+                  gameId: GameIds.numberCircus,
+                  score: _score,
+                );
           };
+  }
+
+  @override
+  void dispose() {
+    // Only submit if score > 0 to avoid overwriting a real game score with 0
+    if (_score > 0) {
+      _gameScoresCubit.submitGameScore(
+        gameId: GameIds.numberCircus,
+        score: _score,
+      );
+    }
+    super.dispose();
   }
 
   @override

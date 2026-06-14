@@ -131,10 +131,13 @@ class MazeGame extends FlameGame with TapDetector, HasCollisionDetection {
     }
   }
 
+  void Function(int score)? onGameFinished;
+
   void _gameOver() {
     isGameActive = false;
     currentMessage = 'انتهت اللعبة! 😢\nالنتيجة: $score';
     showMessage = true;
+    onGameFinished?.call(score);
 
     Future.delayed(const Duration(milliseconds: 3000), () {
       restartGame();

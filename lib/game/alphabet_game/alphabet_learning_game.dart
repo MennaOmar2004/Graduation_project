@@ -123,6 +123,8 @@ class AlphabetLearningGame extends FlameGame {
     // TODO: Play success sound
   }
 
+  void Function(int score)? onGameFinished;
+
   void _onWrongAnswer() {
     lives--;
 
@@ -130,6 +132,7 @@ class AlphabetLearningGame extends FlameGame {
       // Game over - but gentle for kids
       encouragementMessage = 'حاول مرة أخرى! 💪';
       showEncouragement = true;
+      onGameFinished?.call(score);
       lives = 3; // Reset lives
     } else {
       encouragementMessage = 'حاول مرة أخرى 😊';

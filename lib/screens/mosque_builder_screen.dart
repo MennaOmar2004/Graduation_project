@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../models/building_element.dart';
 import '../widgets/element_palette.dart';
 import '../widgets/building_canvas.dart';
@@ -114,6 +117,9 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
   }
 
   void _showCompletionDialog() {
+    // Submit game score
+    context.read<GameScoresCubit>().submitGameScore(gameId: GameIds.mosqueBuilder, score: 30);
+
     showDialog(
       context: context,
       builder:
@@ -142,7 +148,7 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
                 ),
                 SizedBox(height: ResponsiveHelper.size(context, 8)),
                 Text(
-                  'لقد بنيت مسجداً جميلاً!',
+                  'لقد بنيت مسجداً جميلاً وحصلت على ٣٠ نقطة!',
                   style: GoogleFonts.cairo(
                     fontSize: ResponsiveHelper.fontSize(context, 16),
                   ),

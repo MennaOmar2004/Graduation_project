@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/screens/options_screen.dart';
+
+
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import 'package:wanisi_app/widgets/back_ground_widget.dart';
@@ -107,7 +108,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                                       ),
                                     ),
                                     const SizedBox(height: 4),
-                                    const ScoreIndicator(score: '70'),
+                                    const ScoreIndicator(),
                                   ],
                                 ),
                               ],

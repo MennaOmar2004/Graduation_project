@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../models/game_item.dart';
 import 'alphabet_game_screen.dart';
 import 'pattern_selector_screen.dart';
@@ -41,6 +44,10 @@ class GamesScreen extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final taskPoints = context.watch<TasksCubit>().points;
+    final gameScore = context.watch<GameScoresCubit>().totalGameScore;
+    final displayScore = (taskPoints + gameScore).toString();
+
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
@@ -149,7 +156,7 @@ class GamesScreen extends StatelessWidget {
                 const Icon(Icons.stars_rounded, color: Colors.white, size: 24),
                 const SizedBox(width: 6),
                 Text(
-                  '70',
+                  displayScore,
                   style: GoogleFonts.cairo(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

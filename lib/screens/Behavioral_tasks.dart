@@ -112,7 +112,7 @@ class _TasksScreenState extends State<BehavioralTasks> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const ScoreIndicator(score: '70'),
+                        const ScoreIndicator(),
                       ],
                     ),
                   ],

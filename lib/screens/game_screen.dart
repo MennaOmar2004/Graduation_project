@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../game/star_catcher_game.dart';
 import '../utils/responsive_helper.dart';
 
@@ -13,11 +16,25 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   late StarCatcherGame _game;
+  late GameScoresCubit _gameScoresCubit;
 
   @override
   void initState() {
     super.initState();
+    _gameScoresCubit = context.read<GameScoresCubit>();
     _game = StarCatcherGame();
+  }
+
+  @override
+  void dispose() {
+    // Only submit if score > 0 to avoid overwriting a real game score with 0
+    if (_game.score > 0) {
+      _gameScoresCubit.submitGameScore(
+        gameId: GameIds.starCatcher,
+        score: _game.score,
+      );
+    }
+    super.dispose();
   }
 
   @override
@@ -313,7 +330,7 @@ class _GameHUDState extends State<GameHUD> {
   }
 }
 
-class GameOverOverlay extends StatelessWidget {
+class GameOverOverlay extends StatefulWidget {
   final StarCatcherGame game;
   final VoidCallback onRestart;
   final VoidCallback onExit;
@@ -324,6 +341,21 @@ class GameOverOverlay extends StatelessWidget {
     required this.onRestart,
     required this.onExit,
   });
+
+  @override
+  State<GameOverOverlay> createState() => _GameOverOverlayState();
+}
+
+class _GameOverOverlayState extends State<GameOverOverlay> {
+  @override
+  void initState() {
+    super.initState();
+    // Submit score to database
+    context.read<GameScoresCubit>().submitGameScore(
+      gameId: GameIds.starCatcher,
+      score: widget.game.score,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -368,7 +400,7 @@ class GameOverOverlay extends StatelessWidget {
               SizedBox(height: ResponsiveHelper.size(context, 16)),
               FittedBox(
                 child: Text(
-                  'النقاط: ${game.score}',
+                  'النقاط: ${widget.game.score}',
                   style: GoogleFonts.cairo(
                     fontSize: ResponsiveHelper.fontSize(context, 24),
                     fontWeight: FontWeight.bold,
@@ -381,7 +413,7 @@ class GameOverOverlay extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: onExit,
+                      onPressed: widget.onExit,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey,
                         padding: ResponsiveHelper.padding(
@@ -409,7 +441,7 @@ class GameOverOverlay extends StatelessWidget {
                   SizedBox(width: ResponsiveHelper.size(context, 12)),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: onRestart,
+                      onPressed: widget.onRestart,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF4081),
                         padding: ResponsiveHelper.padding(

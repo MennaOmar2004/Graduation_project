@@ -11,7 +11,8 @@ class ApiEndpoints {
   static const String children = '/children';
   static String childById(int id) => '/children/$id';
   static String childWeeklyReport(int id) => '/children/$id/weekly-report';
-  static String childActivitiesSummary(int id) => '/children/$id/activities-summary';
+  static String childActivitiesSummary(int id) =>
+      '/children/$id/activities-summary';
   static String childTopScores(int id) => '/children/$id/top-scores';
   static String childAvatar(int id) => '/children/$id/avatar';
 
@@ -36,13 +37,16 @@ class ApiEndpoints {
   // Stories
   static const String stories = '/stories';
   static String storyById(int id) => '/stories/$id';
-  static String storiesByCategory(String category) => '/stories/category/$category';
+  static String storiesByCategory(String category) =>
+      '/stories/category/$category';
 
   // Story Progress
   static const String storyProgress = '/story-progress';
   static String storyProgressById(int id) => '/story-progress/$id';
-  static String storyProgressByStory(int storyId) => '/story-progress/story/$storyId';
-  static String storyProgressByChild(int childId) => '/story-progress/child/$childId';
+  static String storyProgressByStory(int storyId) =>
+      '/story-progress/story/$storyId';
+  static String storyProgressByChild(int childId) =>
+      '/story-progress/child/$childId';
 
   // Task Logs
   static const String taskLogs = '/task-logs';
@@ -60,13 +64,17 @@ class ApiEndpoints {
   static const String videos = '/videos';
   static String videoById(int id) => '/videos/$id';
   static const String topWatchedVideos = '/videos/top-watched';
-  static String videosByCategory(String category) => '/videos/category/$category';
+  static String videosByCategory(String category) =>
+      '/videos/category/$category';
   static String videoActivities(int id) => '/videos/$id/activities';
 
   // Video Activities
   static const String videoActivitiesProgress = '/video-activities';
   static String videoActivityById(int id) => '/video-activities/$id';
-  static String updateVideoProgress(int id) => '/video-activities/$id/update-progress';
-  static String videoActivitiesByChild(int childId) => '/video-activities/child/$childId';
-  static String videoProgress(int videoId) => '/video-activities/video/$videoId/progress';
+  static String updateVideoProgress(int id) =>
+      '/video-activities/$id/update-progress';
+  static String videoActivitiesByChild(int childId) =>
+      '/video-activities/child/$childId';
+  static String videoProgress(int videoId) =>
+      '/video-activities/video/$videoId/progress';
 }

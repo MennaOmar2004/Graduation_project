@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
 import 'package:wanisi_app/cubit_of_child/child_state.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
+import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
 import 'package:wanisi_app/screens/options_screen.dart';
 import '../model_of_child/child.dart';
 
@@ -24,6 +26,9 @@ class _SelectChildScreenState extends State<SelectChildScreen> {
     return BlocListener<ChildCubit, ChildState>(
       listener: (context, state) {
         if (state is ChildSelectedSuccess) {
+          // Reload scores and tasks for the newly selected child
+          context.read<GameScoresCubit>().fetchGameScores();
+          context.read<TasksCubit>().init();
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => const OptionsScreen()),
@@ -187,6 +192,9 @@ void showStyledPinDialog(BuildContext context, Child child) {
           return BlocListener<ChildCubit, ChildState>(
             listener: (context, state) {
               if (state is ChildSelectedSuccess) {
+                // Reload scores and tasks for the newly selected child
+                context.read<GameScoresCubit>().fetchGameScores();
+                context.read<TasksCubit>().init();
                 Navigator.pop(dialogContext);
                 Navigator.pushReplacement(
                   context,

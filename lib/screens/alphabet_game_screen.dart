@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../game/alphabet_game/alphabet_learning_game.dart';
 import '../utils/responsive_helper.dart';
 
@@ -13,11 +16,32 @@ class AlphabetGameScreen extends StatefulWidget {
 
 class _AlphabetGameScreenState extends State<AlphabetGameScreen> {
   late AlphabetLearningGame _game;
+  late GameScoresCubit _gameScoresCubit;
 
   @override
   void initState() {
     super.initState();
-    _game = AlphabetLearningGame();
+    _gameScoresCubit = context.read<GameScoresCubit>();
+    _game =
+        AlphabetLearningGame()
+          ..onGameFinished = (score) {
+            _gameScoresCubit.submitGameScore(
+              gameId: GameIds.alphabet,
+              score: score,
+            );
+          };
+  }
+
+  @override
+  void dispose() {
+    // Only submit if score > 0 to avoid overwriting a real game score with 0
+    if (_game.score > 0) {
+      _gameScoresCubit.submitGameScore(
+        gameId: GameIds.alphabet,
+        score: _game.score,
+      );
+    }
+    super.dispose();
   }
 
   @override

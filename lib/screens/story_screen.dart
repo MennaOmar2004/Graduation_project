@@ -283,7 +283,7 @@ class _StoryScreenState extends State<StoryScreen> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            const ScoreIndicator(score: '70'),
+                            const ScoreIndicator(),
                           ],
                         ),
                       ],

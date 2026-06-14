@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../models/coloring_page.dart';
 import '../data/color_palette.dart';
 import '../data/coloring_templates.dart';
@@ -165,6 +168,9 @@ class _ColoringGameScreenState extends State<ColoringGameScreen> {
   }
 
   void _showCompletionDialog() {
+    // Submit game score (gameId = 5 for Coloring, e.g. 20 points awarded)
+    context.read<GameScoresCubit>().submitGameScore(gameId: GameIds.coloring, score: 20);
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -192,7 +198,7 @@ class _ColoringGameScreenState extends State<ColoringGameScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'لقد أكملت التلوين بنجاح!',
+                  'لقد أكملت التلوين بنجاح وحصلت على ٢٠ نقطة!',
                   style: GoogleFonts.cairo(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),

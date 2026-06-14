@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/blocs/avatar_selection/avatar_selection_cubit.dart';
 import 'package:wanisi_app/cubit_of_auth/auth_cubit.dart';
 import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
 import 'package:wanisi_app/network/dio_helper.dart';
 import 'package:wanisi_app/screens/splash_screen.dart';
 
-import 'package:wanisi_app/screens/story_screen.dart';
+
+
 import 'package:wanisi_app/screens/widgets/dissmissable_keyboard_ontap.dart';
 
 void main() {
@@ -15,12 +17,17 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<AvatarSelectionCubit>(create: (context) => AvatarSelectionCubit()),
+        BlocProvider<AvatarSelectionCubit>(
+          create: (context) => AvatarSelectionCubit(),
+        ),
         BlocProvider<TasksCubit>(create: (context) => TasksCubit()),
-        BlocProvider<AuthCubit>(create: (context) => AuthCubit(),),
-        BlocProvider<ChildCubit>(create: (context) => ChildCubit(),)
+        BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+        BlocProvider<ChildCubit>(create: (context) => ChildCubit()),
+        BlocProvider<GameScoresCubit>(
+          create: (context) => GameScoresCubit()..fetchGameScores(),
+        ),
       ],
-      child:MyApp() ,
+      child: MyApp(),
     ),
   );
   /* runApp(

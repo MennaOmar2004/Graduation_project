@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flame/game.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/configs/game_ids.dart';
+import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import '../game/moon_phases/moon_phases_game.dart';
 import '../game/moon_phases/data/moon_data.dart';
 import '../utils/responsive_helper.dart';
@@ -18,10 +21,24 @@ class _MoonPhasesScreenState extends State<MoonPhasesScreen> {
   int _score = 0;
   MoonPhase? _currentPhase;
   bool? _lastAnswerCorrect;
+  late GameScoresCubit _gameScoresCubit;
+
+  @override
+  void dispose() {
+    // Only submit if score > 0 to avoid overwriting a real score with 0 on back
+    if (_score > 0) {
+      _gameScoresCubit.submitGameScore(
+        gameId: GameIds.moonPhases,
+        score: _score,
+      );
+    }
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    _gameScoresCubit = context.read<GameScoresCubit>();
     _game =
         MoonPhasesGame()
           ..onScoreChanged = (score) {
