@@ -92,7 +92,7 @@ class _TasksScreenState extends State<ReligiousTasks> {
                     const Spacer(),
                     // Title
                     Text(
-                      'مهام وانيسي',
+                      'مهام ونيسي',
                       style: AppTextStyles.linkText.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -263,6 +263,20 @@ class _TasksScreenState extends State<ReligiousTasks> {
                               MaterialPageRoute(
                                 builder: (_) =>
                                 const MainLayout(selectedIndex: 1,),
+                              ),
+                                  (route) => false,
+                            );
+                          },
+                        ),
+                        _NavIcon(
+                          imagePath: 'assets/images/quran.png',
+                          isSelected: _selectedIndex == 2,
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                const MainLayout(selectedIndex: 2,),
                               ),
                                   (route) => false,
                             );

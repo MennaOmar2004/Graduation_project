@@ -4,6 +4,7 @@ import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
 import 'package:wanisi_app/cubit_of_child/child_state.dart';
 import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
+import 'package:wanisi_app/screens/main_layout_screen.dart';
 import 'package:wanisi_app/screens/options_screen.dart';
 import '../model_of_child/child.dart';
 
@@ -198,7 +199,7 @@ void showStyledPinDialog(BuildContext context, Child child) {
                 Navigator.pop(dialogContext);
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const OptionsScreen()),
+                  MaterialPageRoute(builder: (_) => MainLayout()),
                 );
               }
 

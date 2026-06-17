@@ -154,7 +154,7 @@ class _AvatarSelectionView extends StatelessWidget {
                                   await prefs.remove("temp_child_age");
 
                                   if (context.mounted) {
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OptionsScreen()));
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainLayout(selectedIndex: 0,)));
                                   }
                                 }
                               }
