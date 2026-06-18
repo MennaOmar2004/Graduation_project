@@ -8,12 +8,8 @@ import 'package:wanisi_app/screens/stories/all_videos_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import '../cubit_of_child/child_cubit.dart';
 import '../cubit_of_child/child_state.dart';
-import '../model_of_child/child.dart';
 import 'achievements_screen.dart';
 import 'games_screen.dart';
-
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
 
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({super.key});
@@ -95,25 +91,44 @@ class _OptionsScreenState extends State<OptionsScreen> {
             ),
             BlocBuilder<ChildCubit, ChildState>(
               builder: (context, state) {
-                print("OPTIONS STATE = $state");
-                if (state is ChildSelectedSuccess) {
-                  return Image.network(
-                    state.data.avatarUrl,
-                    height: 100,
-                    width: 100,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        "assets/images/image_profile.png",
-                        height: 100,
-                        width: 100,
-                      );
-                    },
-                  );
-                }
-                return Image.asset(
-                  "assets/images/image_profile.png",
-                  height: 100,
-                  width: 100,
+                final String? url = state is ChildSelectedSuccess
+                    ? state.data.avatarUrl
+                    : null;
+                return Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.pink2, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.pink2.withValues(alpha: 0.35),
+                        blurRadius: 12,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: url != null
+                        ? Image.network(
+                            url,
+                            width: 110,
+                            height: 110,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Image.asset(
+                              'assets/images/image_profile.png',
+                              width: 110,
+                              height: 110,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/image_profile.png',
+                            width: 110,
+                            height: 110,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 );
               },
             ),

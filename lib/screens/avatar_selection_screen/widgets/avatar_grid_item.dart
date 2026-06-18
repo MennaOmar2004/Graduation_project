@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../colors.dart';
 
 /// Individual avatar item in the grid
 class AvatarGridItem extends StatelessWidget {
@@ -20,7 +21,7 @@ class AvatarGridItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFFFA1C4) : Colors.transparent,
+          color: isSelected ? AppColors.lightPink : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
 

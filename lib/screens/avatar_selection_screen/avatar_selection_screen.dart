@@ -11,7 +11,7 @@ import '../../cubit_of_child/child_cubit.dart';
 import '../../network/cloudinary_helper.dart';
 import '../../static/app_assets.dart';
 import '../../colors.dart';
-import '../take_photo_screen.dart';
+import '../take_photo_screen/take_photo_screen.dart';
 import 'widgets/avatar_grid_item.dart';
 import 'widgets/layered_button.dart';
 import '../options_screen.dart';

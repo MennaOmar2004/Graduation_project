@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
 import '../cubit_of_child/child_cubit.dart';
 import '../cubit_of_child/child_state.dart';
@@ -29,25 +27,31 @@ class AvatarCircle extends StatelessWidget {
         ),
         child: BlocBuilder<ChildCubit, ChildState>(
           builder: (context, state) {
-            print("OPTIONS STATE = $state");
             if (state is ChildSelectedSuccess) {
-              return Image.network(
-                state.data.avatarUrl,
-                height: 100,
-                width: 100,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    "assets/images/image_profile.png",
-                    height: 100,
-                    width: 100,
-                  );
-                },
+              return ClipOval(
+                child: Image.network(
+                  state.data.avatarUrl,
+                  width: size,
+                  height: size,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => ClipOval(
+                    child: Image.asset(
+                      'assets/images/image_profile.png',
+                      width: size,
+                      height: size,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               );
             }
-            return Image.asset(
-              "assets/images/image_profile.png",
-              height: 100,
-              width: 100,
+            return ClipOval(
+              child: Image.asset(
+                'assets/images/image_profile.png',
+                width: size,
+                height: size,
+                fit: BoxFit.cover,
+              ),
             );
           },
         ),
