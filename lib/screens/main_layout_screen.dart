@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/screens/achievements_screen.dart';
+import 'package:wanisi_app/screens/el_quran_screen.dart';
 import 'package:wanisi_app/screens/options_screen.dart';
 
 class MainLayout extends StatefulWidget {
@@ -16,6 +17,7 @@ class _MainLayoutState extends State<MainLayout> {
   final List<Widget> _screens = [
     OptionsScreen(),
     AchievementsScreen(),
+    ElQuranScreen()
   ];
 
   @override
@@ -66,6 +68,13 @@ class _MainLayoutState extends State<MainLayout> {
                         isSelected: selectedIndex == 1,
                         onTap: () {
                           setState(() => selectedIndex = 1);
+                        },
+                      ),
+                      _NavIcon(
+                        imagePath: 'assets/images/quran.png',
+                        isSelected: selectedIndex == 2,
+                        onTap: () {
+                          setState(() => selectedIndex = 2);
                         },
                       ),
                     ],

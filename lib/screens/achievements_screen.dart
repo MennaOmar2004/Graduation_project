@@ -72,7 +72,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                         children: [
                           const SizedBox(height: 16),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Row(
                               children: [
                                 // IconButton(
