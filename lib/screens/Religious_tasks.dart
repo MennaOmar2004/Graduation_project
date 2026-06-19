@@ -8,7 +8,6 @@ import '../cubit_of_tasks/tasks_cubit.dart';
 import '../widgets/avatar_circle.dart';
 import '../widgets/personal_task_widget.dart';
 import '../widgets/tasks_widget.dart';
-import 'main_layout_screen.dart';
 
 class ReligiousTasks extends StatefulWidget {
   const ReligiousTasks({super.key});
@@ -56,7 +55,6 @@ class _TasksScreenState extends State<ReligiousTasks> {
   //   },
   // ];
   // late List<bool> checkedList;
-  final int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -69,7 +67,6 @@ class _TasksScreenState extends State<ReligiousTasks> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          bottom: false,
           child: Column(
             children: [
               const SizedBox(height: 16),
@@ -129,9 +126,10 @@ class _TasksScreenState extends State<ReligiousTasks> {
                   final personalTasks =
                   cubit.getPersonalTasks("مهام دينية");
                   return Expanded(
-                    child: Column(
-                      children: [
-                        Padding(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                           child: Align(
                             alignment: Alignment.centerRight,
@@ -169,149 +167,70 @@ class _TasksScreenState extends State<ReligiousTasks> {
 
                         const SizedBox(height: 10),
 
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: PersonalTaskWidget(
-                            category: "مهام دينية",
-                          ),
-                        ),
-                        SizedBox(height: 35),
-                        IntrinsicWidth(
-                          child: Container(
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFFEEB),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: const Color(0xFFFFF133).withOpacity(0.7),
-                                width: 1.2,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PersonalTaskWidget(
+                                category: "مهام دينية",
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFFFFF133).withOpacity(0.2),
-                                  offset: const Offset(0, 7),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 10,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
-                                children: [
-                                  Image.asset(
-                                    "assets/images/Glowing Star.png",
-                                    width: 50,
-                                    height: 50,
+                              IntrinsicWidth(
+                                child: Container(
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFFEEB),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: const Color(0xFFFFF133).withOpacity(0.7),
+                                      width: 1.2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFFFFF133).withOpacity(0.2),
+                                        offset: const Offset(0, 7),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    "+${state.points}",
-                                    style: AppTextStyles.buttonText.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xFF000000),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 10,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/Glowing Star.png",
+                                          width: 50,
+                                          height: 50,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          "+${state.points}",
+                                          style: AppTextStyles.buttonText.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xFF000000),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
+                        const SizedBox(height: 20),
                       ],
                     ),
-                  );
+                  ),
+                );
                 }
                 return Expanded(child: Center(child: CircularProgressIndicator()));
               }),
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Image.asset(
-                    'assets/images/bottom.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _NavIcon(
-                          imagePath: 'assets/images/Home.png',
-                          isSelected: _selectedIndex == 0,
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                const MainLayout(selectedIndex: 0,),
-                              ),
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                        _NavIcon(
-                          imagePath: 'assets/images/Trophy.png',
-                          isSelected: _selectedIndex == 1,
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                const MainLayout(selectedIndex: 1,),
-                              ),
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                        _NavIcon(
-                          imagePath: 'assets/images/quran.png',
-                          isSelected: _selectedIndex == 2,
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                const MainLayout(selectedIndex: 2,),
-                              ),
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ],
           )
-      ),
-    );
-  }
-}
-class _NavIcon extends StatelessWidget {
-  final String imagePath;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _NavIcon({
-    required this.imagePath,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedScale(
-        scale: isSelected ? 1.3 : 1.0,
-        duration: const Duration(milliseconds: 200),
-        child: Image.asset(imagePath, width: 70, height: 70),
       ),
     );
   }

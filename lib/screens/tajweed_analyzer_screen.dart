@@ -178,7 +178,6 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
             body: Column(
               children: [
                 _TajweedHeader(
-                  onBack: () => Navigator.of(context).pop(),
                   onAvatar:
                       () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -251,10 +250,9 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _TajweedHeader extends StatelessWidget {
-  final VoidCallback onBack;
   final VoidCallback onAvatar;
 
-  const _TajweedHeader({required this.onBack, required this.onAvatar});
+  const _TajweedHeader({required this.onAvatar});
 
   @override
   Widget build(BuildContext context) {
@@ -283,26 +281,6 @@ class _TajweedHeader extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8, 12, 16, 22),
           child: Row(
             children: [
-              // Back
-              if (Navigator.of(context).canPop()) ...[
-                Material(
-                  color: Colors.white.withValues(alpha: 0.18),
-                  borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: onBack,
-                    child: const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-              ],
               AvatarCircle(onTap: onAvatar),
               const Spacer(),
               // Title with icon

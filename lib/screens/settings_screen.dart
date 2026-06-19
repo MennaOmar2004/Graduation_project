@@ -16,7 +16,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool quietMode = false;
   final List<Map<String, dynamic>> listItems = [
     {
       "image": "assets/images/setting.png",
@@ -33,25 +32,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       "borderColor": Color(0xFFFFF133),
     },
     {
-      "image": "assets/images/Task.png",
-      "boxText": "تعديل التفضيلات",
-      "boxColor": Color(0xFFFFE8F1),
-      "boxShadowColor": Color(0xFFFCBAD3),
-      "borderColor": Color(0xFFFCBAD3),
-    },
-    {
       "image": "assets/images/time.png",
       "boxText": "ضبط وقت استخدام التطبيق",
       "boxColor": Color(0xFFF3FFE3),
       "boxShadowColor": Color(0xFF72C076),
       "borderColor": Color(0xFF72C076),
-    },
-    {
-      "image": "assets/images/time.png",
-      "boxText": "وضع الهدوء وقت النوم",
-      "boxColor": Color(0xFFF2DDF6),
-      "boxShadowColor": Color(0xFFD66BEB),
-      "borderColor": Color(0xFFD66BEB),
     },
   ];
 
@@ -135,7 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           width:double.infinity ,
                           height: 55,
                           decoration: BoxDecoration(
-                            // *** هنا يتم تمرير لون الخلفية ***
+                            // *** هنا يتم تمرير لون خلفية ***
                             color: item["boxColor"], // استخدام المفتاح الموحد الجديد
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
@@ -168,20 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  if (index != listItems.length - 1)
-                                    Image.asset(item["image"], width: 50, height: 50),
-
-                                  // لو آخر عنصر → Switch
-                                  if (index == listItems.length - 1)
-                                    Switch(
-                                      value: quietMode,
-                                      activeTrackColor: Colors.blue.shade700,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          quietMode = value;
-                                        });
-                                      },
-                                    ),
+                                  Image.asset(item["image"], width: 50, height: 50),
                                   Expanded(
                                     child: Text(
                                       item["boxText"],

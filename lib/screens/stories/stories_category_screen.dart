@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wanisi_app/colors.dart';
+import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
+import 'package:wanisi_app/cubit_of_child/child_state.dart';
+import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/stories/stories_list_screen.dart';
 import 'package:wanisi_app/widgets/back_ground_widget.dart';
 
@@ -67,59 +71,64 @@ class StoriesCategoryScreen extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back_ios, color: Colors.grey[400]),
+            icon: const Icon(Icons.arrow_back_ios_new),
           ),
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.blue, width: 2),
-            ),
-            padding: const EdgeInsets.all(2),
-            child: const CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage('assets/images/person1.png'),
-            ),
-          ),
-          const Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                'نقاطك',
-                style: GoogleFonts.cairo(
-                  fontSize: 12,
-                  color: AppColors.text,
-                  fontWeight: FontWeight.bold,
+          const SizedBox(width: 8),
+          // Dynamic Avatar — navigates to Settings on tap
+          BlocBuilder<ChildCubit, ChildState>(
+            builder: (context, state) {
+              final String? url = state is ChildSelectedSuccess
+                  ? state.data.avatarUrl
+                  : null;
+              return GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const SettingsScreen(),
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.pink, width: 2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset('assets/images/star.png', width: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      '70',
-                      style: GoogleFonts.fredoka(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.text,
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.pink2, width: 2.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.pink2.withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        spreadRadius: 1,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: ClipOval(
+                    child: url != null
+                        ? Image.network(
+                            url,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Image.asset(
+                              'assets/images/image_profile.png',
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.asset(
+                            'assets/images/image_profile.png',
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ],
       ),

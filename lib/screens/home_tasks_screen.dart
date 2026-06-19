@@ -8,7 +8,6 @@ import '../colors.dart';
 import '../cubit_of_tasks/tasks_cubit.dart';
 import '../widgets/avatar_circle.dart';
 import '../widgets/personal_task_widget.dart';
-import 'main_layout_screen.dart';
 
 class HomeTasksScreen extends StatefulWidget {
   const HomeTasksScreen({super.key});
@@ -56,7 +55,6 @@ class _TasksScreenState extends State<HomeTasksScreen> {
   //   },
   // ];
   // late List<bool> checkedList;
-  final int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -69,7 +67,6 @@ class _TasksScreenState extends State<HomeTasksScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        bottom: false,
           child: Column(
             children: [
               const SizedBox(height: 16),
@@ -130,9 +127,10 @@ class _TasksScreenState extends State<HomeTasksScreen> {
                   cubit.getPersonalTasks("مهام منزلية");
 
                   return Expanded(
-                    child: Column(
-                      children: [
-                        Padding(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                           child: Align(
                             alignment: Alignment.centerRight,
@@ -170,183 +168,70 @@ class _TasksScreenState extends State<HomeTasksScreen> {
 
                         const SizedBox(height: 10),
 
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: PersonalTaskWidget(
-                            category: "مهام منزلية",
-                          ),
-                        ),
-                        SizedBox(height: 35),
-                        IntrinsicWidth(
-                          child: Container(
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFFEEB),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: const Color(0xFFFFF133).withOpacity(0.7),
-                                width: 1.2,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PersonalTaskWidget(
+                                category: "مهام منزلية",
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFFFFF133).withOpacity(0.2),
-                                  offset: const Offset(0, 7),
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 10,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
-                                children: [
-                                  Image.asset(
-                                    "assets/images/Glowing Star.png",
-                                    width: 50,
-                                    height: 50,
+                              IntrinsicWidth(
+                                child: Container(
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFFEEB),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: const Color(0xFFFFF133).withOpacity(0.7),
+                                      width: 1.2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFFFFF133).withOpacity(0.2),
+                                        offset: const Offset(0, 7),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    "+${state.points}",
-                                    style: AppTextStyles.buttonText.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xFF000000),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 10,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min, // ⭐ مهم جدًا
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/Glowing Star.png",
+                                          width: 50,
+                                          height: 50,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          "+${state.points}",
+                                          style: AppTextStyles.buttonText.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xFF000000),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
+                        const SizedBox(height: 20),
                       ],
                     ),
-                  );
+                  ),
+                );
                 }
                 return Expanded(child: Center(child: CircularProgressIndicator()));
               }),
-              Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Image.asset(
-                    'assets/images/bottom.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _NavIcon(
-                          imagePath: 'assets/images/Home.png',
-                          isSelected: _selectedIndex == 0,
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                const MainLayout(selectedIndex: 0,),
-                              ),
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                        _NavIcon(
-                          imagePath: 'assets/images/Trophy.png',
-                          isSelected: _selectedIndex == 1,
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                const MainLayout(selectedIndex: 1,),
-                              ),
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                        _NavIcon(
-                          imagePath: 'assets/images/quran.png',
-                          isSelected: _selectedIndex == 2,
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                const MainLayout(selectedIndex: 2,),
-                              ),
-                                  (route) => false,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ],
           )
-      ),
-    );
-  }
-}
-
-
-class _NavIcon extends StatelessWidget {
-  final String imagePath;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _NavIcon({
-    required this.imagePath,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        // إضافة padding عشان منطقة الضغط تبقى أكبر وأسهل
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedScale(
-              scale: isSelected ? 1.2 : 0.9, // تصغير بسيط لغير المختار
-              duration: const Duration(milliseconds: 200),
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 200),
-                opacity: isSelected ? 1.0 : 0.6, // بهتان بسيط لغير المختار بيدي شكل شيك
-                child: Image.asset(
-                  imagePath,
-                  width: 60, // تصغير العرض لـ 60 عشان الـ 3 أيقونات يرتاحوا بجانب بعض
-                  height: 60,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            const SizedBox(height: 6),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 3,
-              width: isSelected ? 25 : 0,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(2),
-                // إضافة توهج بسيط للخط بيدي لمسة جمالية
-                boxShadow: isSelected ? [
-                  BoxShadow(color: Colors.blue.withOpacity(0.5), blurRadius: 4)
-                ] : [],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

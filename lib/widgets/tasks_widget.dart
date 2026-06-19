@@ -41,82 +41,81 @@ class TasksWidget extends StatelessWidget {
     return BlocBuilder<TasksCubit, TasksState>(
       builder: (context, state) {
         final cubit = context.read<TasksCubit>();
-        return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ListView.separated(
-              separatorBuilder: (context, index) =>
-              const SizedBox(height: 20),
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (context, index) =>
+            const SizedBox(height: 20),
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              final item = listItems[index % listItems.length];
+              final task = tasks[index];
 
-                final item = listItems[index % listItems.length];
-                final task = tasks[index];
+              bool isDone = cubit.logs.any(
+                    (log) =>
+                log.taskId == task.id &&
+                    log.status == "Completed",
+              );
 
-                bool isDone = cubit.logs.any(
-                      (log) =>
-                  log.taskId == task.id &&
-                      log.status == "Completed",
-                );
-
-                return Container(
-                  width: double.infinity,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: item["boxColor"],
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: item["borderColor"].withValues(alpha: 0.7),
-                      width: 1.2,
+              return Container(
+                width: double.infinity,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: item["boxColor"],
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: item["borderColor"].withValues(alpha: 0.7),
+                    width: 1.2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: item["boxShadowColor"].withValues(alpha: 0.2),
+                      offset: const Offset(0, 7),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: item["boxShadowColor"].withValues(alpha: 0.2),
-                        offset: const Offset(0, 7),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .read<TasksCubit>()
+                              .toggleTask(task.id!);
+                        },
+                        child: Image.asset(
+                          isDone
+                              ? "assets/images/Checked Checkbox.png"
+                              : "assets/images/empty_box.png",
+                          width: 40,
+                          height: 40,
+                        ),
                       ),
+
+                      Expanded(
+                        child: Text(
+                          task.name!,
+                          textAlign: TextAlign.right,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.buttonText.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF9D9D9D),
+                          ),
+                        ),
+                      ),
+
                     ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        GestureDetector(
-                          onTap: () {
-                            context
-                                .read<TasksCubit>()
-                                .toggleTask(task.id!);
-                          },
-                          child: Image.asset(
-                            isDone
-                                ? "assets/images/Checked Checkbox.png"
-                                : "assets/images/empty_box.png",
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-
-                        Expanded(
-                          child: Text(
-                            task.name!,
-                            textAlign: TextAlign.right,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.buttonText.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF9D9D9D),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         );
       },
