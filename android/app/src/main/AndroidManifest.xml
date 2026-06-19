@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <!-- http calls to HuggingFace Gradio -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- record package: microphone access -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:label="wanisi_app"
         android:name="${applicationName}"
@@ -47,6 +49,9 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 </manifest>
