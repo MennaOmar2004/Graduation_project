@@ -46,7 +46,7 @@ class GamesScreen extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     final taskPoints = context.watch<TasksCubit>().points;
     final gameScore = context.watch<GameScoresCubit>().totalGameScore;
-    final displayScore = (taskPoints + gameScore).toString();
+    final displayScore = (gameScore).toString();
 
     return Container(
       margin: const EdgeInsets.all(16),
