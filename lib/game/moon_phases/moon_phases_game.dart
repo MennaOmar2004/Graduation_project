@@ -61,7 +61,7 @@ class MoonPhasesGame extends FlameGame with TapDetector {
     final isCorrect = (selectedDay - correctDay).abs() <= 2; // Allow ±2 days
 
     if (isCorrect) {
-      score += 10;
+      score += 1;
       onScoreChanged?.call(score);
       onAnswerSubmitted?.call(true);
 

@@ -123,11 +123,9 @@ class StarComponent extends SpriteComponent
   int getPoints() {
     switch (type) {
       case StarType.regular:
-        return 10;
       case StarType.golden:
-        return 25;
       case StarType.rainbow:
-        return 50;
+        return 1;
     }
   }
 }

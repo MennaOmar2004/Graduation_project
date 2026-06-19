@@ -55,7 +55,7 @@ class PrayerGardenGame extends FlameGame with TapDetector {
     final isCorrect = (selectedHour - correctHour).abs() <= 1; // Allow ±1 hour
 
     if (isCorrect) {
-      score += 10;
+      score += 1;
       onScoreChanged?.call(score);
       onAnswerSubmitted?.call(true);
 

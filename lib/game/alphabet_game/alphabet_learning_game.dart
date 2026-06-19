@@ -88,7 +88,7 @@ class AlphabetLearningGame extends FlameGame {
   }
 
   void _onCorrectAnswer() {
-    score += 10;
+    score += 1;
     correctAnswers++;
 
     // Show encouragement

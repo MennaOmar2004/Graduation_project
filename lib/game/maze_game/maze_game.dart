@@ -104,12 +104,12 @@ class MazeGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   void onCollectibleCollected(CollectibleStar collectible) {
     if (collectible.isGood) {
-      score += 10;
+      score += 1;
       collectedValues++;
       currentMessage =
           '${collectible.value.emoji} ${collectible.value.arabicName}!';
     } else {
-      score = max(0, score - 5);
+      score = max(0, score - 1);
       lives--;
       currentMessage =
           '${collectible.value.emoji} تجنب ${collectible.value.arabicName}!';

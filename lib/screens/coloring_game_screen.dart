@@ -168,8 +168,8 @@ class _ColoringGameScreenState extends State<ColoringGameScreen> {
   }
 
   void _showCompletionDialog() {
-    // Submit game score (gameId = 5 for Coloring, e.g. 20 points awarded)
-    context.read<GameScoresCubit>().submitGameScore(gameId: GameIds.coloring, score: 20);
+    // Submit game score (gameId = 5 for Coloring, e.g. 1 point awarded)
+    context.read<GameScoresCubit>().submitGameScore(gameId: GameIds.coloring, score: 1);
 
     showDialog(
       context: context,
@@ -198,7 +198,7 @@ class _ColoringGameScreenState extends State<ColoringGameScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'لقد أكملت التلوين بنجاح وحصلت على ٢٠ نقطة!',
+                  'لقد أكملت التلوين بنجاح وحصلت على نقطة واحدة!',
                   style: GoogleFonts.cairo(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),

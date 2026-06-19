@@ -119,7 +119,7 @@ class BalloonPopGame extends FlameGame with TapDetector {
   void _onBalloonPopped(int number) {
     if (number == targetNumber) {
       // Correct balloon!
-      score += 10 * level;
+      score += 1;
       scoreText.text = 'النقاط: ${_getArabicNumber(score)}';
 
       // Move to next number
@@ -135,7 +135,7 @@ class BalloonPopGame extends FlameGame with TapDetector {
       onScoreChanged?.call(score);
     } else {
       // Wrong balloon - small penalty
-      score = math.max(0, score - 5);
+      score = math.max(0, score - 1);
       scoreText.text = 'النقاط: ${_getArabicNumber(score)}';
     }
   }

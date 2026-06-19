@@ -118,7 +118,7 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
 
   void _showCompletionDialog() {
     // Submit game score
-    context.read<GameScoresCubit>().submitGameScore(gameId: GameIds.mosqueBuilder, score: 30);
+    context.read<GameScoresCubit>().submitGameScore(gameId: GameIds.mosqueBuilder, score: 1);
 
     showDialog(
       context: context,
@@ -148,7 +148,7 @@ class _MosqueBuilderScreenState extends State<MosqueBuilderScreen> {
                 ),
                 SizedBox(height: ResponsiveHelper.size(context, 8)),
                 Text(
-                  'لقد بنيت مسجداً جميلاً وحصلت على ٣٠ نقطة!',
+                  'لقد بنيت مسجداً جميلاً وحصلت على نقطة واحدة!',
                   style: GoogleFonts.cairo(
                     fontSize: ResponsiveHelper.fontSize(context, 16),
                   ),

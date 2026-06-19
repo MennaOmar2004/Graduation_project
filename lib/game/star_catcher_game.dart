@@ -106,15 +106,7 @@ class StarCatcherGame extends FlameGame
     if (combo > maxCombo) maxCombo = combo;
     comboTimer = comboTimeout;
 
-    final comboMultiplier = min(combo / 5, 3.0); // Max 3x from combo
-    points = (points * (1 + comboMultiplier)).round();
-
-    // Apply double points power-up
-    if (hasPowerUp(PowerUpType.doublePoints)) {
-      points *= 2;
-    }
-
-    score += points;
+    score += 1;
 
     // Visual feedback
     player.onCatchStar();
