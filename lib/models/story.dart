@@ -22,15 +22,25 @@ class Story extends Equatable {
     required this.points,
   });
 
+  static int _parseInt(dynamic value) {
+    if (value == null) return 0;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is String) {
+      return int.tryParse(value) ?? 0;
+    }
+    return 0;
+  }
+
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
-      id: json['storyId'] ?? 0,
-      title: json['title'] ?? '',
-      text: json['storyText'] ?? '',
-      category: json['category'] ?? '',
-      audioUrl: json['audioUrl'],
-      videoUrl: json['url'],
-      points: json['pointsRewarded'] ?? 0,
+      id: _parseInt(json['storyId'] ?? json['videoId'] ?? json['id']),
+      title: (json['title'] ?? '').toString(),
+      text: (json['storyText'] ?? json['description'] ?? '').toString(),
+      category: (json['category'] ?? '').toString(),
+      audioUrl: json['audioUrl']?.toString(),
+      videoUrl: (json['url'] ?? json['videoUrl'])?.toString(),
+      points: _parseInt(json['pointsRewarded'] ?? json['points']),
     );
   }
 

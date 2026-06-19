@@ -27,4 +27,25 @@ class StoriesCubit extends Cubit<StoriesState> {
       emit(StoriesError(e.toString()));
     }
   }
+
+  Future<void> fetchVideos() async {
+    emit(StoriesLoading());
+    try {
+      final videos = await _repository.getVideos();
+      emit(StoriesLoaded(videos));
+    } catch (e) {
+      emit(StoriesError(e.toString()));
+    }
+  }
+
+  Future<void> fetchVideosByCategory(String category) async {
+    emit(StoriesLoading());
+    try {
+      final videos = await _repository.getVideosByCategory(category);
+      emit(StoriesLoaded(videos, selectedCategory: category));
+      print("Loaded videos: ${videos.length}");
+    } catch (e) {
+      emit(StoriesError(e.toString()));
+    }
+  }
 }

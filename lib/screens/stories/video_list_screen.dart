@@ -23,7 +23,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StoriesCubit(StoriesRepository())..fetchStoriesByCategory(widget.category),
+      create: (context) => StoriesCubit(StoriesRepository())..fetchVideosByCategory(widget.category),
       child: Scaffold(
         backgroundColor: const Color(0xFFFBFDFF),
         body: BlocBuilder<StoriesCubit, StoriesState>(

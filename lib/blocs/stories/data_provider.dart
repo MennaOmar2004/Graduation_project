@@ -17,4 +17,14 @@ class StoriesDataProvider {
   Future<Response> getStoryById(int id) async {
     return await ApiConsumer.get(ApiEndpoints.storyById(id));
   }
+
+  /// Fetches all videos from the API
+  Future<Response> getAllVideos() async {
+    return await ApiConsumer.get(ApiEndpoints.videos);
+  }
+
+  /// Fetches videos by category
+  Future<Response> getVideosByCategory(String category) async {
+    return await ApiConsumer.get(ApiEndpoints.videosByCategory(category));
+  }
 }

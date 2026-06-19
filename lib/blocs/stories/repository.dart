@@ -34,4 +34,32 @@ class StoriesRepository {
       rethrow;
     }
   }
+
+  Future<List<Story>> getVideos() async {
+    try {
+      final response = await _dataProvider.getAllVideos();
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'];
+        return data.map((json) => Story.fromJson(json)).toList();
+      } else {
+        throw Exception(response.data['message'] ?? 'Failed to load videos');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Story>> getVideosByCategory(String category) async {
+    try {
+      final response = await _dataProvider.getVideosByCategory(category);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'];
+        return data.map((json) => Story.fromJson(json)).toList();
+      } else {
+        throw Exception(response.data['message'] ?? 'Failed to load videos');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
