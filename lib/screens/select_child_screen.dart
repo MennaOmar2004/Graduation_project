@@ -335,6 +335,17 @@ void showStyledPinDialog(BuildContext context, Child child) {
   String? errorText;
   bool isLoading = false;
 
+  // Same accent logic as _ChildCard
+  const accents = [
+    Color(0xFF6C63FF),
+    Color(0xFF48CAE4),
+    Color(0xFFF472B6),
+    Color(0xFFA78BFA),
+    Color(0xFF4ADE80),
+    Color(0xFFFBBF24),
+  ];
+  final accent = accents[child.name.codeUnits.first % accents.length];
+
   showDialog(
     context: context,
     barrierColor: Colors.black.withValues(alpha: 0.5),
@@ -363,47 +374,61 @@ void showStyledPinDialog(BuildContext context, Child child) {
               child: Material(
                 color: Colors.transparent,
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 28),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(36),
+                    borderRadius: BorderRadius.circular(32),
+                    border: Border.all(
+                      color: accent.withValues(alpha: 0.2),
+                      width: 1.5,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF6C63FF).withValues(alpha: 0.2),
-                        blurRadius: 40,
-                        spreadRadius: 5,
+                        color: accent.withValues(alpha: 0.15),
+                        blurRadius: 35,
+                        offset: const Offset(0, 12),
                       ),
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.08),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
+                        color: Colors.black.withValues(alpha: 0.06),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Top gradient banner
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 28),
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color(0xFF6C63FF), Color(0xFF48CAE4)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(34),
-                          ),
-                        ),
-                        child: Column(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Avatar with same ring as _ChildCard
+                        Stack(
+                          alignment: Alignment.center,
                           children: [
+                            Container(
+                              width: 110,
+                              height: 110,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: RadialGradient(
+                                  colors: [
+                                    accent.withValues(alpha: 0.18),
+                                    accent.withValues(alpha: 0.0),
+                                  ],
+                                ),
+                              ),
+                            ),
                             Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.white.withValues(alpha: 0.3),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    accent,
+                                    accent.withValues(alpha: 0.6),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                               ),
                               child: CircleAvatar(
                                 radius: 44,
@@ -412,133 +437,144 @@ void showStyledPinDialog(BuildContext context, Child child) {
                                 onBackgroundImageError: (_, __) {},
                               ),
                             ),
-                            const SizedBox(height: 12),
-                            Text(
-                              child.name,
-                              style: GoogleFonts.cairo(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
                           ],
                         ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
-                        child: Column(
+                        const SizedBox(height: 14),
+                        // Child name
+                        Text(
+                          child.name,
+                          style: GoogleFonts.cairo(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF1B0033),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'سنوات ${child.age}',
+                          style: GoogleFonts.cairo(
+                            fontSize: 13,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Divider(color: accent.withValues(alpha: 0.15), thickness: 1),
+                        const SizedBox(height: 20),
+                        // Label
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'أدخل الرقم السري 🔐',
+                            textDirection: TextDirection.rtl,
+                            style: GoogleFonts.cairo(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF1B0033),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        // PIN field
+                        TextField(
+                          controller: pinController,
+                          obscureText: true,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fredoka(
+                            fontSize: 26,
+                            letterSpacing: 12,
+                            color: accent,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: '• • • •',
+                            hintStyle: TextStyle(
+                              letterSpacing: 8,
+                              color: Colors.grey[400],
+                              fontSize: 18,
+                            ),
+                            errorText: errorText,
+                            errorStyle: GoogleFonts.cairo(
+                              color: AppColors.red,
+                              fontSize: 13,
+                            ),
+                            filled: true,
+                            fillColor: accent.withValues(alpha: 0.05),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                  color: accent.withValues(alpha: 0.15)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                  color: accent.withValues(alpha: 0.2)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(color: accent, width: 2),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        // Buttons
+                        Row(
                           children: [
-                            Text(
-                              'أدخل الرقم السري 🔐',
-                              style: GoogleFonts.cairo(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF1B0033),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-
-                            // PIN field
-                            TextField(
-                              controller: pinController,
-                              obscureText: true,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.fredoka(
-                                fontSize: 26,
-                                letterSpacing: 12,
-                                color: const Color(0xFF6C63FF),
-                              ),
-                              decoration: InputDecoration(
-                                hintText: '••••',
-                                hintStyle: const TextStyle(
-                                  letterSpacing: 10,
-                                  color: Colors.grey,
-                                  fontSize: 20,
-                                ),
-                                errorText: errorText,
-                                errorStyle: GoogleFonts.cairo(
-                                  color: AppColors.red,
-                                  fontSize: 13,
-                                ),
-                                filled: true,
-                                fillColor: const Color(0xFFF3F4FF),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 18, horizontal: 20),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF6C63FF),
-                                    width: 2,
+                            // Cancel
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => Navigator.pop(dialogContext),
+                                child: Container(
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                        color: Colors.grey.shade200),
                                   ),
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(height: 24),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(dialogContext),
-                                    style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 14),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16),
-                                        side: BorderSide(
-                                            color: Colors.grey.shade300),
-                                      ),
-                                    ),
+                                  child: Center(
                                     child: Text(
                                       'إلغاء',
                                       style: GoogleFonts.cairo(
-                                        color: Colors.grey,
+                                        color: Colors.grey[600],
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  flex: 2,
-                                  child: _PrimaryButton(
-                                    isLoading: isLoading,
-                                    onPressed: () {
-                                      final pin = pinController.text.trim();
-                                      if (pin.isEmpty) {
-                                        setState(() {
-                                          errorText =
-                                              'من فضلك أدخل الرقم السري';
-                                        });
-                                        return;
-                                      }
-                                      setState(() {
-                                        errorText = null;
-                                        isLoading = true;
-                                      });
-                                      context
-                                          .read<ChildCubit>()
-                                          .selectChild(child, pin);
-                                    },
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(width: 12),
+                            // Confirm
+                            Expanded(
+                              flex: 2,
+                              child: _PrimaryButton(
+                                accent: accent,
+                                isLoading: isLoading,
+                                onPressed: () {
+                                  final pin = pinController.text.trim();
+                                  if (pin.isEmpty) {
+                                    setState(() {
+                                      errorText = 'من فضلك أدخل الرقم السري';
+                                    });
+                                    return;
+                                  }
+                                  setState(() {
+                                    errorText = null;
+                                    isLoading = true;
+                                  });
+                                  context
+                                      .read<ChildCubit>()
+                                      .selectChild(child, pin);
+                                },
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -551,13 +587,18 @@ void showStyledPinDialog(BuildContext context, Child child) {
 }
 
 // ---------------------------------------------------------------------------
-// Primary Button
+// Primary Button — uses child's accent color
 // ---------------------------------------------------------------------------
 class _PrimaryButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
+  final Color accent;
 
-  const _PrimaryButton({required this.isLoading, required this.onPressed});
+  const _PrimaryButton({
+    required this.isLoading,
+    required this.onPressed,
+    required this.accent,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -568,14 +609,14 @@ class _PrimaryButton extends StatelessWidget {
         height: 52,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF6C63FF), Color(0xFF48CAE4)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+          gradient: LinearGradient(
+            colors: [accent, accent.withValues(alpha: 0.75)],
+            begin: Alignment.centerRight,
+            end: Alignment.centerLeft,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF6C63FF).withValues(alpha: 0.35),
+              color: accent.withValues(alpha: 0.35),
               blurRadius: 15,
               offset: const Offset(0, 6),
             ),
