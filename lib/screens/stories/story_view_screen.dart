@@ -308,18 +308,19 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(25),
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
                     widget.story.title,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                    textDirection: TextDirection.rtl,
                     style: GoogleFonts.cairo(
                       color: Colors.white,
-                      fontSize: 28,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      height: 1.2,
+                      height: 1.3,
                       shadows: [
                         Shadow(
                           color: Colors.black.withValues(alpha: 0.3),
