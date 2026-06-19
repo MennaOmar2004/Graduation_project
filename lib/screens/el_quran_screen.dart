@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/blocs/tajweed/tajweed_cubit.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import 'package:wanisi_app/screens/tajweed_analyzer_screen.dart';
@@ -80,7 +82,10 @@ class _ElQuranScreenState extends State<ElQuranScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const TajweedAnalyzerScreen(),
+                                builder: (context) => BlocProvider(
+                                  create: (context) => TajweedCubit(),
+                                  child: const TajweedAnalyzerScreen(),
+                                ),
                               ),
                             );
                           },
