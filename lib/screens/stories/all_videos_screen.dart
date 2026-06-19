@@ -256,43 +256,12 @@ class _VideoCard extends StatelessWidget {
                     textAlign: TextAlign.right,
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [_buildPointsBadge(), _buildWatchNowAction()],
-                  ),
+                  _buildWatchNowAction(),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildPointsBadge() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFD700).withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFFFD700).withValues(alpha: 0.2),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.stars_rounded, color: Color(0xFFD4AF37), size: 18),
-          const SizedBox(width: 6),
-          Text(
-            '+${story.points}',
-            style: GoogleFonts.fredoka(
-              color: const Color(0xFFB8860B),
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-        ],
       ),
     );
   }

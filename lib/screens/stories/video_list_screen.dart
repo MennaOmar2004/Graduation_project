@@ -200,42 +200,18 @@ class _VideoCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.amber.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.stars_rounded, color: Colors.amber, size: 16),
-                            const SizedBox(width: 5),
-                            Text(
-                              '+${story.points}',
-                              style: GoogleFonts.fredoka(
-                                color: const Color(0xFFB8860B),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        'شاهد الآن',
+                        style: GoogleFonts.cairo(
+                          color: story.uiColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            'شاهد الآن',
-                            style: GoogleFonts.cairo(
-                              color: story.uiColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Icon(Icons.video_collection_rounded, size: 18, color: story.uiColor),
-                        ],
-                      ),
+                      const SizedBox(width: 5),
+                      Icon(Icons.video_collection_rounded, size: 18, color: story.uiColor),
                     ],
                   ),
                 ],

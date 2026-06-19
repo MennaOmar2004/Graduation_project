@@ -96,23 +96,54 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                             builder: (context, state) {
                               print("OPTIONS STATE = $state");
                               if (state is ChildSelectedSuccess) {
-                                return Image.network(
-                                  state.data.avatarUrl,
-                                  height: 100,
-                                  width: 100,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      "assets/images/image_profile.png",
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: 0.1),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      state.data.avatarUrl,
                                       height: 100,
                                       width: 100,
-                                    );
-                                  },
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Image.asset(
+                                          "assets/images/image_profile.png",
+                                          height: 100,
+                                          width: 100,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 );
                               }
-                              return Image.asset(
-                                "assets/images/image_profile.png",
-                                height: 100,
-                                width: 100,
+                              return Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: 0.1),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    "assets/images/image_profile.png",
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               );
                             },
                           ),

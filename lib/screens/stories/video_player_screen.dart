@@ -109,9 +109,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                             const SizedBox(height: 25),
                             // Metadata Card
                             _buildContentCard(),
-                            const SizedBox(height: 25),
-                            // Rewards/Actions
-                            _buildActionSection(),
                           ],
                         ),
                       ),
@@ -250,74 +247,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     );
   }
 
-  Widget _buildActionSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            widget.story.uiColor,
-            widget.story.uiColor.withValues(alpha: 0.8),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: widget.story.uiColor.withValues(alpha: 0.3),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'شاهد الفيديو لنهايته',
-                style: GoogleFonts.cairo(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                'للحصول على مكافأة ذهبية',
-                style: GoogleFonts.cairo(
-                  color: Colors.white,
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.stars_rounded, color: Colors.amber, size: 24),
-                const SizedBox(width: 8),
-                Text(
-                  '+${widget.story.points}',
-                  style: GoogleFonts.fredoka(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showCompletionDialog() {
     showDialog(
       context: context,
@@ -341,7 +270,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   ),
                 ),
                 Text(
-                  'لقد شاهدت القصة كاملة وحصلت على ${widget.story.points} نقطة',
+                  'لقد شاهدت القصة كاملة بنجاح!',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cairo(fontSize: 16, color: Colors.grey[600]),
                 ),

@@ -64,10 +64,6 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
-      actions: [
-        _buildPointsBadge(),
-        const SizedBox(width: 15),
-      ],
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(
@@ -122,33 +118,6 @@ class _StoriesListScreenState extends State<StoriesListScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildPointsBadge() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset('assets/images/star.png', width: 14),
-          const SizedBox(width: 6),
-          Text(
-            '70',
-            style: GoogleFonts.fredoka(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -300,44 +269,12 @@ class _StoryCard extends StatelessWidget {
 
 
   Widget _buildCardMetadata() {
-    return Row(
-      children: [
-        Flexible(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.amber.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.stars_rounded, color: Colors.amber, size: 14),
-                const SizedBox(width: 4),
-                Flexible(
-                  child: Text(
-                    '${story.points} نقطة ذهبية',
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.cairo(
-                      color: const Color(0xFFB8860B),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          '5 دقائق', // Sample duration
-          style: GoogleFonts.cairo(
-            fontSize: 12,
-            color: Colors.grey[500],
-          ),
-        ),
-      ],
+    return Text(
+      '5 دقائق', // Sample duration
+      style: GoogleFonts.cairo(
+        fontSize: 12,
+        color: Colors.grey[500],
+      ),
     );
   }
 

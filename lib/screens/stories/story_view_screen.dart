@@ -378,75 +378,20 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
   }
 
   Widget _buildGoldenRewardCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFFD700), Color(0xFFFF9D00)],
-        ),
+    return ElevatedButton(
+      onPressed: () => _showA7santDialog(context),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: _getCategoryColor(),
+        minimumSize: const Size(double.infinity, 60),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(
+      child: Text(
+        'لقد أنهيت القراءة! 🎉',
+        style: GoogleFonts.cairo(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(27),
-        ),
-        child: Row(
-          children: [
-             _buildAnimatedTrophy(),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'هدية قراءة ممتعة',
-                    style: GoogleFonts.cairo(
-                      color: Colors.grey[500],
-                      fontSize: 13,
-                    ),
-                  ),
-                  Text(
-                    '${widget.story.points} نقطة ذهبية',
-                    style: GoogleFonts.cairo(
-                      color: const Color(0xFFB8860B),
-                      fontWeight: FontWeight.w900,
-                      fontSize: 22,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () => _showA7santDialog(context),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors: [Color(0xFFB8860B), Color(0xFFFFD700)]),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.check_rounded, color: Colors.white, size: 30),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAnimatedTrophy() {
-    return FadeTransition(
-      opacity: _fadeController,
-      child: ScaleTransition(
-        scale: _fadeController,
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFD700).withValues(alpha: 0.15),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.emoji_events_rounded, color: Color(0xFFB8860B), size: 35),
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
       ),
     );
@@ -491,7 +436,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
                       minimumSize: const Size(double.infinity, 60),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     ),
-                    child: Text('استلم ${widget.story.points} نقطة', 
+                    child: Text('رائع!', 
                       style: GoogleFonts.cairo(color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                 ],
