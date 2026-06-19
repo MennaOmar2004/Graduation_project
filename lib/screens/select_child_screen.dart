@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
 import 'package:wanisi_app/cubit_of_child/child_state.dart';
 import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
@@ -146,6 +147,7 @@ class _SelectChildScreenState extends State<SelectChildScreen> {
               child: CircleAvatar(
                 radius: 35,
                 backgroundImage: NetworkImage(child.avatarUrl),
+                backgroundColor: Colors.transparent,
               ),
             ),
             const SizedBox(width: 15),
@@ -155,11 +157,7 @@ class _SelectChildScreenState extends State<SelectChildScreen> {
                 children: [
                   Text(
                     child.name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1B0033),
-                    ),
+                    style: AppTextStyles.linkText,
                   ),
                   Text(
                     "العمر: ${child.age}",
