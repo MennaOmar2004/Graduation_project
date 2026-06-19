@@ -103,7 +103,9 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
           ),
           backgroundColor: AppColors.red,
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       );
       return;
@@ -139,7 +141,8 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
               backgroundColor: AppColors.red,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           );
         }
@@ -155,8 +158,9 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
             ),
             backgroundColor: AppColors.red,
             behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
       }
@@ -175,10 +179,12 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
               children: [
                 _TajweedHeader(
                   onBack: () => Navigator.of(context).pop(),
-                  onAvatar: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (_) => const SettingsScreen()),
-                  ),
+                  onAvatar:
+                      () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SettingsScreen(),
+                        ),
+                      ),
                 ),
                 Expanded(
                   child: SingleChildScrollView(
@@ -203,9 +209,9 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
                             isPlayingAudio: _isPlayingAudio,
                             onAnalyze: () {
                               if (_formKey.currentState!.validate()) {
-                                context
-                                    .read<TajweedCubit>()
-                                    .analyzeAyah(_controller.text);
+                                context.read<TajweedCubit>().analyzeAyah(
+                                  _controller.text,
+                                );
                               }
                             },
                             onListen: _togglePlayRecitation,
@@ -220,7 +226,8 @@ class _TajweedAnalyzerScreenState extends State<TajweedAnalyzerScreen>
                                 return _ErrorResult(message: state.message);
                               } else if (state is TajweedSuccessState) {
                                 return _SuccessResult(
-                                    htmlContent: state.htmlContent);
+                                  htmlContent: state.htmlContent,
+                                );
                               }
                               return const _EmptyResult();
                             },
@@ -277,20 +284,25 @@ class _TajweedHeader extends StatelessWidget {
           child: Row(
             children: [
               // Back
-              Material(
-                color: Colors.white.withValues(alpha: 0.18),
-                borderRadius: BorderRadius.circular(12),
-                child: InkWell(
+              if (Navigator.of(context).canPop()) ...[
+                Material(
+                  color: Colors.white.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(12),
-                  onTap: onBack,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(Icons.arrow_back_ios_new,
-                        color: Colors.white, size: 20),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: onBack,
+                    child: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
+                const SizedBox(width: 8),
+              ],
               AvatarCircle(onTap: onAvatar),
               const Spacer(),
               // Title with icon
@@ -389,8 +401,11 @@ class _InputCard extends StatelessWidget {
                   color: AppColors.lightBlue,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.edit_note_rounded,
-                    color: AppColors.blue_, size: 18),
+                child: const Icon(
+                  Icons.edit_note_rounded,
+                  color: AppColors.blue_,
+                  size: 18,
+                ),
               ),
             ],
           ),
@@ -441,20 +456,28 @@ class _InputCard extends StatelessWidget {
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
                       borderSide: const BorderSide(
-                          color: AppColors.blue_, width: 1.5),
+                        color: AppColors.blue_,
+                        width: 1.5,
+                      ),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(color: AppColors.red, width: 1.5),
+                      borderSide: const BorderSide(
+                        color: AppColors.red,
+                        width: 1.5,
+                      ),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
-                      borderSide:
-                          const BorderSide(color: AppColors.red, width: 1.5),
+                      borderSide: const BorderSide(
+                        color: AppColors.red,
+                        width: 1.5,
+                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 14),
+                      horizontal: 14,
+                      vertical: 14,
+                    ),
                   ),
                 ),
               ),
@@ -467,12 +490,15 @@ class _InputCard extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 6),
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.red.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: Colors.redAccent.withValues(alpha: 0.4)),
+                      color: Colors.redAccent.withValues(alpha: 0.4),
+                    ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -525,15 +551,17 @@ class _MicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: isListening
-          ? AnimatedBuilder(
-              animation: pulseAnimation,
-              builder: (_, __) => Transform.scale(
-                scale: pulseAnimation.value,
-                child: _micContainer(isListening),
-              ),
-            )
-          : _micContainer(isListening),
+      child:
+          isListening
+              ? AnimatedBuilder(
+                animation: pulseAnimation,
+                builder:
+                    (_, __) => Transform.scale(
+                      scale: pulseAnimation.value,
+                      child: _micContainer(isListening),
+                    ),
+              )
+              : _micContainer(isListening),
     );
   }
 
@@ -543,21 +571,23 @@ class _MicButton extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: listening
-            ? const LinearGradient(
-                colors: [Colors.redAccent, Color(0xFFFF6B6B)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
-            : const LinearGradient(
-                colors: [AppColors.blue_, Color(0xFF7B9BFF)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+        gradient:
+            listening
+                ? const LinearGradient(
+                  colors: [Colors.redAccent, Color(0xFFFF6B6B)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+                : const LinearGradient(
+                  colors: [AppColors.blue_, Color(0xFF7B9BFF)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
         boxShadow: [
           BoxShadow(
-            color: (listening ? Colors.red : AppColors.blue_)
-                .withValues(alpha: 0.35),
+            color: (listening ? Colors.red : AppColors.blue_).withValues(
+              alpha: 0.35,
+            ),
             blurRadius: listening ? 18 : 10,
             spreadRadius: listening ? 3 : 1,
           ),
@@ -567,12 +597,12 @@ class _MicButton extends StatelessWidget {
         'assets/images/recorder.png',
         width: 30,
         height: 30,
-        color: Colors.white,
-        errorBuilder: (_, __, ___) => Icon(
-          listening ? Icons.mic : Icons.mic_none_rounded,
-          color: Colors.white,
-          size: 26,
-        ),
+        errorBuilder:
+            (_, __, ___) => Icon(
+              listening ? Icons.mic : Icons.mic_none_rounded,
+              color: Colors.white,
+              size: 26,
+            ),
       ),
     );
   }
@@ -602,12 +632,16 @@ class _ActionButtons extends StatelessWidget {
         // Listen Button
         Expanded(
           child: _PremiumButton(
-            label: isLoadingAudio
-                ? 'جاري التحميل...'
-                : (isPlayingAudio ? 'إيقاف الاستماع' : 'استماع للشيخ'),
-            icon: isLoadingAudio
-                ? Icons.hourglass_top_rounded
-                : (isPlayingAudio ? Icons.stop_rounded : Icons.volume_up_rounded),
+            label:
+                isLoadingAudio
+                    ? 'جاري التحميل...'
+                    : (isPlayingAudio ? 'إيقاف الاستماع' : 'استماع للشيخ'),
+            icon:
+                isLoadingAudio
+                    ? Icons.hourglass_top_rounded
+                    : (isPlayingAudio
+                        ? Icons.stop_rounded
+                        : Icons.volume_up_rounded),
             gradient: const LinearGradient(
               colors: [Color(0xFF52C49D), Color(0xFF3DB88B)],
               begin: Alignment.topLeft,
@@ -774,8 +808,11 @@ class _ErrorResult extends StatelessWidget {
               color: AppColors.red.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.error_outline_rounded,
-                color: AppColors.red, size: 20),
+            child: const Icon(
+              Icons.error_outline_rounded,
+              color: AppColors.red,
+              size: 20,
+            ),
           ),
         ],
       ),
@@ -826,8 +863,11 @@ class _SuccessResult extends StatelessWidget {
                   style: AppTextStyles.buttonText.copyWith(fontSize: 15),
                 ),
                 const SizedBox(width: 8),
-                const Icon(Icons.check_circle_outline_rounded,
-                    color: Colors.white, size: 20),
+                const Icon(
+                  Icons.check_circle_outline_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ],
             ),
           ),

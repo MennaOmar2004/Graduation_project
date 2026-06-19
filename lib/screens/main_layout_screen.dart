@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/screens/achievements_screen.dart';
-import 'package:wanisi_app/screens/el_quran_screen.dart';
+import 'package:wanisi_app/screens/tajweed_analyzer_screen.dart';
 import 'package:wanisi_app/screens/options_screen.dart';
 
 class MainLayout extends StatefulWidget {
@@ -17,7 +17,7 @@ class _MainLayoutState extends State<MainLayout> {
   final List<Widget> _screens = [
     OptionsScreen(),
     AchievementsScreen(),
-    ElQuranScreen()
+    const TajweedAnalyzerScreen()
   ];
 
   @override
@@ -135,7 +135,7 @@ class _NavIcon extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
                 // إضافة توهج بسيط للخط بيدي لمسة جمالية
                 boxShadow: isSelected ? [
-                  BoxShadow(color: Colors.blue.withOpacity(0.5), blurRadius: 4)
+                  BoxShadow(color: Colors.blue.withValues(alpha: 0.5), blurRadius: 4)
                 ] : [],
               ),
             ),
