@@ -8,6 +8,7 @@ import '../../blocs/avatar_selection/avatar_selection_cubit.dart';
 import '../../blocs/avatar_selection/avatar_selection_state.dart';
 import '../../blocs/avatar_selection/avatar_to_file.dart';
 import '../../cubit_of_child/child_cubit.dart';
+import '../../cubit_of_child/child_state.dart';
 import '../../network/cloudinary_helper.dart';
 import '../../static/app_assets.dart';
 import '../../colors.dart';
@@ -17,17 +18,25 @@ import 'widgets/layered_button.dart';
 import '../options_screen.dart';
 
 /// Avatar selection screen - allows user to choose their profile avatar
+
+enum AvatarMode {
+  create,
+  edit,
+}
+
 class AvatarSelectionScreen extends StatelessWidget {
-  const AvatarSelectionScreen({super.key});
+  final AvatarMode mode;
+  const AvatarSelectionScreen({super.key, required this.mode});
 
   @override
   Widget build(BuildContext context) {
-    return const _AvatarSelectionView();
+    return  _AvatarSelectionView(mode);
   }
 }
 
 class _AvatarSelectionView extends StatelessWidget {
-  const _AvatarSelectionView();
+  final AvatarMode mode;
+  const _AvatarSelectionView(this.mode);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +60,7 @@ class _AvatarSelectionView extends StatelessWidget {
               width:200 ,
               onPressed: () {
                 // TODO: Navigate to create your image screen
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => TakePhotoScreen(),));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => TakePhotoScreen(mode: mode,),));
                 // ScaffoldMessenger.of(context).showSnackBar(
                 //   SnackBar(
                 //     content: Text(
@@ -123,14 +132,22 @@ class _AvatarSelectionView extends StatelessWidget {
                           showShadow: state.selectedAvatar != null,
                             // داخل AvatarSelectionScreen - زر "تأكيد"
                             onPressed: () async {
-                              final selectedAvatar = context.read<AvatarSelectionCubit>().state.selectedAvatar;
+                              final selectedAvatar =
+                                  context.read<AvatarSelectionCubit>().state.selectedAvatar;
+
                               if (selectedAvatar == null) return;
 
                               // 1. ارفعي الصورة لـ Cloudinary
                               File imageFile = await assetToFile(selectedAvatar);
                               String? imageUrl = await CloudinaryHelper.uploadImage(imageFile);
 
-                              if (imageUrl != null) {
+                              if (imageUrl == null) return;
+
+                              final childCubit = context.read<ChildCubit>();
+                              final childState = childCubit.state;
+
+                              if (mode == AvatarMode.create) {
+                                // 🔥 FLOW القديم زي ما هو (إنشاء الطفل)
                                 final prefs = await SharedPreferences.getInstance();
 
                                 // 2. اسحبي البيانات "المؤقتة" اللي حفظناها في الـ Signup
@@ -140,13 +157,12 @@ class _AvatarSelectionView extends StatelessWidget {
                                 final int? childId = prefs.getInt("childId");
 
                                 if (childId != null) {
-                                  // 3. نداء الـ Update بكل البيانات المطلوبة للـ API
-                                  await context.read<ChildCubit>().updateChild(
+                                  await childCubit.updateChild(
                                     childId: childId,
-                                    name: name,         // البيانات القديمة
-                                    age: age,           // البيانات القديمة
-                                    avatarUrl: imageUrl, // الرابط الجديد (المهم)
-                                    preferences: preferences, // البيانات القديمة
+                                    name: name,
+                                    age: age,
+                                    avatarUrl: imageUrl,
+                                    preferences: preferences,
                                   );
 
                                   // 4. تنظيف الـ SharedPreferences (اختياري لكن يفضل)
@@ -154,7 +170,26 @@ class _AvatarSelectionView extends StatelessWidget {
                                   await prefs.remove("temp_child_age");
 
                                   if (context.mounted) {
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainLayout(selectedIndex: 0,)));
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => MainLayout(selectedIndex: 0),
+                                      ),
+                                    );
+                                  }
+                                }
+                              }
+
+                              else if (mode == AvatarMode.edit) {
+                                // ✨ FLOW الجديد (تعديل الصورة فقط)
+                                if (childState is ChildSelectedSuccess) {
+                                  await childCubit.updateChild(
+                                    childId: childState.data.id,
+                                    avatarUrl: imageUrl,
+                                  );
+
+                                  if (context.mounted) {
+                                    Navigator.pop(context); // بس رجوع
                                   }
                                 }
                               }

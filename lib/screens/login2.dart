@@ -75,11 +75,11 @@ class Login2 extends StatelessWidget {
                           text: "تسجيل الدخول",
                           onPressed: () {
                             if(_formKey.currentState!.validate()){
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => const AvatarSelectionScreen(),
-                                ),
-                              );
+                              // Navigator.of(context).pushReplacement(
+                              //   MaterialPageRoute(
+                              //     builder: (context) => const AvatarSelectionScreen(),
+                              //   ),
+                              // );
                             }
                             else {
                               ScaffoldMessenger.of(context).showSnackBar(

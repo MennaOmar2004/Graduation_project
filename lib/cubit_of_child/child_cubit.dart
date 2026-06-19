@@ -52,36 +52,49 @@ class ChildCubit extends Cubit<ChildState>{
     emit(ChildSelectedSuccess(child));
   }
 
-  Future<void> updateChild({required int childId,
-    required String name,
-    required int age,
-    required String avatarUrl,
-    required String preferences
-  }) async{
-    try{
-      emit(InitialChildState());
-      final response = await dio.put("/api/v1/children/$childId",
-        data: {
-          "name": name,
-          "age": age,
-          "avatarUrl": avatarUrl,
-          "preferences": preferences,
-        }
-      );
-      print("✅ UPDATE RESPONSE: ${response.data}");
-      emit(ChildUpdatedSuccess());
-      emit(ChildSelectedSuccess(
-        Child(
-          id: childId,
-          name: name,
-          age: age,
-          avatarUrl: avatarUrl,
-          // تأكدي إن موديل الـ Child عندك بيدعم preferences لو محتاجاها
-        ),
-      ));
-    }catch(e){
-      emit(ChildError(e.toString()));
+  Future<void> updateChild({
+    required int childId,
+    String? name,
+    int? age,
+    String? avatarUrl,
+    String? preferences,
+  }) async {
+
+    Child? currentChild;
+
+    if (state is ChildSelectedSuccess) {
+      currentChild = (state as ChildSelectedSuccess).data;
     }
 
+    final newName = name ?? currentChild?.name;
+    final newAge = age ?? currentChild?.age;
+    final newAvatar = avatarUrl ?? currentChild?.avatarUrl;
+
+    try {
+      final response = await dio.put(
+        "/api/v1/children/$childId",
+        data: {
+          "name": newName,
+          "age": newAge,
+          "avatarUrl": newAvatar,
+          "preferences": preferences,
+        },
+      );
+
+      print(response.data);
+      emit(ChildUpdatedSuccess());
+      emit(
+        ChildSelectedSuccess(
+          Child(
+            id: childId,
+            name: newName!,
+            age: newAge!,
+            avatarUrl: newAvatar!,
+          ),
+        ),
+      );
+    } catch (e) {
+      emit(ChildError(e.toString()));
+    }
   }
 }

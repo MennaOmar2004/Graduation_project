@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/cubit_of_child/child_cubit.dart';
+import 'package:wanisi_app/screens/avatar_selection_screen/avatar_selection_screen.dart';
 import 'package:wanisi_app/screens/personal_info_screen.dart';
 import 'package:wanisi_app/screens/select_child_screen.dart';
 import 'package:wanisi_app/screens/signup_screen.dart';
@@ -139,6 +140,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               if(listItems[index]["boxText"]=="معلومات شخصية"){
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (context) => PersonalInfoScreen()));
+                              }
+                              if(listItems[index]["boxText"]=="تعديل الصورة الشخصية"){
+                                Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => AvatarSelectionScreen(mode: AvatarMode.edit)));
                               }
                             },
                             child: Padding(

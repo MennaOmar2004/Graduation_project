@@ -91,7 +91,7 @@ class SuccessScreen extends StatelessWidget {
                           () {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => AvatarSelectionScreen(),
+                                builder: (context) => AvatarSelectionScreen(mode: AvatarMode.create,),
                               ),
                             );
                           },
