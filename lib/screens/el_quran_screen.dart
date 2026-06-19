@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/screens/main_layout_screen.dart';
-import 'package:wanisi_app/screens/options_screen.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
+import 'package:wanisi_app/screens/tajweed_analyzer_screen.dart';
 
 import '../colors.dart';
 import '../widgets/avatar_circle.dart';
@@ -75,8 +74,44 @@ class _ElQuranScreenState extends State<ElQuranScreen> {
                   Expanded(
                     child: ListView(
                       padding: const EdgeInsets.fromLTRB(45, 16, 45, 100), // مساحة أسفل القائمة
-                      children: const [
-                        LessonCard(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const TajweedAnalyzerScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 120,
+                            decoration: BoxDecoration(
+                              color: AppColors.lightGreen,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withValues(alpha: 0.3),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                )
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.menu_book, size: 50, color: AppColors.blue),
+                                const SizedBox(width: 15),
+                                Text(
+                                  'مصحف التجويد الذكي',
+                                  style: AppTextStyles.numberText.copyWith(fontSize: 22),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        const LessonCard(
                           imagePath: 'assets/images/qalqalah.png',
                         ),
                         SizedBox(height: 16),

@@ -11,27 +11,51 @@ class AiAvatarSourceBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 160,
-      padding: const EdgeInsets.all(20),
+      height: 180,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       decoration: const BoxDecoration(
         color: AppColors.backgroundLight,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _SourceButton(
-            iconAsset: 'assets/images/Camera.png',
-            label: 'كاميرا',
-            shadowColor: AppColors.purple,
-            onTap: () => context.read<AiAvatarCubit>().pickImageFromCamera(),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, -4),
           ),
-          const SizedBox(width: 50),
-          _SourceButton(
-            iconAsset: 'assets/images/Camera.png',
-            label: 'معرض',
-            shadowColor: AppColors.blue_,
-            onTap: () => context.read<AiAvatarCubit>().pickImageFromGallery(),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'اختر مصدر الصورة 📥',
+            style: AppTextStyles.linkText.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.blue_,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _SourceButton(
+                iconAsset: 'assets/images/Camera.png',
+                label: 'كاميرا',
+                shadowColor: AppColors.purple,
+                onTap: () => context.read<AiAvatarCubit>().pickImageFromCamera(),
+              ),
+              const SizedBox(width: 60),
+              _SourceButton(
+                iconAsset: 'assets/images/Camera.png', // Fallback as there is no specific gallery icon
+                label: 'معرض الصور',
+                shadowColor: AppColors.blue_,
+                onTap: () => context.read<AiAvatarCubit>().pickImageFromGallery(),
+              ),
+            ],
           ),
         ],
       ),
@@ -59,22 +83,42 @@ class _SourceButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
               boxShadow: [
-                BoxShadow(color: shadowColor, blurRadius: 8, spreadRadius: 1),
+                BoxShadow(
+                  color: shadowColor.withValues(alpha: 0.4),
+                  blurRadius: 12,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 4),
+                ),
               ],
             ),
-            child: Image.asset(iconAsset, width: 55, height: 55),
+            child: Image.asset(
+              iconAsset,
+              width: 48,
+              height: 48,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.image,
+                size: 48,
+                color: shadowColor,
+              ),
+            ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(
             label,
             style: AppTextStyles.linkText.copyWith(
-              fontSize: 14,
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
               color: AppColors.blue_,
             ),
           ),
