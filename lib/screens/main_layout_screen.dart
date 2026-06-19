@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/screens/achievements_screen.dart';
 import 'package:wanisi_app/screens/tajweed_analyzer_screen.dart';
 import 'package:wanisi_app/screens/options_screen.dart';
 
 class MainLayout extends StatefulWidget {
   final int selectedIndex;
-  const MainLayout({super.key, this.selectedIndex =0});
+  const MainLayout({super.key, this.selectedIndex = 0});
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
 }
 
 class _MainLayoutState extends State<MainLayout> {
- late int selectedIndex;
+  late int selectedIndex;
 
   final List<Widget> _screens = [
     OptionsScreen(),
-    AchievementsScreen(),
-    const TajweedAnalyzerScreen()
+    const TajweedAnalyzerScreen(),
   ];
 
   @override
   void initState() {
     super.initState();
-    selectedIndex = widget.selectedIndex; // initialize state from widget
+    if (widget.selectedIndex == 2) {
+      selectedIndex = 1; // Map former Quran index to new Quran index
+    } else if (widget.selectedIndex == 1) {
+      selectedIndex = 0; // Map former Trophy index to Home
+    } else {
+      selectedIndex = widget.selectedIndex;
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +39,7 @@ class _MainLayoutState extends State<MainLayout> {
         child: Column(
           children: [
             Expanded(
-              child: IndexedStack(
-                index: selectedIndex,
-                children: _screens,
-              ),
+              child: IndexedStack(index: selectedIndex, children: _screens),
             ),
 
             /// Bottom Navigation
@@ -64,17 +66,10 @@ class _MainLayoutState extends State<MainLayout> {
                         },
                       ),
                       _NavIcon(
-                        imagePath: 'assets/images/Trophy.png',
+                        imagePath: 'assets/images/quran.png',
                         isSelected: selectedIndex == 1,
                         onTap: () {
                           setState(() => selectedIndex = 1);
-                        },
-                      ),
-                      _NavIcon(
-                        imagePath: 'assets/images/quran.png',
-                        isSelected: selectedIndex == 2,
-                        onTap: () {
-                          setState(() => selectedIndex = 2);
                         },
                       ),
                     ],
@@ -88,6 +83,7 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 }
+
 class _NavIcon extends StatelessWidget {
   final String imagePath;
   final bool isSelected;
@@ -116,10 +112,14 @@ class _NavIcon extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 200),
-                opacity: isSelected ? 1.0 : 0.6, // بهتان بسيط لغير المختار بيدي شكل شيك
+                opacity:
+                    isSelected
+                        ? 1.0
+                        : 0.6, // بهتان بسيط لغير المختار بيدي شكل شيك
                 child: Image.asset(
                   imagePath,
-                  width: 60, // تصغير العرض لـ 60 عشان الـ 3 أيقونات يرتاحوا بجانب بعض
+                  width:
+                      60, // تصغير العرض لـ 60 عشان الـ 3 أيقونات يرتاحوا بجانب بعض
                   height: 60,
                   fit: BoxFit.contain,
                 ),
@@ -134,9 +134,15 @@ class _NavIcon extends StatelessWidget {
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(2),
                 // إضافة توهج بسيط للخط بيدي لمسة جمالية
-                boxShadow: isSelected ? [
-                  BoxShadow(color: Colors.blue.withValues(alpha: 0.5), blurRadius: 4)
-                ] : [],
+                boxShadow:
+                    isSelected
+                        ? [
+                          BoxShadow(
+                            color: Colors.blue.withValues(alpha: 0.5),
+                            blurRadius: 4,
+                          ),
+                        ]
+                        : [],
               ),
             ),
           ],

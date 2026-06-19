@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/screens/tasks_type_screen.dart';
-import 'package:wanisi_app/screens/login2.dart';
 import 'package:wanisi_app/screens/stories/stories_category_screen.dart';
 import 'package:wanisi_app/screens/stories/all_videos_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import '../cubit_of_child/child_cubit.dart';
 import '../cubit_of_child/child_state.dart';
-import 'achievements_screen.dart';
+import 'settings_screen.dart';
 import 'games_screen.dart';
 
 class OptionsScreen extends StatefulWidget {
@@ -86,40 +85,49 @@ class _OptionsScreenState extends State<OptionsScreen> {
                 final String? url = state is ChildSelectedSuccess
                     ? state.data.avatarUrl
                     : null;
-                return Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.pink2, width: 3),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.pink2.withValues(alpha: 0.35),
-                        blurRadius: 12,
-                        spreadRadius: 2,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsScreen(),
                       ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: url != null
-                        ? Image.network(
-                            url,
-                            width: 110,
-                            height: 110,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Image.asset(
+                    );
+                  },
+                  child: Container(
+                    width: 110,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.pink2, width: 3),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.pink2.withValues(alpha: 0.35),
+                          blurRadius: 12,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: ClipOval(
+                      child: url != null
+                          ? Image.network(
+                              url,
+                              width: 110,
+                              height: 110,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Image.asset(
+                                'assets/images/image_profile.png',
+                                width: 110,
+                                height: 110,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Image.asset(
                               'assets/images/image_profile.png',
                               width: 110,
                               height: 110,
                               fit: BoxFit.cover,
                             ),
-                          )
-                        : Image.asset(
-                            'assets/images/image_profile.png',
-                            width: 110,
-                            height: 110,
-                            fit: BoxFit.cover,
-                          ),
+                    ),
                   ),
                 );
               },
