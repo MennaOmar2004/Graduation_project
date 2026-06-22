@@ -25,8 +25,8 @@ class QalqlahStatusLabel extends StatelessWidget {
           ),
           QalqlahRecorded() => (
             '✅  تلاوة ممتازة! اضغط «تحليل» لترى النتيجة',
-            Color.fromARGB(255, 202, 100, 134),
-            const Color(0xFFE8F5E9),
+            Colors.redAccent,
+            Colors.red.shade50,
           ),
           QalqlahLoading() => (
             '⏳  نستمع لتلاوتك الجميلة...',
@@ -36,7 +36,7 @@ class QalqlahStatusLabel extends StatelessWidget {
           QalqlahSuccess() => (
             '✨  رائع جداً! تم تحليل تلاوتك بنجاح',
             Color.fromARGB(255, 202, 100, 134),
-            const Color(0xFFE8F5E9),
+            const Color(0xFFFFF0F3),
           ),
           QalqlahFailure() => (
             '❌  لا تيأس، حاول مرة أخرى يا بطل!',

@@ -16,13 +16,6 @@ class QalqlahHeader extends StatelessWidget {
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x554CAF50),
-            blurRadius: 24,
-            offset: Offset(0, 10),
-          ),
-        ],
       ),
       child: SafeArea(
         bottom: false,

@@ -38,7 +38,7 @@ class _LoadingCard extends StatelessWidget {
             width: 48,
             height: 48,
             child: CircularProgressIndicator(
-              color: Color(0xFF4CAF50),
+              color: Color(0xFFCA6486),
               strokeWidth: 3,
             ),
           ),
@@ -47,7 +47,7 @@ class _LoadingCard extends StatelessWidget {
             'جارٍ تحليل التسجيل...',
             style: AppTextStyles.linkText.copyWith(
               fontSize: 15,
-              color: AppColors.green,
+              color: const Color(0xFFCA6486),
             ),
           ),
           const SizedBox(height: 4),
@@ -144,7 +144,7 @@ class _SuccessCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.green.withValues(alpha: 0.08),
+            color: const Color(0xFFCA6486).withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 6),
           ),
@@ -158,7 +158,7 @@ class _SuccessCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF4CAF50), Color(0xFF81C784)],
+                colors: [Colors.redAccent, Color.fromARGB(255, 161, 67, 81)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -217,7 +217,7 @@ class _SuccessCard extends StatelessWidget {
                             height: 8,
                             margin: const EdgeInsetsDirectional.only(end: 10),
                             decoration: const BoxDecoration(
-                              color: Color(0xFF4CAF50),
+                              color: Color(0xFFCA6486),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -301,7 +301,7 @@ class _CardShell extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.green.withValues(alpha: 0.06),
+            color: const Color(0xFFCA6486).withValues(alpha: 0.06),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
