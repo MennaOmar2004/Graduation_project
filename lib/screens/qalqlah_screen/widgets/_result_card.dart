@@ -151,6 +151,43 @@ class _SuccessCardState extends State<_SuccessCard> {
     return cleaned;
   }
 
+  Map<String, String> _extractWordAndConfidence(String line) {
+    // Clean bullet characters
+    String cleaned = line.replaceFirst(RegExp(r'^[-*\s•]+'), '');
+    // Clean "كلمة:" or "الكلمة:" prefix
+    cleaned = cleaned.replaceFirst(RegExp(r'^(الكلمة|كلمة)\s*:\s*'), '');
+
+    // Check for word and confidence value inside parenthesis
+    final regex = RegExp(r'^([^\(]+)\s*\(([^)]+)\)');
+    final match = regex.firstMatch(cleaned);
+    if (match != null) {
+      final word = match.group(1)!.trim();
+      var confidence = match.group(2)!.trim();
+
+      // Convert "نسبة الثقة" to a friendlier phrase "دقة النطق" and format decimal as percentage
+      confidence = confidence.replaceAll('نسبة الثقة', 'دقة النطق');
+      final numberRegex = RegExp(r'0\.\d+');
+      final numMatch = numberRegex.firstMatch(confidence);
+      if (numMatch != null) {
+        final val = double.tryParse(numMatch.group(0)!);
+        if (val != null) {
+          final percentage = (val * 100).toStringAsFixed(0);
+          confidence = confidence.replaceFirst(numMatch.group(0)!, '$percentage%');
+        }
+      }
+
+      return {
+        'word': word,
+        'confidence': confidence,
+      };
+    }
+
+    return {
+      'word': cleaned.trim(),
+      'confidence': '',
+    };
+  }
+
   Future<void> _playWordAudio(String word) async {
     if (_currentlyPlayingWord == word) {
       await _audioPlayer.stop();
@@ -206,12 +243,14 @@ class _SuccessCardState extends State<_SuccessCard> {
   @override
   Widget build(BuildContext context) {
     // Split the raw text into lines and filter blanks
-    final lines =
-        widget.resultText
-            .split('\n')
-            .map((l) => l.trim())
-            .where((l) => l.isNotEmpty)
-            .toList();
+    final lines = widget.resultText
+        .split('\n')
+        .map((l) => l.trim())
+        .where((l) => l.isNotEmpty)
+        .toList();
+
+    // The first line is the summary/header (which contains the Ayah text)
+    final header = lines.isNotEmpty ? lines.first : widget.resultText;
 
     // The rest are bullet items
     final bullets = lines.length > 1 ? lines.sublist(1) : <String>[];
@@ -229,10 +268,7 @@ class _SuccessCardState extends State<_SuccessCard> {
               offset: const Offset(0, 6),
             ),
           ],
-          border: Border.all(
-            color: Colors.amber.withValues(alpha: 0.3),
-            width: 1.5,
-          ),
+          border: Border.all(color: Colors.amber.withValues(alpha: 0.3), width: 1.5),
         ),
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
@@ -321,29 +357,47 @@ class _SuccessCardState extends State<_SuccessCard> {
           Padding(
             padding: const EdgeInsets.all(18),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Friendly header/instruction
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'محاولة رائعة يا بطل! فلنتدرب معاً على نطق الكلمات التالية لتصبح تلاوتك ممتازة: ✨',
-                        textAlign: TextAlign.right,
-                        textDirection: TextDirection.rtl,
-                        style: AppTextStyles.linkText.copyWith(
-                          fontSize: 15,
-                          color: const Color(0xFF2D2D5E),
-                          fontWeight: FontWeight.bold,
-                          height: 1.6,
-                        ),
+                // ── Recorded Ayah Text Display ──────────────────────
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF0F3), // Soft pink background
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFFCA6486).withValues(alpha: 0.3),
+                        width: 1.5,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Text('💡', style: TextStyle(fontSize: 22)),
-                  ],
+                    child: Column(
+                      children: [
+                        Text(
+                          'الآية التي قرأتها:',
+                          style: AppTextStyles.snackbarText.copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFFCA6486),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          header,
+                          style: AppTextStyles.linkText.copyWith(
+                            fontSize: 18,
+                            color: const Color(0xFF2D2D5E),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
 
@@ -364,32 +418,27 @@ class _SuccessCardState extends State<_SuccessCard> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         // Join word search query to fetch the correct Ayah pronunciation
-                        final combinedQuery = bullets
-                            .map(_extractWord)
-                            .join(' ');
+                        final combinedQuery = bullets.map(_extractWord).join(' ');
                         _playWordAudio(combinedQuery);
                       },
-                      icon:
-                          _isLoadingAudio
-                              ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                              : Icon(
-                                _currentlyPlayingWord != null
-                                    ? Icons.stop_rounded
-                                    : Icons.volume_up_rounded,
+                      icon: _isLoadingAudio
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
                                 color: Colors.white,
-                                size: 20,
+                                strokeWidth: 2,
                               ),
+                            )
+                          : Icon(
+                              _currentlyPlayingWord != null
+                                  ? Icons.stop_rounded
+                                  : Icons.volume_up_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                       label: Text(
-                        _currentlyPlayingWord != null
-                            ? 'إيقاف الصوت'
-                            : 'استمع للآية الكريمة',
+                        _currentlyPlayingWord != null ? 'إيقاف الصوت' : 'استمع للآية الكريمة',
                         style: AppTextStyles.buttonText.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -397,10 +446,7 @@ class _SuccessCardState extends State<_SuccessCard> {
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFCA6486),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         elevation: 0,
                         shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
@@ -411,68 +457,65 @@ class _SuccessCardState extends State<_SuccessCard> {
                     ),
                   ),
                 ),
-
-                const SizedBox(height: 18),
-                const Divider(height: 1),
-                const SizedBox(height: 18),
-
-                // Static tactile badges layout (clean, no volume play button)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
+                
+                if (bullets.isNotEmpty) ...[
+                  const SizedBox(height: 18),
+                  const Divider(height: 1),
+                  const SizedBox(height: 18),
+                  Text(
+                    'الكلمات التي تحتاج إلى تحسين ونسبة دقتها:',
+                    style: AppTextStyles.linkText.copyWith(
+                      fontSize: 14,
+                      color: const Color(0xFF2D2D5E),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
                     textDirection: TextDirection.rtl,
-                    children:
-                        bullets.map((line) {
-                          final word = _extractWord(line);
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFF0F3), // Soft pink bg
-                              borderRadius: BorderRadius.circular(18),
-                              border: Border.all(
-                                color: const Color(0xFFCA6486),
-                                width: 2.0,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(
-                                    0xFFCA6486,
-                                  ).withValues(alpha: 0.2),
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 0,
-                                  spreadRadius: 0,
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              textDirection: TextDirection.rtl,
-                              children: [
-                                const Icon(
-                                  Icons.star_rounded,
-                                  color: Color(0xFFCA6486),
-                                  size: 18,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  word,
-                                  style: AppTextStyles.numberText.copyWith(
-                                    fontSize: 17,
-                                    color: const Color(0xFFCA6486),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  // Static tactile badges layout (clean, no volume play button)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      textDirection: TextDirection.rtl,
+                      children: bullets.map((line) {
+                        final extracted = _extractWordAndConfidence(line);
+                        final word = extracted['word']!;
+                        final confidence = extracted['confidence']!;
+                        final displayText = confidence.isNotEmpty
+                            ? '$word ($confidence)'
+                            : word;
+                        
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFF0F3), // Soft pink bg
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: const Color(0xFFCA6486),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Text(
+                            displayText,
+                            style: AppTextStyles.numberText.copyWith(
+                              fontSize: 14,
+                              color: const Color(0xFFCA6486),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                            textDirection: TextDirection.rtl,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
