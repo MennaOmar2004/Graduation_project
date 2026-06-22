@@ -23,9 +23,10 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     )..repeat(reverse: true);
-    _scale = Tween<double>(begin: 1.0, end: 1.15).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
-    );
+    _scale = Tween<double>(
+      begin: 1.0,
+      end: 1.15,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -59,7 +60,7 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
                   shape: BoxShape.circle,
                   color: (isRecording
                           ? Colors.redAccent
-                          : const Color(0xFF4CAF50))
+                          : Color.fromARGB(255, 202, 100, 134))
                       .withValues(alpha: 0.12),
                 ),
               ),
@@ -71,7 +72,7 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
                   shape: BoxShape.circle,
                   color: (isRecording
                           ? Colors.redAccent
-                          : const Color(0xFF4CAF50))
+                          : Color.fromARGB(255, 202, 100, 134))
                       .withValues(alpha: 0.25),
                 ),
               ),
@@ -81,17 +82,21 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
                 height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: isRecording
-                      ? const LinearGradient(
-                          colors: [Colors.redAccent, Color(0xFFFF6B6B)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        )
-                      : const LinearGradient(
-                          colors: [Color(0xFF2E7D32), Color(0xFF66BB6A)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                  gradient:
+                      isRecording
+                          ? const LinearGradient(
+                            colors: [Colors.redAccent, Color(0xFFFF6B6B)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                          : const LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 202, 100, 134),
+                              Color.fromARGB(255, 202, 100, 134),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                   boxShadow: [
                     BoxShadow(
                       color: (isRecording
@@ -116,8 +121,9 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
         if (isRecording) {
           return AnimatedBuilder(
             animation: _scale,
-            builder: (_, __) =>
-                Transform.scale(scale: _scale.value, child: coreButton),
+            builder:
+                (_, __) =>
+                    Transform.scale(scale: _scale.value, child: coreButton),
           );
         }
         return coreButton;

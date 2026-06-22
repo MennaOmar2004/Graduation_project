@@ -20,11 +20,15 @@ class QalqlahBody extends StatelessWidget {
         children: [
           // ── Premium gradient header ──────────────────────────────
           Builder(
-            builder: (ctx) => QalqlahHeader(
-              onAvatar: () => Navigator.of(ctx).push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              ),
-            ),
+            builder:
+                (ctx) => QalqlahHeader(
+                  onAvatar:
+                      () => Navigator.of(ctx).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SettingsScreen(),
+                        ),
+                      ),
+                ),
           ),
           // ── Scrollable content ──────────────────────────────────
           Expanded(
@@ -70,7 +74,7 @@ class _HowItWorksCard extends StatelessWidget {
     _Step(
       icon: Icons.mic_rounded,
       text: 'اضغط زر الميكروفون لبدء التسجيل',
-      color: Color(0xFF43A047),
+      color: Colors.pink,
     ),
     _Step(
       icon: Icons.menu_book_rounded,
@@ -85,7 +89,7 @@ class _HowItWorksCard extends StatelessWidget {
     _Step(
       icon: Icons.auto_fix_high_rounded,
       text: 'اضغط «تحليل القلقلة» لإرسال التسجيل',
-      color: Color(0xFF43A047),
+      color: Colors.pink,
     ),
   ];
 
@@ -98,7 +102,7 @@ class _HowItWorksCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF43A047).withValues(alpha: 0.08),
+            color: Colors.pink.withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 6),
           ),
@@ -123,20 +127,23 @@ class _HowItWorksCard extends StatelessWidget {
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF43A047), Color(0xFF66BB6A)],
+                    colors: [Colors.pink, Colors.pinkAccent],
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.help_outline_rounded, color: Colors.white, size: 16),
+                child: const Icon(
+                  Icons.help_outline_rounded,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 16),
           // Step list
-          ..._steps.asMap().entries.map((e) => _StepRow(
-                index: e.key + 1,
-                step: e.value,
-              )),
+          ..._steps.asMap().entries.map(
+            (e) => _StepRow(index: e.key + 1, step: e.value),
+          ),
         ],
       ),
     );
@@ -170,9 +177,7 @@ class _StepRow extends StatelessWidget {
               color: step.color.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Center(
-              child: Icon(step.icon, color: step.color, size: 16),
-            ),
+            child: Center(child: Icon(step.icon, color: step.color, size: 16)),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -226,7 +231,7 @@ class _RecordingPanel extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF43A047).withValues(alpha: 0.07),
+            color: Colors.pink.withValues(alpha: 0.07),
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
@@ -239,7 +244,7 @@ class _RecordingPanel extends StatelessWidget {
           Text(
             'نحن متحمسون لسماع صوتك!',
             style: AppTextStyles.snackbarText.copyWith(
-              color: const Color(0xFF2E7D32).withValues(alpha: 0.8),
+              color: Color.fromARGB(255, 202, 100, 134).withValues(alpha: 0.8),
               fontSize: 14,
               fontWeight: FontWeight.bold,
             ),

@@ -14,35 +14,35 @@ class QalqlahStatusLabel extends StatelessWidget {
       builder: (context, state) {
         final (text, color, bgColor) = switch (state) {
           QalqlahInitial() => (
-              'أنت بطل! اضغط المايك وابدأ تلاوتك 🌟',
-              const Color(0xFF2E7D32),
-              const Color(0xFFE8F5E9),
-            ),
+            'أنت بطل! اضغط المايك وابدأ تلاوتك 🌟',
+            Color.fromARGB(255, 202, 100, 134),
+            const Color(0xFFE8F5E9),
+          ),
           QalqlahRecording() => (
-              '🔴  صوتك رائع! استمر في التلاوة...',
-              Colors.redAccent,
-              Colors.red.shade50,
-            ),
+            '🔴  صوتك رائع! استمر في التلاوة...',
+            Colors.redAccent,
+            Colors.red.shade50,
+          ),
           QalqlahRecorded() => (
-              '✅  تلاوة ممتازة! اضغط «تحليل» لترى النتيجة',
-              const Color(0xFF2E7D32),
-              const Color(0xFFE8F5E9),
-            ),
+            '✅  تلاوة ممتازة! اضغط «تحليل» لترى النتيجة',
+            Color.fromARGB(255, 202, 100, 134),
+            const Color(0xFFE8F5E9),
+          ),
           QalqlahLoading() => (
-              '⏳  نستمع لتلاوتك الجميلة...',
-              AppColors.blue_,
-              const Color(0xFFEEF2FF),
-            ),
+            '⏳  نستمع لتلاوتك الجميلة...',
+            AppColors.blue_,
+            const Color(0xFFEEF2FF),
+          ),
           QalqlahSuccess() => (
-              '✨  رائع جداً! تم تحليل تلاوتك بنجاح',
-              const Color(0xFF2E7D32),
-              const Color(0xFFE8F5E9),
-            ),
+            '✨  رائع جداً! تم تحليل تلاوتك بنجاح',
+            Color.fromARGB(255, 202, 100, 134),
+            const Color(0xFFE8F5E9),
+          ),
           QalqlahFailure() => (
-              '❌  لا تيأس، حاول مرة أخرى يا بطل!',
-              AppColors.red,
-              const Color(0xFFFFF0F3),
-            ),
+            '❌  لا تيأس، حاول مرة أخرى يا بطل!',
+            AppColors.red,
+            const Color(0xFFFFF0F3),
+          ),
         };
 
         return AnimatedSwitcher(

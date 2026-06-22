@@ -11,11 +11,7 @@ class QalqlahHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF1B5E20), Color(0xFF43A047), Color(0xFF66BB6A)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Color.fromARGB(255, 202, 100, 134),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
@@ -97,15 +93,6 @@ class QalqlahHeader extends StatelessWidget {
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'سجّل تلاوتك وافحص أحرف القلقلة بالذكاء الاصطناعي',
-                            textDirection: TextDirection.rtl,
-                            style: AppTextStyles.snackbarText.copyWith(
-                              fontSize: 12,
-                              color: Colors.white.withValues(alpha: 0.85),
                             ),
                           ),
                         ],

@@ -7,8 +7,9 @@ import 'package:wanisi_app/cubit_of_games/game_scores_cubit.dart';
 /// Compact pixel-perfect score indicator widget
 class ScoreIndicator extends StatelessWidget {
   final String? score;
+  final Color? backgroundColor;
 
-  const ScoreIndicator({super.key, this.score});
+  const ScoreIndicator({super.key, this.score, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ScoreIndicator extends StatelessWidget {
       height: 30,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0x4F9D9D9D), // rgba(157, 157, 157, 0.31)
+          color: backgroundColor ?? const Color(0x4F9D9D9D), // rgba(157, 157, 157, 0.31)
           border: Border.all(color: const Color(0xFFFCBAD3), width: 2),
           borderRadius: BorderRadius.circular(10),
         ),

@@ -17,7 +17,7 @@ class AppColors {
   static const Color bgSurface = Color(0xFFF5F7FF);
   static const Color blue = Color(0xFF3396FF);
   static const Color gray = Color(0x9D9D9DAB);
-  static const Color green = Color(0xFF03A308);
+  static const Color green = Color(0xFF72C076);
   static const Color blue_ = Color(0xFF5479FC);
   static const Color purple = Color(0xFFB76BC6);
   static const Color red = Color(0xFFD05675);
@@ -27,6 +27,10 @@ class AppColors {
   static const Color lightBlue = Color(0xFFD0DDFF);
   static const Color lightPurple = Color(0xFFCF9DD9);
   static const Color lightPink = Color(0xFFFFAACA);
+  
+  // Section label colors
+  static const Color sectionLabelText = Color(0xFF2D2D5E);
+  static const Color sectionLabelBg = Color(0xFFEEF2FF);
 
   // Gradient configurations
   static const List<Color> primaryGradient = [Color(0xFF5479FC), Color(0xFF7B9BFF)];
