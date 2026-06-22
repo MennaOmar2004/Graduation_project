@@ -16,7 +16,7 @@ class QalqlahStatusLabel extends StatelessWidget {
           QalqlahInitial() => (
             'أنت بطل! اضغط المايك وابدأ تلاوتك 🌟',
             Color.fromARGB(255, 202, 100, 134),
-            const Color(0xFFE8F5E9),
+            Colors.red.shade50,
           ),
           QalqlahRecording() => (
             '🔴  صوتك رائع! استمر في التلاوة...',

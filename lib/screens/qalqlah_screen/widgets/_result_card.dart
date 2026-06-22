@@ -15,8 +15,9 @@ class QalqlahResultCard extends StatelessWidget {
         return switch (state) {
           QalqlahLoading() => _LoadingCard(),
           QalqlahFailure(:final message) => _ErrorCard(message: message),
-          QalqlahSuccess(:final resultText) =>
-            _SuccessCard(resultText: resultText),
+          QalqlahSuccess(:final resultText) => _SuccessCard(
+            resultText: resultText,
+          ),
           _ => _EmptyCard(),
         };
       },
@@ -126,11 +127,12 @@ class _SuccessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Split the raw text into lines and filter blanks
-    final lines = resultText
-        .split('\n')
-        .map((l) => l.trim())
-        .where((l) => l.isNotEmpty)
-        .toList();
+    final lines =
+        resultText
+            .split('\n')
+            .map((l) => l.trim())
+            .where((l) => l.isNotEmpty)
+            .toList();
 
     // First line is the summary/header; the rest are bullet items
     final header = lines.isNotEmpty ? lines.first : resultText;
@@ -245,7 +247,6 @@ class _SuccessCard extends StatelessWidget {
   }
 }
 
-
 // ─── Empty ──────────────────────────────────────────────────────────────────
 
 class _EmptyCard extends StatelessWidget {
@@ -257,8 +258,8 @@ class _EmptyCard extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Color(0xFFE8F5E9),
+            decoration: BoxDecoration(
+              color: Colors.red.shade50,
               shape: BoxShape.circle,
             ),
             child: const Text('🔊', style: TextStyle(fontSize: 36)),
@@ -268,14 +269,14 @@ class _EmptyCard extends StatelessWidget {
             'نتيجة القلقلة ستظهر هنا',
             style: AppTextStyles.linkText.copyWith(
               fontSize: 15,
-              color: AppColors.green.withValues(alpha: 0.8),
+              color: Colors.red.shade50,
             ),
           ),
           const SizedBox(height: 6),
           Text(
             'سجّل تلاوتك واضغط «تحليل»',
             style: AppTextStyles.snackbarText.copyWith(
-              color: Colors.grey.shade400,
+              color: Colors.red.shade400,
               fontSize: 13,
             ),
           ),

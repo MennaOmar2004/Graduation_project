@@ -6,7 +6,6 @@ import 'package:wanisi_app/screens/qalqlah_screen/qalqlah_screen.dart';
 import 'package:wanisi_app/screens/tajweed_analyzer_screen.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'quran_hero_header.dart';
-import 'section_label.dart';
 import 'quran_grid_card.dart';
 
 class QuranBody extends StatelessWidget {

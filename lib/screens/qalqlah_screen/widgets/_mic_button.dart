@@ -99,9 +99,7 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
                           ),
                   boxShadow: [
                     BoxShadow(
-                      color: (isRecording
-                              ? Colors.red
-                              : const Color(0xFF43A047))
+                      color: (isRecording ? Colors.red : Colors.red.shade50)
                           .withValues(alpha: 0.5),
                       blurRadius: isRecording ? 24 : 16,
                       spreadRadius: isRecording ? 4 : 2,
