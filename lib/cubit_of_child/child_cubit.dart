@@ -60,40 +60,25 @@ class ChildCubit extends Cubit<ChildState>{
     String? avatarUrl,
     String? preferences,
   }) async {
-
-    Child? currentChild;
-
-    if (state is ChildSelectedSuccess) {
-      currentChild = (state as ChildSelectedSuccess).data;
-    }
-
-    final newName = name ?? currentChild?.name;
-    final newAge = age ?? currentChild?.age;
-    final newAvatar = avatarUrl ?? currentChild?.avatarUrl;
-
     try {
-      final response = await dio.put(
+      await dio.put(
         "/api/v1/children/$childId",
         data: {
-          "name": newName,
-          "age": newAge,
-          "avatarUrl": newAvatar,
+          "name": name,
+          "age": age,
+          "avatarUrl": avatarUrl,
           "preferences": preferences,
         },
       );
 
-      debugPrint(response.data);
-      emit(ChildUpdatedSuccess());
-      emit(
-        ChildSelectedSuccess(
-          Child(
-            id: childId,
-            name: newName!,
-            age: newAge!,
-            avatarUrl: newAvatar!,
-          ),
-        ),
-      );
+      // بعد التحديث: هات أحدث بيانات من السيرفر
+      final response = await dio.get("/api/v1/auth/my-children");
+
+      final updatedChild = (response.data["data"] as List)
+          .map((e) => Child.fromJson(e))
+          .firstWhere((c) => c.id == childId);
+
+      emit(ChildSelectedSuccess(updatedChild));
     } catch (e) {
       emit(ChildError(e.toString()));
     }

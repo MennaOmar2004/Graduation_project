@@ -81,4 +81,8 @@ class GameScoresCubit extends Cubit<GameScoresState> {
       debugPrint("⚠️ Game score submit failed: $e");
     }
   }
+  void resetScore() {
+    totalGameScore = 0;
+    emit(GameScoresInitial());
+  }
 }

@@ -46,7 +46,7 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ChildCubit,ChildState>(
       listener: (context, state) {
-        if (state is ChildUpdatedSuccess) {
+        if (state is ChildSelectedSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("تم تعديل بيانات الطفل بنجاح")),
           );

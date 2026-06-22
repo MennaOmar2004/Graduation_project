@@ -7,6 +7,7 @@ import 'package:wanisi_app/screens/select_child_screen.dart';
 import 'package:wanisi_app/screens/signup_screen.dart';
 import '../colors.dart';
 import '../cubit_of_child/child_state.dart';
+import '../model_of_child/child.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -66,9 +67,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(height: 30,),
               BlocBuilder<ChildCubit, ChildState>(
                 builder: (context, state) {
-                  final String? url = state is ChildSelectedSuccess
-                      ? state.data.avatarUrl
-                      : null;
+                  final child = context.select<ChildCubit,Child?>((cubit) {
+                    final state = cubit.state;
+                    if (state is ChildSelectedSuccess) return state.data;
+                    return null;
+                  });
+
+                  final url = child?.avatarUrl;
                   return Container(
                     width: 100,
                     height: 100,

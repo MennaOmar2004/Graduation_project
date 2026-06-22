@@ -38,7 +38,7 @@ class AiAvatarSourceBar extends StatelessWidget {
               color: AppColors.blue_,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -105,7 +105,7 @@ class _SourceButton extends StatelessWidget {
             child: Image.asset(
               iconAsset,
               width: 48,
-              height: 48,
+              height: 40,
               errorBuilder: (context, error, stackTrace) => Icon(
                 Icons.image,
                 size: 48,
@@ -113,7 +113,7 @@ class _SourceButton extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
           Text(
             label,
             style: AppTextStyles.linkText.copyWith(

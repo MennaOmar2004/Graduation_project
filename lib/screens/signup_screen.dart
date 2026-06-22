@@ -9,6 +9,8 @@ import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
 import 'package:wanisi_app/screens/success_screen.dart';
 import '../colors.dart';
 import '../cubit_of_child/child_cubit.dart';
+import '../cubit_of_games/game_scores_cubit.dart';
+import '../cubit_of_tasks/tasks_cubit.dart';
 import '../model_of_child/child.dart';
 import '../network/dio_helper.dart';
 
@@ -213,6 +215,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     avatarUrl: avatarUrl ??"",
                                   ),
                                 );
+                                context.read<TasksCubit>().resetPoints();
+                                context.read<GameScoresCubit>().resetScore();
                                 // 4️⃣ الانتقال
                                 if (mounted) {
                                   Navigator.pushReplacement(

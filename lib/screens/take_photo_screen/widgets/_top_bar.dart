@@ -46,11 +46,7 @@ class AiAvatarTopBar extends StatelessWidget {
           const Spacer(),
 
           // Brand Logo
-          Image.asset(
-            AppAssets.smallIcon,
-            height: 48,
-            errorBuilder: (context, error, stackTrace) => const SizedBox(width: 48),
-          ),
+
         ],
       ),
     );

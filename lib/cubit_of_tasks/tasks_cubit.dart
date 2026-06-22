@@ -300,7 +300,10 @@ class TasksCubit extends Cubit<TasksState> {
     }
   }
 
-
+  void resetPoints() {
+    points = 0;
+    emit(InitialTasksState()); // أو أي state مناسب
+  }
 
 }
 
