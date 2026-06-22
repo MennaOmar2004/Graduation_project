@@ -3,7 +3,6 @@ import 'package:wanisi_app/screens/avatar_selection_screen/avatar_selection_scre
 import '../colors.dart';
 import '../static/app_assets.dart';
 import 'avatar_selection_screen/widgets/layered_button.dart';
-import 'options_screen.dart';
 
 /// Success screen shown after child registration
 class SuccessScreen extends StatelessWidget {

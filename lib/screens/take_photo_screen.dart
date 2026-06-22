@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
-import '../static/app_assets.dart';
 
 class TakePhotoScreen extends StatefulWidget {
   const TakePhotoScreen({super.key});

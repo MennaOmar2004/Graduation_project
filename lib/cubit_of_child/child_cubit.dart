@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,7 +82,7 @@ class ChildCubit extends Cubit<ChildState>{
         },
       );
 
-      print(response.data);
+      debugPrint(response.data);
       emit(ChildUpdatedSuccess());
       emit(
         ChildSelectedSuccess(

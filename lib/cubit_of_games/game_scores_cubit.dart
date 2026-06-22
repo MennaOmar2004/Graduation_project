@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
@@ -33,7 +34,7 @@ class GameScoresCubit extends Cubit<GameScoresState> {
         ),
       );
     } catch (e) {
-      print("⚠️ Error fetching game scores: $e");
+      debugPrint("⚠️ Error fetching game scores: $e");
 
       emit(
         const GameScoresLoaded(
@@ -61,11 +62,11 @@ class GameScoresCubit extends Cubit<GameScoresState> {
         "attempts": 0,
       };
 
-      print("====================================");
-      print("📤 POSTING SCORE TO BACKEND:");
-      print("ENDPOINT: /api/v1/game-scores");
-      print("PAYLOAD: $postData");
-      print("====================================");
+      debugPrint("====================================");
+      debugPrint("📤 POSTING SCORE TO BACKEND:");
+      debugPrint("ENDPOINT: /api/v1/game-scores");
+      debugPrint("PAYLOAD: $postData");
+      debugPrint("====================================");
 
       await dio.post(
         '/api/v1/game-scores',
@@ -77,7 +78,7 @@ class GameScoresCubit extends Cubit<GameScoresState> {
       // تحديث السكورات بعد الإضافة
       await fetchGameScores();
     } catch (e) {
-      print("⚠️ Game score submit failed: $e");
+      debugPrint("⚠️ Game score submit failed: $e");
     }
   }
 }

@@ -124,7 +124,7 @@ class _StoryScreenState extends State<StoryScreen> {
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AchievementsScreen(),));
+                          if (!context.mounted) return; Navigator.of(context).push(MaterialPageRoute(builder: (context) => AchievementsScreen(),));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0XFFFCBAD3),
@@ -261,12 +261,12 @@ class _StoryScreenState extends State<StoryScreen> {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            if (!context.mounted) return; Navigator.of(context).pop();
                           },
                           icon: const Icon(Icons.arrow_back_ios_new),
                         ),
                         AvatarCircle(onTap: () {
-                          Navigator.of(context).push(
+                          if (!context.mounted) return; Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => SettingsScreen(),));
                         },
                         ),
@@ -474,3 +474,4 @@ class _NavIcon extends StatelessWidget {
     );
   }
 }
+

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/widgets/avatar_circle.dart';
 import 'package:wanisi_app/widgets/back_ground_widget.dart';
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
 import '../colors.dart';
 import 'main_layout_screen.dart';
 import 'widgets/story_card.dart';

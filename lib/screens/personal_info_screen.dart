@@ -4,12 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import 'package:wanisi_app/widgets/custom_text_form_field.dart';
 import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
-import 'package:wanisi_app/screens/success_screen.dart';
-import 'package:wanisi_app/screens/signup_screen.dart';
 
-import '../blocs/avatar_selection/avatar_selection_cubit.dart';
-import '../blocs/avatar_selection/avatar_selection_state.dart';
-import '../colors.dart';
 import '../cubit_of_child/child_cubit.dart';
 import '../cubit_of_child/child_state.dart';
 

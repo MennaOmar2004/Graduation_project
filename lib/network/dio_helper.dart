@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 // import 'package:dio/dio.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 //
@@ -27,11 +28,11 @@
 //           // إذا كان المسار هو إنشاء طفل، اجبره يستخدم توكن الأب
 //           if (options.path.contains("/api/v1/children") && options.method == "POST") {
 //             token = parentToken;
-//             print("🔑 Using PARENT Token for creation");
+//             debugPrint("🔑 Using PARENT Token for creation");
 //           } else {
 //             // في باقي العمليات، نستخدم توكن الطفل إذا وجد، وإلا توكن الأب
 //             token = childToken ?? parentToken;
-//             print("🔑 Using ${childToken != null ? 'CHILD' : 'PARENT'} Token");
+//             debugPrint("🔑 Using ${childToken != null ? 'CHILD' : 'PARENT'} Token");
 //           }
 //
 //           if (token != null) {
@@ -42,7 +43,7 @@
 //         },
 //         onError: (DioException e, handler) {
 //           // هذه الطباعة ستخبرنا بالسبب الحقيقي للرفض من السيرفر
-//           print("❌ Server Reject Reason: ${e.response?.data}");
+//           debugPrint("❌ Server Reject Reason: ${e.response?.data}");
 //           return handler.next(e);
 //         },
 //       ),
@@ -94,15 +95,15 @@ class DioHelper {
 
           if (isMyChildrenRequest || isCreateChildRequest || isUpdateChildRequest || isAvatarUploadRequest) {
             token = parentToken;
-            print("🔑 Using PARENT Token");
+            debugPrint("🔑 Using PARENT Token");
           } else {
             token = childToken ?? parentToken;
-            print("🔑 Using ${childToken != null ? 'CHILD' : 'PARENT'} Token");
+            debugPrint("🔑 Using ${childToken != null ? 'CHILD' : 'PARENT'} Token");
           }
 
           // 🔥 مهم جدًا: طباعة التوكن اللي بيتبعت فعليًا
-          print("📤 REQUEST: ${options.path}");
-          print("🔐 TOKEN SENT: $token");
+          debugPrint("📤 REQUEST: ${options.path}");
+          debugPrint("🔐 TOKEN SENT: $token");
 
           if (token != null && !options.headers.containsKey("Authorization")) {
             options.headers["Authorization"] = "Bearer $token";
@@ -111,11 +112,11 @@ class DioHelper {
           return handler.next(options);
         },
         onError: (DioException e, handler) {
-          print("❌ STATUS: ${e.response?.statusCode}");
-          print("❌ PATH: ${e.requestOptions.path}");
-          print("❌ TOKEN: ${e.requestOptions.headers['Authorization']}");
-          print("❌ RESPONSE DATA: ${e.response?.data}");
-          print("❌ RESPONSE HEADERS: ${e.response?.headers}");
+          debugPrint("❌ STATUS: ${e.response?.statusCode}");
+          debugPrint("❌ PATH: ${e.requestOptions.path}");
+          debugPrint("❌ TOKEN: ${e.requestOptions.headers['Authorization']}");
+          debugPrint("❌ RESPONSE DATA: ${e.response?.data}");
+          debugPrint("❌ RESPONSE HEADERS: ${e.response?.headers}");
 
           return handler.next(e);
         },

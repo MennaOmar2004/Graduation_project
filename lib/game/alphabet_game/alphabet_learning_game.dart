@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
 import 'components/alphabet_background.dart';
 import 'components/letter_component.dart';
 import 'components/target_word_component.dart';

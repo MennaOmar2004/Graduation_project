@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import 'package:wanisi_app/screens/select_child_screen.dart';
 import 'package:wanisi_app/widgets/custom_text_form_field.dart';
-import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
-import 'package:wanisi_app/screens/success_screen.dart';
 import 'package:wanisi_app/screens/signup_screen.dart';
 
 import '../colors.dart';
@@ -64,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         else if (state is AuthFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          if (!context.mounted) return; ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );
         }
@@ -198,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 passwordController.text,
                               );
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
+                              if (!context.mounted) return; ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
                                     'الرجاء ملء جميع الحقول بشكل صحيح',
@@ -220,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //   children: [
                       //     GestureDetector(
                       //       onTap: () {
-                      //         Navigator.of(context).push(
+                      //         if (!context.mounted) return; Navigator.of(context).push(
                       //           MaterialPageRoute(
                       //             builder: (context) => const SignupScreen(),
                       //           ),
@@ -257,3 +255,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+

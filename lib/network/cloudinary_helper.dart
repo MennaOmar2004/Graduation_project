@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:cloudinary_public/cloudinary_public.dart';
 
@@ -17,11 +18,11 @@ class CloudinaryHelper {
         ),
       );
 
-      print("✅ Cloudinary URL: ${response.secureUrl}");
+      debugPrint("✅ Cloudinary URL: ${response.secureUrl}");
 
       return response.secureUrl;
     } catch (e) {
-      print("❌ Cloudinary error: $e");
+      debugPrint("❌ Cloudinary error: $e");
       return null;
     }
   }

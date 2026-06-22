@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wanisi_app/screens/Behavioral_tasks.dart';
-import 'package:wanisi_app/screens/Religious_tasks.dart';
+import 'package:wanisi_app/screens/behavioral_tasks.dart';
+import 'package:wanisi_app/screens/religious_tasks.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/studying_tasks.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';

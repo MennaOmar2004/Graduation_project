@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -130,7 +131,7 @@ class CollectibleStar extends PositionComponent
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is PlayerCharacter) {
-      print(
+      debugPrint(
         '🎯 Collision detected! isGood: $isGood, value: ${value.arabicName}',
       );
       game.onCollectibleCollected(this);
@@ -225,3 +226,4 @@ class PlayerCharacter extends PositionComponent
     canvas.drawPath(smilePath, smilePaint);
   }
 }
+

@@ -4,8 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wanisi_app/screens/parent_signup_screen.dart';
 
 import '../colors.dart';
-import 'login_Screen.dart';
-import 'games_screen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

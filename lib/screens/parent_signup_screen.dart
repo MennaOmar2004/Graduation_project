@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
-import 'package:wanisi_app/screens/select_child_screen.dart';
 import 'package:wanisi_app/widgets/custom_text_form_field.dart';
-import 'package:wanisi_app/widgets/custom_dropdown_field.dart';
-import 'package:wanisi_app/screens/success_screen.dart';
 import 'package:wanisi_app/screens/signup_screen.dart';
 
 import '../colors.dart';
 import '../cubit_of_auth/auth_cubit.dart';
 import '../cubit_of_auth/auth_state.dart';
-import '../cubit_of_child/child_cubit.dart';
-import '../network/dio_helper.dart';
 
 class ParentSignUpScreen extends StatefulWidget {
   const ParentSignUpScreen({super.key});

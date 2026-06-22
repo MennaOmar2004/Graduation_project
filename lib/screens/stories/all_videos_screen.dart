@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wanisi_app/blocs/stories/bloc.dart';
 import 'package:wanisi_app/blocs/stories/repository.dart';
 import 'package:wanisi_app/blocs/stories/state.dart';
-import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/models/story.dart';
 import 'package:wanisi_app/screens/stories/video_player_screen.dart';
 

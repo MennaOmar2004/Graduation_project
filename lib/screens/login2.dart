@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wanisi_app/screens/avatar_selection_screen/widgets/layered_button.dart';
 import '../colors.dart';
-import '../widgets/custom_Elevated_button.dart';
 import '../widgets/custom_text_form_field.dart';
-import 'avatar_selection_screen/avatar_selection_screen.dart';
 
 class Login2 extends StatelessWidget {
   final emailController = TextEditingController();

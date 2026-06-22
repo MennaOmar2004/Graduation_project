@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/blocs/stories/repository.dart';
 import 'package:wanisi_app/blocs/stories/state.dart';
@@ -22,7 +23,7 @@ class StoriesCubit extends Cubit<StoriesState> {
     try {
       final stories = await _repository.getStoriesByCategory(category);
       emit(StoriesLoaded(stories, selectedCategory: category));
-      print("Loaded stories: ${stories.length}");
+      debugPrint("Loaded stories: ${stories.length}");
     } catch (e) {
       emit(StoriesError(e.toString()));
     }
@@ -43,9 +44,10 @@ class StoriesCubit extends Cubit<StoriesState> {
     try {
       final videos = await _repository.getVideosByCategory(category);
       emit(StoriesLoaded(videos, selectedCategory: category));
-      print("Loaded videos: ${videos.length}");
+      debugPrint("Loaded videos: ${videos.length}");
     } catch (e) {
       emit(StoriesError(e.toString()));
     }
   }
 }
+

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wanisi_app/screens/tajweed_analyzer_screen.dart';
+import 'package:wanisi_app/screens/el_quran_screen.dart';
 import 'package:wanisi_app/screens/options_screen.dart';
 
 class MainLayout extends StatefulWidget {
@@ -15,7 +15,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   final List<Widget> _screens = [
     OptionsScreen(),
-    const TajweedAnalyzerScreen(),
+    const ElQuranScreen(),
   ];
 
   @override

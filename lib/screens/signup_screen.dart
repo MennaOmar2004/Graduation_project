@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -158,14 +159,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                 final parentId = prefs.getInt("parentId");
 
                                 if (parentId == null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
+                                  if (!context.mounted) return; ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("عفواً، يجب تسجيل دخول الأب أولاً")),
                                   );
                                   return;
                                 }
                                 final avatarUrl =
                                 prefs.getString("selected_avatar_url");
-                                print("🔵 avatarUrl from prefs = $avatarUrl");
+                                debugPrint("🔵 avatarUrl from prefs = $avatarUrl");
                                 // 1️⃣ إنشاء الطفل
                                 final createResponse = await DioHelper.dio.post(
                                   "/api/v1/children",
@@ -184,7 +185,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 await prefs.setString("temp_child_gender", selectedGender!);
                                 await prefs.setString("temp_child_prefs", specializationsController.text.trim());
 
-                                print("CREATE RESPONSE: ${createResponse.data}");
+                                debugPrint("CREATE RESPONSE: ${createResponse.data}");
                                 await prefs.remove("selected_avatar_url");
                                 // تأكدي من قراءة الـ ID بشكل صحيح (حسب رد السيرفر)
                                 final dynamic responseData = createResponse.data;
@@ -225,7 +226,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   );
                                 }
                               } catch (e) {
-                                print("❌ Complete Error: $e");
+                                debugPrint("❌ Complete Error: $e");
                                 String errorMsg = "فشل التسجيل، تأكد من البيانات";
 
                                 // إذا كان الخطأ من السيرفر، نحاول إظهار السبب الحقيقي
@@ -233,7 +234,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   errorMsg = e.response?.data["message"] ?? errorMsg;
                                 }
 
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                if (!context.mounted) return; ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(errorMsg)),
                                 );
                               }
@@ -246,7 +247,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // Navigator.of(context).pop();
+                              // if (!context.mounted) return; Navigator.of(context).pop();
                             },
                             child: Text(
                               'تسجيل الدخول',
@@ -279,3 +280,6 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
+
+
+

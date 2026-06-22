@@ -135,7 +135,7 @@ class StarSpawner extends Component with HasGameReference<StarCatcherGame> {
   late Timer _timer;
   final Random _rng = Random();
   double _currentInterval = 1.5;
-  double _minInterval = 0.4;
+  final double _minInterval = 0.4;
   double _difficultyTimer = 0;
   final double _difficultyIncreaseInterval =
       10.0; // Increase difficulty every 10 seconds

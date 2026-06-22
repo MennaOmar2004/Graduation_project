@@ -15,7 +15,6 @@ import '../../colors.dart';
 import '../take_photo_screen/take_photo_screen.dart';
 import 'widgets/avatar_grid_item.dart';
 import 'widgets/layered_button.dart';
-import '../options_screen.dart';
 
 /// Avatar selection screen - allows user to choose their profile avatar
 
@@ -60,8 +59,8 @@ class _AvatarSelectionView extends StatelessWidget {
               width:200 ,
               onPressed: () {
                 // TODO: Navigate to create your image screen
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => TakePhotoScreen(mode: mode,),));
-                // ScaffoldMessenger.of(context).showSnackBar(
+                if (!context.mounted) return; Navigator.of(context).push(MaterialPageRoute(builder: (context) => TakePhotoScreen(mode: mode,),));
+                // if (!context.mounted) return; ScaffoldMessenger.of(context).showSnackBar(
                 //   SnackBar(
                 //     content: Text(
                 //       'انشئ صورتك - قريباً',
@@ -143,6 +142,7 @@ class _AvatarSelectionView extends StatelessWidget {
 
                               if (imageUrl == null) return;
 
+                              if (!context.mounted) return;
                               final childCubit = context.read<ChildCubit>();
                               final childState = childCubit.state;
 
@@ -208,3 +208,5 @@ class _AvatarSelectionView extends StatelessWidget {
     );
   }
 }
+
+

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -219,6 +218,7 @@ class StarCatcherGame extends FlameGame
     }
   }
 
+  @override
   double currentTime() => _gameTime;
 
   int getComboMultiplier() {

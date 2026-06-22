@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wanisi_app/cubit_of_tasks/tasks_State.dart';
+import 'package:wanisi_app/cubit_of_tasks/tasks_state.dart';
 import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
 import 'package:wanisi_app/model_of_tasks/tasks.dart';
 import '../colors.dart';

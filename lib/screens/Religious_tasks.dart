@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wanisi_app/screens/settings_screen.dart';
 import 'package:wanisi_app/screens/widgets/score_indicator.dart';
 import '../colors.dart';
-import '../cubit_of_tasks/tasks_State.dart';
+import '../cubit_of_tasks/tasks_state.dart';
 import '../cubit_of_tasks/tasks_cubit.dart';
 import '../widgets/avatar_circle.dart';
 import '../widgets/personal_task_widget.dart';
