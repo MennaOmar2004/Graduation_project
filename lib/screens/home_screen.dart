@@ -50,7 +50,6 @@ class HomeScreen extends StatelessWidget {
                     height: 65,
                     backgroundColor: AppColors.gray,
                     shadowColor: const Color(0xFFD6D6D6),
-                    image: "assets/images/icon.png",
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -63,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                     width: 500,
                     height: 65,
                     backgroundColor: AppColors.blue,
-                    image: "assets/images/baby_icon.png",
+
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => ParentSignUpScreen()),
