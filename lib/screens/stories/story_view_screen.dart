@@ -274,11 +274,9 @@ class _StoryViewScreenState extends State<StoryViewScreen>
   }
 
   Widget _buildStoryArtCard() {
-    return Hero(
-      tag: 'story_${widget.story.id}',
-      child: Container(
-        height: 260,
-        width: double.infinity,
+    return Container(
+      height: 260,
+      width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
           gradient: LinearGradient(
@@ -368,7 +366,6 @@ class _StoryViewScreenState extends State<StoryViewScreen>
             ],
           ),
         ),
-      ),
     );
   }
 
