@@ -49,5 +49,36 @@ class StoriesCubit extends Cubit<StoriesState> {
       emit(StoriesError(e.toString()));
     }
   }
-}
 
+  Future<void> completeStory(
+    int childId,
+    int storyId, {
+    double progressPercent = 100,
+  }) async {
+    try {
+      await _repository.completeStory(
+        childId,
+        storyId,
+        progressPercent: progressPercent,
+      );
+    } catch (e) {
+      debugPrint("Failed to complete story: $e");
+    }
+  }
+
+  Future<void> completeVideo(
+    int childId,
+    int videoId, {
+    double watchPercent = 100,
+  }) async {
+    try {
+      await _repository.completeVideo(
+        childId,
+        videoId,
+        watchPercent: watchPercent,
+      );
+    } catch (e) {
+      debugPrint("Failed to complete video: $e");
+    }
+  }
+}

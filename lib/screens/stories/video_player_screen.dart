@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/blocs/stories/repository.dart';
 import 'package:wanisi_app/models/story.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'dart:ui';
+import 'package:wanisi_app/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wanisi_app/blocs/stories/bloc.dart';
+import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final Story story;
@@ -247,7 +253,24 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     );
   }
 
-  void _showCompletionDialog() {
+  void _showCompletionDialog() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final childId = prefs.getInt("childId");
+      if (childId != null && mounted) {
+        // Send completion to backend
+        await StoriesRepository().completeVideo(childId, widget.story.id);
+        if (mounted) {
+          // Update global points
+          context.read<TasksCubit>().loadLogs();
+        }
+      }
+    } catch (e) {
+      debugPrint("Error completing video: $e");
+    }
+
+    if (!mounted) return;
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -270,10 +293,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   ),
                 ),
                 Text(
-                  'لقد شاهدت القصة كاملة بنجاح!',
+                  'لقد شاهدت الفيديو كاملًا بنجاح!',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cairo(fontSize: 16, color: Colors.grey[600]),
                 ),
+                if (widget.story.points > 0) ...[
+                  const SizedBox(height: 15),
+                  Text('+${widget.story.points} نقطة',
+                      style: GoogleFonts.cairo(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.green)),
+                ],
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {

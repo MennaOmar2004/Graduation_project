@@ -62,4 +62,26 @@ class StoriesRepository {
       rethrow;
     }
   }
+
+  Future<void> completeStory(int childId, int storyId, {double progressPercent = 100}) async {
+    try {
+      final response = await _dataProvider.completeStory(childId, storyId, progressPercent);
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw Exception(response.data['message'] ?? 'Failed to complete story');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> completeVideo(int childId, int videoId, {double watchPercent = 100}) async {
+    try {
+      final response = await _dataProvider.completeVideo(childId, videoId, watchPercent);
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw Exception(response.data['message'] ?? 'Failed to complete video');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

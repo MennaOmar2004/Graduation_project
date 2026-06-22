@@ -27,4 +27,28 @@ class StoriesDataProvider {
   Future<Response> getVideosByCategory(String category) async {
     return await ApiConsumer.get(ApiEndpoints.videosByCategory(category));
   }
+
+  /// Sends progress for a story to earn points
+  Future<Response> completeStory(int childId, int storyId, double progressPercent) async {
+    return await ApiConsumer.post(
+      ApiEndpoints.storyProgress,
+      data: {
+        "childId": childId,
+        "storyId": storyId,
+        "progressPercent": progressPercent,
+      },
+    );
+  }
+
+  /// Sends progress for a video to earn points
+  Future<Response> completeVideo(int childId, int videoId, double watchPercent) async {
+    return await ApiConsumer.post(
+      ApiEndpoints.videoActivitiesProgress,
+      data: {
+        "childId": childId,
+        "videoId": videoId,
+        "watchPercent": watchPercent,
+      },
+    );
+  }
 }

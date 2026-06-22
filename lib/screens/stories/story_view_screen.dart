@@ -1,8 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wanisi_app/blocs/stories/repository.dart';
 import 'package:wanisi_app/colors.dart';
 import 'package:wanisi_app/models/story.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wanisi_app/blocs/stories/bloc.dart';
+import 'package:wanisi_app/cubit_of_tasks/tasks_cubit.dart';
 
 class StoryViewScreen extends StatefulWidget {
   final Story story;
@@ -13,7 +18,8 @@ class StoryViewScreen extends StatefulWidget {
   State<StoryViewScreen> createState() => _StoryViewScreenState();
 }
 
-class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderStateMixin {
+class _StoryViewScreenState extends State<StoryViewScreen>
+    with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late AnimationController _sparkleController;
   late ScrollController _scrollController;
@@ -30,7 +36,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
       vsync: this,
       duration: const Duration(seconds: 10),
     )..repeat();
-    
+
     _scrollController = ScrollController()..addListener(_onScroll);
     _fadeController.forward();
   }
@@ -38,7 +44,9 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
   void _onScroll() {
     if (_scrollController.hasClients) {
       setState(() {
-        _scrollPercentage = _scrollController.offset / _scrollController.position.maxScrollExtent;
+        _scrollPercentage =
+            _scrollController.offset /
+            _scrollController.position.maxScrollExtent;
       });
     }
   }
@@ -70,7 +78,10 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
                     child: SingleChildScrollView(
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       child: Column(
                         children: [
                           _buildStoryArtCard(),
@@ -99,17 +110,26 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
         Positioned(
           top: -100,
           right: -100,
-          child: _buildBlurCircle(300, const Color(0xFFFFD1E1).withValues(alpha: 0.4)),
+          child: _buildBlurCircle(
+            300,
+            const Color(0xFFFFD1E1).withValues(alpha: 0.4),
+          ),
         ),
         Positioned(
           bottom: -50,
           left: -100,
-          child: _buildBlurCircle(400, const Color(0xFFD1E1FF).withValues(alpha: 0.5)),
+          child: _buildBlurCircle(
+            400,
+            const Color(0xFFD1E1FF).withValues(alpha: 0.5),
+          ),
         ),
         Positioned(
           top: 200,
           left: -50,
-          child: _buildBlurCircle(200, const Color(0xFFE1FFD1).withValues(alpha: 0.3)),
+          child: _buildBlurCircle(
+            200,
+            const Color(0xFFE1FFD1).withValues(alpha: 0.3),
+          ),
         ),
       ],
     );
@@ -119,10 +139,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
         child: Container(color: Colors.transparent),
@@ -138,8 +155,11 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
           children: List.generate(15, (index) {
             final random = (index * 73) % 1000 / 1000;
             return Positioned(
-              top: (MediaQuery.of(context).size.height * ((random + _sparkleController.value) % 1.0)),
-              left: (MediaQuery.of(context).size.width * ((index * 0.07) % 1.0)),
+              top:
+                  (MediaQuery.of(context).size.height *
+                      ((random + _sparkleController.value) % 1.0)),
+              left:
+                  (MediaQuery.of(context).size.width * ((index * 0.07) % 1.0)),
               child: Opacity(
                 opacity: 0.3,
                 child: Icon(
@@ -170,7 +190,10 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [_getCategoryColor(), _getCategoryColor().withValues(alpha: 0.7)],
+              colors: [
+                _getCategoryColor(),
+                _getCategoryColor().withValues(alpha: 0.7),
+              ],
             ),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
@@ -178,7 +201,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
                 color: _getCategoryColor().withValues(alpha: 0.3),
                 blurRadius: 4,
                 spreadRadius: 1,
-              )
+              ),
             ],
           ),
         ),
@@ -197,7 +220,10 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
               color: Colors.white,
               shape: BoxShape.circle,
               boxShadow: [
-                BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                ),
               ],
             ),
             child: IconButton(
@@ -209,7 +235,10 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [_getCategoryColor(), _getCategoryColor().withValues(alpha: 0.8)],
+                colors: [
+                  _getCategoryColor(),
+                  _getCategoryColor().withValues(alpha: 0.8),
+                ],
               ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
@@ -222,7 +251,11 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
             ),
             child: Row(
               children: [
-                const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 16),
+                const Icon(
+                  Icons.auto_awesome_rounded,
+                  color: Colors.white,
+                  size: 16,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   widget.story.category,
@@ -404,7 +437,24 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
     return AppColors.green;
   }
 
-  void _showA7santDialog(BuildContext context) {
+  void _showA7santDialog(BuildContext context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final childId = prefs.getInt("childId");
+      if (childId != null && mounted) {
+        // Send completion to backend
+        await StoriesRepository().completeStory(childId, widget.story.id);
+        if (mounted) {
+          // Update global points
+          context.read<TasksCubit>().loadLogs();
+        }
+      }
+    } catch (e) {
+      debugPrint("Error completing story: $e");
+    }
+
+    if (!mounted) return;
+
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -418,14 +468,36 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
             opacity: anim1.value,
             child: AlertDialog(
               backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.auto_awesome_rounded, color: Colors.amber, size: 80),
+                  const Icon(
+                    Icons.auto_awesome_rounded,
+                    color: Colors.amber,
+                    size: 80,
+                  ),
                   const SizedBox(height: 20),
-                  Text('أحسنت يا بطل!', 
-                    style: GoogleFonts.cairo(fontSize: 26, fontWeight: FontWeight.bold)),
+                  Text(
+                    'أحسنت يا بطل!',
+                    style: GoogleFonts.cairo(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (widget.story.points > 0) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      '+${widget.story.points} نقطة',
+                      style: GoogleFonts.cairo(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.green,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
@@ -435,10 +507,17 @@ class _StoryViewScreenState extends State<StoryViewScreen> with TickerProviderSt
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _getCategoryColor(),
                       minimumSize: const Size(double.infinity, 60),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
-                    child: Text('رائع!', 
-                      style: GoogleFonts.cairo(color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'رائع!',
+                      style: GoogleFonts.cairo(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
