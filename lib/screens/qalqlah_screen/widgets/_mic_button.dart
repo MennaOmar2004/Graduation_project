@@ -53,32 +53,32 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
             children: [
               // Outer glow ring
               Container(
-                width: 110,
-                height: 110,
+                width: 120,
+                height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: (isRecording
                           ? Colors.redAccent
-                          : const Color(0xFF43A047))
-                      .withValues(alpha: 0.15),
+                          : const Color(0xFF4CAF50))
+                      .withValues(alpha: 0.12),
                 ),
               ),
               // Middle ring
               Container(
-                width: 90,
-                height: 90,
+                width: 96,
+                height: 96,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: (isRecording
                           ? Colors.redAccent
-                          : const Color(0xFF43A047))
-                      .withValues(alpha: 0.22),
+                          : const Color(0xFF4CAF50))
+                      .withValues(alpha: 0.25),
                 ),
               ),
               // Core button
               Container(
-                width: 70,
-                height: 70,
+                width: 72,
+                height: 72,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: isRecording
@@ -106,7 +106,7 @@ class _QalqlahMicButtonState extends State<QalqlahMicButton>
                 child: Icon(
                   isRecording ? Icons.stop_rounded : Icons.mic_rounded,
                   color: Colors.white,
-                  size: 34,
+                  size: 38,
                 ),
               ),
             ],

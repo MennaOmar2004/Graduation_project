@@ -219,7 +219,8 @@ class _RecordingPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 36),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(28),
@@ -234,12 +235,21 @@ class _RecordingPanel extends StatelessWidget {
       child: Column(
         children: [
           const QalqlahMicButton(),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
-            'اضغط للتسجيل',
+            'نحن متحمسون لسماع صوتك!',
             style: AppTextStyles.snackbarText.copyWith(
-              color: Colors.grey.shade400,
-              fontSize: 13,
+              color: const Color(0xFF2E7D32).withValues(alpha: 0.8),
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'اضغط على المايك لتبدأ',
+            style: AppTextStyles.snackbarText.copyWith(
+              color: Colors.grey.shade500,
+              fontSize: 12,
             ),
           ),
         ],

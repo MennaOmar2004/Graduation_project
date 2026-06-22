@@ -14,32 +14,32 @@ class QalqlahStatusLabel extends StatelessWidget {
       builder: (context, state) {
         final (text, color, bgColor) = switch (state) {
           QalqlahInitial() => (
-              'اضغط الميكروفون لبدء التسجيل',
-              Colors.grey.shade600,
-              Colors.grey.shade100,
+              'أنت بطل! اضغط المايك وابدأ تلاوتك 🌟',
+              const Color(0xFF2E7D32),
+              const Color(0xFFE8F5E9),
             ),
           QalqlahRecording() => (
-              '🔴  جارٍ التسجيل… اضغط للإيقاف',
+              '🔴  صوتك رائع! استمر في التلاوة...',
               Colors.redAccent,
               Colors.red.shade50,
             ),
           QalqlahRecorded() => (
-              '✅  تم التسجيل — اضغط «تحليل» للفحص',
+              '✅  تلاوة ممتازة! اضغط «تحليل» لترى النتيجة',
               const Color(0xFF2E7D32),
               const Color(0xFFE8F5E9),
             ),
           QalqlahLoading() => (
-              '⏳  جارٍ الرفع والتحليل...',
+              '⏳  نستمع لتلاوتك الجميلة...',
               AppColors.blue_,
               const Color(0xFFEEF2FF),
             ),
           QalqlahSuccess() => (
-              '✨  اكتمل التحليل بنجاح',
+              '✨  رائع جداً! تم تحليل تلاوتك بنجاح',
               const Color(0xFF2E7D32),
               const Color(0xFFE8F5E9),
             ),
           QalqlahFailure() => (
-              '❌  حدث خطأ — يمكنك المحاولة مجددًا',
+              '❌  لا تيأس، حاول مرة أخرى يا بطل!',
               AppColors.red,
               const Color(0xFFFFF0F3),
             ),
