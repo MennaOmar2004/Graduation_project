@@ -31,7 +31,6 @@ class CustomDropdownField<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: DropdownButtonFormField<T>(
-        initialValue: value,
         items: items,
         onChanged: onChanged,
         validator: validator,
