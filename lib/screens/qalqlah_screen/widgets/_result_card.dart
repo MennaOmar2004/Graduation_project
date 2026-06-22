@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:wanisi_app/blocs/qalqlah/qalqlah_cubit.dart';
 import 'package:wanisi_app/blocs/qalqlah/qalqlah_state.dart';
 import 'package:wanisi_app/colors.dart';
+import 'package:wanisi_app/services/quran_audio_service.dart';
 
 /// Shows the analysis result: loading spinner, error, success card, or empty.
 class QalqlahResultCard extends StatelessWidget {
@@ -120,23 +122,155 @@ class _ErrorCard extends StatelessWidget {
 
 // ─── Success ────────────────────────────────────────────────────────────────
 
-class _SuccessCard extends StatelessWidget {
+class _SuccessCard extends StatefulWidget {
   final String resultText;
   const _SuccessCard({required this.resultText});
+
+  @override
+  State<_SuccessCard> createState() => _SuccessCardState();
+}
+
+class _SuccessCardState extends State<_SuccessCard> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  String? _currentlyPlayingWord;
+  bool _isLoadingAudio = false;
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  String _extractWord(String line) {
+    // Clean bullet characters
+    String cleaned = line.replaceFirst(RegExp(r'^[-*\s•]+'), '');
+    // Clean "كلمة:" or "الكلمة:" prefix
+    cleaned = cleaned.replaceFirst(RegExp(r'^(الكلمة|كلمة)\s*:\s*'), '');
+    // Remove anything in parentheses
+    cleaned = cleaned.split('(').first.trim();
+    return cleaned;
+  }
+
+  Future<void> _playWordAudio(String word) async {
+    if (_currentlyPlayingWord == word) {
+      await _audioPlayer.stop();
+      setState(() {
+        _currentlyPlayingWord = null;
+        _isLoadingAudio = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _currentlyPlayingWord = word;
+      _isLoadingAudio = true;
+    });
+
+    try {
+      final audioUrl = await QuranAudioService().getAudioUrl(word);
+      if (audioUrl != null && mounted) {
+        await _audioPlayer.stop();
+        await _audioPlayer.play(UrlSource(audioUrl));
+        _audioPlayer.onPlayerComplete.listen((_) {
+          if (mounted) {
+            setState(() {
+              _currentlyPlayingWord = null;
+              _isLoadingAudio = false;
+            });
+          }
+        });
+        setState(() {
+          _isLoadingAudio = false;
+        });
+      } else {
+        if (mounted) {
+          setState(() {
+            _currentlyPlayingWord = null;
+            _isLoadingAudio = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('تعذر العثور على صوت الكلمة')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _currentlyPlayingWord = null;
+          _isLoadingAudio = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // Split the raw text into lines and filter blanks
     final lines =
-        resultText
+        widget.resultText
             .split('\n')
             .map((l) => l.trim())
             .where((l) => l.isNotEmpty)
             .toList();
 
-    // First line is the summary/header; the rest are bullet items
-    final header = lines.isNotEmpty ? lines.first : resultText;
+    // The rest are bullet items
     final bullets = lines.length > 1 ? lines.sublist(1) : <String>[];
+
+    // If there are no bullets, the recitation is 100% correct
+    if (bullets.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.amber.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 6),
+            ),
+          ],
+          border: Border.all(
+            color: Colors.amber.withValues(alpha: 0.3),
+            width: 1.5,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: Column(
+          children: [
+            // Golden Trophy
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.amber.shade50,
+                shape: BoxShape.circle,
+              ),
+              child: const Text('🏆', style: TextStyle(fontSize: 48)),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              'تلاوتك ممتازة وخالية من الأخطاء!',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.linkText.copyWith(
+                fontSize: 18,
+                color: Colors.amber.shade800,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'أحسنت يا بطل! لقد قرأت أحرف القلقلة بشكل صحيح تماماً. استمر في هذا الأداء الرائع! 🌟👏',
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+              style: AppTextStyles.snackbarText.copyWith(
+                fontSize: 14,
+                color: Colors.grey.shade700,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -189,55 +323,156 @@ class _SuccessCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Header/summary line
-                Text(
-                  header,
-                  textAlign: TextAlign.right,
-                  textDirection: TextDirection.rtl,
-                  style: AppTextStyles.linkText.copyWith(
-                    fontSize: 16,
-                    color: const Color(0xFF2D2D5E),
-                    fontWeight: FontWeight.bold,
-                    height: 1.6,
-                  ),
-                ),
-                if (bullets.isNotEmpty) ...[
-                  const SizedBox(height: 14),
-                  const Divider(height: 1),
-                  const SizedBox(height: 14),
-                  // Word + confidence bullet list
-                  ...bullets.map(
-                    (line) => Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Row(
+                // Friendly header/instruction
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'محاولة رائعة يا بطل! فلنتدرب معاً على نطق الكلمات التالية لتصبح تلاوتك ممتازة: ✨',
+                        textAlign: TextAlign.right,
                         textDirection: TextDirection.rtl,
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            margin: const EdgeInsetsDirectional.only(end: 10),
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFCA6486),
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              line.replaceAll(RegExp(r'^[-\s]+'), ''),
-                              textAlign: TextAlign.right,
-                              textDirection: TextDirection.rtl,
-                              style: AppTextStyles.snackbarText.copyWith(
-                                fontSize: 15,
-                                color: const Color(0xFF3D3D6E),
-                                height: 1.5,
+                        style: AppTextStyles.linkText.copyWith(
+                          fontSize: 15,
+                          color: const Color(0xFF2D2D5E),
+                          fontWeight: FontWeight.bold,
+                          height: 1.6,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('💡', style: TextStyle(fontSize: 22)),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // ── Single play button for the whole Ayah ──────────
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFCA6486).withValues(alpha: 0.3),
+                          offset: const Offset(0, 4),
+                          blurRadius: 0,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        // Join word search query to fetch the correct Ayah pronunciation
+                        final combinedQuery = bullets
+                            .map(_extractWord)
+                            .join(' ');
+                        _playWordAudio(combinedQuery);
+                      },
+                      icon:
+                          _isLoadingAudio
+                              ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : Icon(
+                                _currentlyPlayingWord != null
+                                    ? Icons.stop_rounded
+                                    : Icons.volume_up_rounded,
+                                color: Colors.white,
+                                size: 20,
                               ),
-                            ),
-                          ),
-                        ],
+                      label: Text(
+                        _currentlyPlayingWord != null
+                            ? 'إيقاف الصوت'
+                            : 'استمع للآية الكريمة',
+                        style: AppTextStyles.buttonText.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFCA6486),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: const BorderSide(color: Colors.white, width: 1),
+                        ),
                       ),
                     ),
                   ),
-                ],
+                ),
+
+                const SizedBox(height: 18),
+                const Divider(height: 1),
+                const SizedBox(height: 18),
+
+                // Static tactile badges layout (clean, no volume play button)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    textDirection: TextDirection.rtl,
+                    children:
+                        bullets.map((line) {
+                          final word = _extractWord(line);
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFF0F3), // Soft pink bg
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                color: const Color(0xFFCA6486),
+                                width: 2.0,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(
+                                    0xFFCA6486,
+                                  ).withValues(alpha: 0.2),
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 0,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              textDirection: TextDirection.rtl,
+                              children: [
+                                const Icon(
+                                  Icons.star_rounded,
+                                  color: Color(0xFFCA6486),
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  word,
+                                  style: AppTextStyles.numberText.copyWith(
+                                    fontSize: 17,
+                                    color: const Color(0xFFCA6486),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                ),
               ],
             ),
           ),
